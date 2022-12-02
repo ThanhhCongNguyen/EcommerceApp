@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_8dp"
+    android:layout_marginTop="@dimen/_8dp"
+    android:layout_marginEnd="@dimen/_8dp"
+    app:cardCornerRadius="@dimen/_8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_6dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/itemImage"
+            android:layout_width="@dimen/_100dp"
+            android:layout_height="@dimen/_100dp"
+            android:layout_marginStart="@dimen/_4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/_8dp"
+            app:cardCornerRadius="@dimen/_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_test" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintStart_toEndOf="@+id/itemImage"
+            app:layout_constraintTop_toTopOf="@+id/itemImage"
+            tools:text="Minimal Stand" />
+
+        <TextView
+            android:id="@+id/itemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/itemName"
+            app:layout_constraintTop_toBottomOf="@+id/itemName"
+            tools:text="$ 25.00" />
+
+        <ImageView
+            android:id="@+id/itemCancel"
+            android:layout_width="@dimen/_24dp"
+            android:layout_height="@dimen/_24dp"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_marginEnd="@dimen/_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cancel" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_4dp"
+            android:layout_marginStart="@dimen/_10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/itemImage"
+            app:layout_constraintStart_toEndOf="@+id/itemImage">
+
+            <ImageView
+                android:id="@+id/addBtn"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
+                android:background="@drawable/bg_add_minus"
+                android:padding="@dimen/_4dp"
+                android:src="@drawable/ic_add" />
+
+            <TextView
+                android:id="@+id/accountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
+                android:fontFamily="sans-serif-medium"
+                tools:text="10" />
+
+            <ImageView
+                android:id="@+id/minusBtn"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
+                android:layout_marginStart="@dimen/_10dp"
+                android:background="@drawable/bg_add_minus"
+                android:padding="@dimen/_4dp"
+                android:src="@drawable/ic_minus" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

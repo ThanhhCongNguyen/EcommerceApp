@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_16dp"
+    android:layout_marginTop="@dimen/_16dp"
+    android:layout_marginStart="@dimen/_16dp"
+    android:layout_marginEnd="@dimen/_16dp"
+    app:cardCornerRadius="@dimen/_8dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/userAvatar"
+            android:layout_width="@dimen/_32dp"
+            android:layout_height="@dimen/_32dp"
+            android:layout_marginStart="@dimen/_16dp"
+            android:layout_marginTop="@dimen/_16dp"
+            android:src="@drawable/kitchen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
+            app:layout_constraintStart_toEndOf="@+id/userAvatar"
+            tools:text="Leo Messi" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/userAvatar"
+            app:layout_constraintTop_toBottomOf="@id/userName">
+
+            <ImageView
+                android:id="@+id/oneStar"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:src="@drawable/star" />
+
+            <ImageView
+                android:id="@+id/twoStar"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:layout_marginStart="@dimen/_8dp"
+                android:src="@drawable/star" />
+
+            <ImageView
+                android:id="@+id/threeStar"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:layout_marginStart="@dimen/_8dp"
+                android:src="@drawable/star" />
+
+            <ImageView
+                android:id="@+id/fourStar"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:layout_marginStart="@dimen/_8dp"
+                android:src="@drawable/star" />
+
+            <ImageView
+                android:id="@+id/fiveStar"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:layout_marginStart="@dimen/_8dp"
+                android:src="@drawable/star" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reviewsOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="@dimen/_12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/userName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/userName"
+            tools:text="9/4/2023" />
+
+        <TextView
+            android:id="@+id/reviewContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16dp"
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_marginEnd="@dimen/_16dp"
+            android:layout_marginBottom="@dimen/_16dp"
+            android:textAlignment="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:text="Customer reviews can have an outsized impact on the perception of your brand. Bad reviews, if steps aren't taken to correct them, draw hundreds of eyes and make potential new customers uneasy about the customer experience you offer." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:layout_marginStart="@dimen/_16dp"-->
+    <!--    android:layout_marginTop="@dimen/_16dp"-->
+    <!--    android:layout_marginEnd="@dimen/_16dp">-->
+
+
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/userAvatar"-->
+    <!--                android:layout_width="@dimen/_32dp"-->
+    <!--                android:layout_height="@dimen/_32dp"-->
+    <!--                android:layout_marginStart="@dimen/_16dp"-->
+    <!--                android:layout_marginTop="@dimen/_16dp"-->
+    <!--                android:src="@drawable/kitchen"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/userName"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="@dimen/_16dp"-->
+    <!--                android:fontFamily="sans-serif-medium"-->
+    <!--                android:textColor="@color/black"-->
+    <!--                app:layout_constraintBottom_toBottomOf="@+id/userAvatar"-->
+    <!--                app:layout_constraintStart_toEndOf="@+id/userAvatar"-->
+    <!--                tools:text="Leo Messi" />-->
+
+    <!--            <LinearLayout-->
+    <!--                android:id="@+id/linearLayout"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="@dimen/_10dp"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                app:layout_constraintStart_toStartOf="@+id/userAvatar"-->
+    <!--                app:layout_constraintTop_toBottomOf="@id/userName">-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/oneStar"-->
+    <!--                    android:layout_width="@dimen/_14dp"-->
+    <!--                    android:layout_height="@dimen/_14dp"-->
+    <!--                    android:src="@drawable/star" />-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/twoStar"-->
+    <!--                    android:layout_width="@dimen/_14dp"-->
+    <!--                    android:layout_height="@dimen/_14dp"-->
+    <!--                    android:layout_marginStart="@dimen/_8dp"-->
+    <!--                    android:src="@drawable/star" />-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/threeStar"-->
+    <!--                    android:layout_width="@dimen/_14dp"-->
+    <!--                    android:layout_height="@dimen/_14dp"-->
+    <!--                    android:layout_marginStart="@dimen/_8dp"-->
+    <!--                    android:src="@drawable/star" />-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/fourStar"-->
+    <!--                    android:layout_width="@dimen/_14dp"-->
+    <!--                    android:layout_height="@dimen/_14dp"-->
+    <!--                    android:layout_marginStart="@dimen/_8dp"-->
+    <!--                    android:src="@drawable/star" />-->
+
+    <!--                <ImageView-->
+    <!--                    android:id="@+id/fiveStar"-->
+    <!--                    android:layout_width="@dimen/_14dp"-->
+    <!--                    android:layout_height="@dimen/_14dp"-->
+    <!--                    android:layout_marginStart="@dimen/_8dp"-->
+    <!--                    android:src="@drawable/star" />-->
+    <!--            </LinearLayout>-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/reviewsOn"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginEnd="@dimen/_16dp"-->
+    <!--                android:fontFamily="sans-serif-medium"-->
+    <!--                android:textSize="@dimen/_12sp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="@+id/userName"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/userName"-->
+    <!--                tools:text="9/4/2023" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/reviewContent"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="0dp"-->
+    <!--                android:layout_marginStart="@dimen/_16dp"-->
+    <!--                android:layout_marginTop="@dimen/_16dp"-->
+    <!--                android:layout_marginEnd="@dimen/_16dp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/linearLayout"-->
+    <!--                tools:text="Customer reviews can have an outsized impact on the perception of your brand. Bad reviews, if steps aren't taken to correct them, draw hundreds of eyes and make potential new customers uneasy about the customer experience you offer." />-->
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    </androidx.cardview.widget.CardView>-->
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
