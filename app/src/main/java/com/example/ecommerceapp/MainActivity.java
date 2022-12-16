@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        LoginFragment loginFragment = new LoginFragment();
-        transactionFragment(loginFragment);
+//        LoginFragment loginFragment = new LoginFragment();
+        MainFragment mainFragment = new MainFragment();
+        transactionFragment(mainFragment);
     }
 
     private void transactionFragment(Fragment fragment) {
