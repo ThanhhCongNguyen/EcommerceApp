@@ -26,8 +26,11 @@
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/drawable/ic_plus.xml" value="0.1675" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/drawable/ic_search.xml" value="0.1875" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/drawable/ic_shopping_bag.xml" value="0.1675" />
+        <entry key="..\:/Android/EcommerceApp/app/src/main/res/drawable/tab_layout_bg.xml" value="0.2265" />
+        <entry key="..\:/Android/EcommerceApp/app/src/main/res/drawable/tabs_selector.xml" value="0.2265" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/font/abeezee.xml" value="0.32151898734177214" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Android/EcommerceApp/app/src/main/res/layout/fragment_chair.xml" value="0.14722222222222223" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/layout/fragment_check_out.xml" value="0.25" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/layout/fragment_detail.xml" value="0.25" />
         <entry key="..\:/Android/EcommerceApp/app/src/main/res/layout/fragment_facorites.xml" value="0.36666666666666664" />

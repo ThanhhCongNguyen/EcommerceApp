@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.ui;
+package com.example.ecommerceapp.ui.home_fragment;
 
 import android.os.Bundle;
 
@@ -16,12 +16,15 @@ import android.view.ViewGroup;
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.CategoryAdapter;
 import com.example.ecommerceapp.adapter.ProductAdapter;
+import com.example.ecommerceapp.adapter.ViewPagerAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
 import com.example.ecommerceapp.databinding.FragmentSignUpBinding;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
+
+    private ViewPagerAdapter viewPagerAdapter;
 
     private HomeViewModel homeViewModel;
     private CategoryAdapter categoryAdapter;
@@ -47,31 +50,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.recyclerViewCategory.setAdapter(categoryAdapter);
-        binding.recyclerViewCategory.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        binding.recyclerMain.setAdapter(productAdapter);
-        binding.recyclerMain.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-
-        homeViewModel.getLiveCategoryData().observe(getActivity(), categories -> {
-            if (categories != null) {
-                categoryAdapter.setCategoryList(categories);
-            }
-        });
-
-        homeViewModel.getLiveProductData().observe(getActivity(), products -> {
-            if (products != null) {
-                productAdapter.setProducts(products);
-            }
-        });
-
-        categoryAdapter.setCallback(new CategoryAdapter.Callback() {
-            @Override
-            public void onItemClick(int position) {
-
-            }
-        });
-
+        viewPagerAdapter = new ViewPagerAdapter(requireActivity().getSupportFragmentManager());
+//        binding.viewPager.setAdapter(viewPagerAdapter);
+//
+//        binding.tabLayout.setupWithViewPager(binding.viewPager);
 
     }
 }

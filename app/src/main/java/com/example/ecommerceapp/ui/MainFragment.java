@@ -1,15 +1,13 @@
 package com.example.ecommerceapp.ui;
 
-import static com.example.ecommerceapp.utils.Utilities.TAG;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +15,18 @@ import android.view.ViewGroup;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentMainBinding;
+import com.example.ecommerceapp.ui.home_fragment.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
+    private HomeFragment homeFragment = new HomeFragment();
+    private MyCartFragment myCartFragment = new MyCartFragment();
+    private NotificationFragment notificationFragment = new NotificationFragment();
+    private SettingFragment settingFragment = new SettingFragment();
+
+    private FragmentManager fragmentManager;
+    private Fragment active = homeFragment;
 
 
     @Override
@@ -38,9 +44,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        HomeFragment homeFragment = new HomeFragment();
-        Log.d(TAG, "1" );
-        transactionFragment(homeFragment);
+//        HomeFragment homeFragment = new HomeFragment();
+//        Log.d(TAG, "1");
+//        transactionFragment(homeFragment);
+        fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, settingFragment).hide(settingFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, notificationFragment).hide(notificationFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, myCartFragment).hide(myCartFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, homeFragment).commit();
         binding.bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
@@ -51,24 +62,20 @@ public class MainFragment extends Fragment {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.home:
-                    HomeFragment homeFragment = new HomeFragment();
-                    Log.d(TAG, "1" );
-                    transactionFragment(homeFragment);
+                    fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
+                    active = homeFragment;
                     return true;
                 case R.id.save:
-                    Log.d(TAG, "2" );
-                    MyCartFragment myCartFragment = new MyCartFragment();
-                    transactionFragment(myCartFragment);
+                    fragmentManager.beginTransaction().hide(active).show(myCartFragment).commit();
+                    active = myCartFragment;
                     return true;
                 case R.id.notifications:
-                    Log.d(TAG, "3" );
-                    NotificationFragment notificationFragment = new NotificationFragment();
-                    transactionFragment(notificationFragment);
+                    fragmentManager.beginTransaction().hide(active).show(notificationFragment).commit();
+                    active = notificationFragment;
                     return true;
                 case R.id.personal:
-                    Log.d(TAG, "4" );
-                    SettingFragment settingFragment = new SettingFragment();
-                    transactionFragment(settingFragment);
+                    fragmentManager.beginTransaction().hide(active).show(settingFragment).commit();
+                    active = settingFragment;
                     return true;
             }
             return false;
