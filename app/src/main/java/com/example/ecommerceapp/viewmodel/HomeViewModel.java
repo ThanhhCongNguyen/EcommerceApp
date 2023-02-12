@@ -4,18 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.ecommerceapp.model.Category;
 import com.example.ecommerceapp.model.Product;
-import com.example.ecommerceapp.model.Shop;
 import com.example.ecommerceapp.repository.FurnitureRepository;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<Category>> categoryListMutableLiveData;
-    private MutableLiveData<ArrayList<Product>> productListMutableLiveData;
+    private MutableLiveData<ArrayList<Product>> chairListMutableLiveData;
+    private MutableLiveData<ArrayList<Product>> tableListMutableLiveData;
+    private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
+    private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
 
     private FirebaseFirestore firebaseFirestore;
     private FurnitureRepository furnitureRepository;
@@ -23,19 +22,27 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         furnitureRepository = new FurnitureRepository(firebaseFirestore);
-        categoryListMutableLiveData = furnitureRepository.getCategory();
-        productListMutableLiveData = furnitureRepository.getProduct();
-
+        chairListMutableLiveData = furnitureRepository.getAllChair();
+        tableListMutableLiveData = furnitureRepository.getAllTable();
+        bedListMutableLiveData = furnitureRepository.getAllBed();
+        armChairListMutableLiveData = furnitureRepository.getAllArmChair();
     }
 
-    public LiveData<ArrayList<Category>> getLiveCategoryData() {
-        return categoryListMutableLiveData;
+    public LiveData<ArrayList<Product>> getAllChair() {
+        return chairListMutableLiveData;
     }
 
-    public LiveData<ArrayList<Product>> getLiveProductData() {
-        return productListMutableLiveData;
+    public LiveData<ArrayList<Product>> getAllTable() {
+        return tableListMutableLiveData;
     }
 
+    public LiveData<ArrayList<Product>> getAllArmChair() {
+        return armChairListMutableLiveData;
+    }
+
+    public LiveData<ArrayList<Product>> getAllBed() {
+        return bedListMutableLiveData;
+    }
 
 
 }

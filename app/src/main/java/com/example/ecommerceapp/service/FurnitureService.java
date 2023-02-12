@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface FurnitureService {
-    MutableLiveData<ArrayList<Category>> getCategory();
 
-    MutableLiveData<ArrayList<Category>> getAllChair();
+    MutableLiveData<ArrayList<Product>> getAllChair();
 
-    MutableLiveData<ArrayList<Product>> getProduct();
+    MutableLiveData<ArrayList<Product>> getAllTable();
+
+    MutableLiveData<ArrayList<Product>> getAllArmChair();
+
+    MutableLiveData<ArrayList<Product>> getAllBed();
 
 }

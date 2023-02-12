@@ -20,16 +20,20 @@ public class FurnitureRepository {
         retrieveDatabase = new RetrieveDatabase(firebaseFirestore);
     }
 
-//    private void initRetrieveDatabase(FirebaseFirestore firebaseFirestore) {
-//        retrieveDatabase = new RetrieveDatabase(firebaseFirestore);
-//    }
-
-    public MutableLiveData<ArrayList<Category>> getCategory() {
-        return retrieveDatabase.getCategory();
+    public MutableLiveData<ArrayList<Product>> getAllChair() {
+        return retrieveDatabase.getAllChair();
     }
 
-    public MutableLiveData<ArrayList<Product>> getProduct() {
-        return retrieveDatabase.getProduct();
+    public MutableLiveData<ArrayList<Product>> getAllTable() {
+        return retrieveDatabase.getAllTable();
+    }
+
+    public MutableLiveData<ArrayList<Product>> getAllArmChair() {
+        return retrieveDatabase.getAllArmChair();
+    }
+
+    public MutableLiveData<ArrayList<Product>> getAllBed() {
+        return retrieveDatabase.getAllBed();
     }
 
 }

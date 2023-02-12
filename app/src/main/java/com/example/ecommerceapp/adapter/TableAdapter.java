@@ -1,6 +1,5 @@
 package com.example.ecommerceapp.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.example.ecommerceapp.model.Product;
 
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHolder> {
     private ArrayList<Product> products;
 
     public void setProducts(ArrayList<Product> products) {
@@ -26,17 +25,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
-        return new ProductViewHolder(view);
+        return new TableViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
         Product product = products.get(position);
 
         holder.productName.setText(product.getProductName());
         holder.productPrice.setText("$ ".concat(product.getPrice()));
+
         Glide.with(holder.productImage.getContext())
                 .load(product.getImage())
                 .centerCrop()
@@ -48,11 +48,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return products != null ? products.size() : 0;
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class TableViewHolder extends RecyclerView.ViewHolder {
         public final TextView productName, productPrice;
         public final ImageView productImage;
 
-        public ProductViewHolder(@NonNull View itemView) {
+        public TableViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.productName);
             productPrice = itemView.findViewById(R.id.productPrice);
