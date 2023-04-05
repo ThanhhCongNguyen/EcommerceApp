@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ecommerceapp.model.Category;
 import com.example.ecommerceapp.model.Product;
+import com.example.ecommerceapp.model.Review;
 import com.example.ecommerceapp.model.Shop;
 import com.example.ecommerceapp.service.FurnitureService;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -120,6 +121,29 @@ public class RetrieveDatabase implements FurnitureService {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
+
+                                firebaseFirestore.collection("myShop")
+                                        .document("Category")
+                                        .collection("Product")
+                                        .document(document.getId())
+                                        .collection("reviews")
+                                        .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            ArrayList<Review> reviews = new ArrayList<>();
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                                                Review review = document.toObject(Review.class);
+                                                                reviews.add(review);
+                                                            }
+                                                            product.setReviews(reviews);
+                                                        } else {
+                                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                                        }
+                                                    }
+                                                });
                                 armChairs.add(product);
                                 armChairs.add(product);
                                 armChairs.add(product);

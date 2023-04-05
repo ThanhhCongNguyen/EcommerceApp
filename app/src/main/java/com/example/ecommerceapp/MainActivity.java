@@ -29,13 +29,14 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = new MainFragment();
         transactionFragment(mainFragment);
 
-        @SuppressLint("HardwareIds") String deviceID = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Toast.makeText(this, deviceID, Toast.LENGTH_SHORT).show();
+//        @SuppressLint("HardwareIds") String deviceID = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+//        Toast.makeText(this, deviceID, Toast.LENGTH_SHORT).show();
     }
 
     private void transactionFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -16,6 +18,8 @@ import com.example.ecommerceapp.adapter.ArmChairAdapter;
 import com.example.ecommerceapp.adapter.ProductAdapter;
 import com.example.ecommerceapp.databinding.FragmentArmchairBinding;
 import com.example.ecommerceapp.databinding.FragmentTableBinding;
+import com.example.ecommerceapp.model.Product;
+import com.example.ecommerceapp.ui.DetailFragment;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class ArmChairFragment extends Fragment {
@@ -43,8 +47,16 @@ public class ArmChairFragment extends Fragment {
         binding.armChairRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
         binding.armChairRecyclerView.setAdapter(productAdapter);
 
+        productAdapter.setCallback(product -> {
+            FragmentManager fm = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayout, new DetailFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        });
+
         homeViewModel.getAllArmChair().observe(requireActivity(), products -> {
-            if(products != null){
+            if (products != null) {
                 productAdapter.setProducts(products);
             }
         });

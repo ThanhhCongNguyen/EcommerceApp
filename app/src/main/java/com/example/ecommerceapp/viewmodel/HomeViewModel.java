@@ -16,6 +16,8 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
 
+    private MutableLiveData<Product> productMutableLiveData;
+
     private FirebaseFirestore firebaseFirestore;
     private FurnitureRepository furnitureRepository;
 
@@ -26,6 +28,14 @@ public class HomeViewModel extends ViewModel {
         tableListMutableLiveData = furnitureRepository.getAllTable();
         bedListMutableLiveData = furnitureRepository.getAllBed();
         armChairListMutableLiveData = furnitureRepository.getAllArmChair();
+    }
+
+    public MutableLiveData<Product> getProductMutableLiveData() {
+        return productMutableLiveData;
+    }
+
+    public void setProductMutableLiveData(MutableLiveData<Product> productMutableLiveData) {
+        this.productMutableLiveData = productMutableLiveData;
     }
 
     public LiveData<ArrayList<Product>> getAllChair() {

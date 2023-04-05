@@ -47,4 +47,9 @@
     <string name="check_password_length">Password length must be more than 6 characters</string>
     <string name="confirm_password_not_correct">Confirm password is not correct</string>
     <string name="authen_fail">Authentication failed.</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="chair">Chair</string>
+    <string name="table">Table</string>
+    <string name="arm_chair">ArmChair</string>
+    <string name="bed">Bed</string>
 </resources>

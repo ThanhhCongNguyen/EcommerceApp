@@ -1,17 +1,27 @@
 package com.example.ecommerceapp.model;
 
+import java.util.ArrayList;
+
 public class Product {
+    private String productId;
     private String productName;
     private String price;
     private String image;
     private String width;
     private String height;
-    private String rating;
     private String description;
-    private String color;
     private String categoryName;
+    private ArrayList<Review> reviews;
 
     public Product() {
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -54,14 +64,6 @@ public class Product {
         this.height = height;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -70,19 +72,19 @@ public class Product {
         this.description = description;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public String getCategoryName() {
         return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
     }
 }

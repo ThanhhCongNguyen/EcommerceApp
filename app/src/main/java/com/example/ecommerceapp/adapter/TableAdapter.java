@@ -17,10 +17,15 @@ import java.util.ArrayList;
 
 public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHolder> {
     private ArrayList<Product> products;
+    private Callback callback;
 
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
         notifyDataSetChanged();
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
     @NonNull
@@ -48,7 +53,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
         return products != null ? products.size() : 0;
     }
 
-    public static class TableViewHolder extends RecyclerView.ViewHolder {
+    public class TableViewHolder extends RecyclerView.ViewHolder {
         public final TextView productName, productPrice;
         public final ImageView productImage;
 
@@ -57,6 +62,14 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
             productName = itemView.findViewById(R.id.productName);
             productPrice = itemView.findViewById(R.id.productPrice);
             productImage = itemView.findViewById(R.id.productImage);
+
+            itemView.setOnClickListener(view -> {
+                callback.onItemClick(products.get(getAdapterPosition()));
+            });
         }
+    }
+
+    public interface Callback {
+        void onItemClick(Product product);
     }
 }
