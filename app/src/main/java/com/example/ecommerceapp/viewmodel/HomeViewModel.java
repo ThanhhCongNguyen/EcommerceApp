@@ -1,5 +1,9 @@
 package com.example.ecommerceapp.viewmodel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,18 +14,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Product>> chairListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> tableListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
 
-    private MutableLiveData<Product> productMutableLiveData;
+    private MutableLiveData<Product> productMutableLiveData = new MutableLiveData<>();
 
     private FirebaseFirestore firebaseFirestore;
     private FurnitureRepository furnitureRepository;
 
-    public HomeViewModel() {
+    private Application application;
+
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
+        this.application = application;
         firebaseFirestore = FirebaseFirestore.getInstance();
         furnitureRepository = new FurnitureRepository(firebaseFirestore);
         chairListMutableLiveData = furnitureRepository.getAllChair();
@@ -30,12 +38,13 @@ public class HomeViewModel extends ViewModel {
         armChairListMutableLiveData = furnitureRepository.getAllArmChair();
     }
 
+
     public MutableLiveData<Product> getProductMutableLiveData() {
         return productMutableLiveData;
     }
 
-    public void setProductMutableLiveData(MutableLiveData<Product> productMutableLiveData) {
-        this.productMutableLiveData = productMutableLiveData;
+    public void setProductMutableLiveData(Product product) {
+        productMutableLiveData.setValue(product);
     }
 
     public LiveData<ArrayList<Product>> getAllChair() {
@@ -52,6 +61,18 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<ArrayList<Product>> getAllBed() {
         return bedListMutableLiveData;
+    }
+
+    public void saveUserToSharePreferences() {
+        furnitureRepository.saveUserToSharePreferences(application);
+    }
+
+    public void clearUserToSharePreferences() {
+        furnitureRepository.saveUserToSharePreferences(application);
+    }
+
+    public boolean isLogin() {
+        return furnitureRepository.isLogin(application);
     }
 
 

@@ -48,6 +48,7 @@ public class ArmChairFragment extends Fragment {
         binding.armChairRecyclerView.setAdapter(productAdapter);
 
         productAdapter.setCallback(product -> {
+            homeViewModel.setProductMutableLiveData(product);
             FragmentManager fm = getParentFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(R.id.frameLayout, new DetailFragment());

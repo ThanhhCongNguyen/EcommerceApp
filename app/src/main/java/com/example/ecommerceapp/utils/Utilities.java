@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 public class Utilities {
     public static final String TAG = "thanh";
+    public static final String PREFS_NAME = "sharePreferences";
 
     public static final void toast(String message, Context context) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
