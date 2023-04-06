@@ -8,6 +8,8 @@
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="log_in">Log in</string>
+    <string name="log_in_vn">Đăng nhập</string>
+    <string name="cancel_vn">Từ chối</string>
     <string name="name">Name</string>
     <string name="sign_up">Sign up</string>
     <string name="already_have_account">Already have account?</string>
@@ -52,6 +54,6 @@
     <string name="table">Table</string>
     <string name="arm_chair">ArmChair</string>
     <string name="bed">Bed</string>
-    <string name="request_login">Bạn cần đăng nhập để sử dụng tính năng này</string>
+    <string name="request_login">Bạn cần đăng nhập \n để sử dụng tính năng này</string>
     <string name="cancel">Cancel</string>
 </resources>

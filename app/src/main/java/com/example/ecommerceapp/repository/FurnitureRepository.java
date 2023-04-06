@@ -22,6 +22,7 @@ public class FurnitureRepository {
     public FurnitureRepository(FirebaseFirestore firebaseFirestore) {
         this.firebaseFirestore = firebaseFirestore;
         retrieveDatabase = new RetrieveDatabase(firebaseFirestore);
+        localDatabase = new LocalDatabase();
     }
 
     public MutableLiveData<ArrayList<Product>> getAllChair() {

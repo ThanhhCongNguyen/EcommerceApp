@@ -1,5 +1,6 @@
 package com.example.ecommerceapp.ui;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -55,10 +56,11 @@ public class DetailFragment extends Fragment {
         });
 
         binding.addToCartButton.setOnClickListener(v -> {
-            if(homeViewModel.isLogin()){
+            if (homeViewModel.isLogin()) {
 
-            }else {
-
+            } else {
+                CustomDialogClass dialogFragment = new CustomDialogClass();
+                dialogFragment.show(getParentFragmentManager(), "dialogFragment");
             }
         });
     }

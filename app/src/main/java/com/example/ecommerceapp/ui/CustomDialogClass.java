@@ -5,28 +5,38 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.DialogCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.ecommerceapp.R;
 
 public class CustomDialogClass extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.r)
-                .setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+        builder.setView(inflater.inflate(R.layout.request_login_layout, null))
+
+                .setPositiveButton(R.string.log_in_vn, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // START THE GAME!
+                        FragmentManager fm = getParentFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
+                        fragmentTransaction.commit();
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel_vn, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
+                        dismiss();
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 

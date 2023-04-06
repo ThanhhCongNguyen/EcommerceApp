@@ -1,24 +1,24 @@
 package com.example.ecommerceapp;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecommerceapp.databinding.ActivityMainBinding;
 import com.example.ecommerceapp.ui.LoginFragment;
 import com.example.ecommerceapp.ui.MainFragment;
 import com.example.ecommerceapp.ui.SignUpFragment;
+import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
         implements LoginFragment.OnItemSelectedListener, SignUpFragment.Callback {
 
     private ActivityMainBinding binding;
+    private HomeViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 //        LoginFragment loginFragment = new LoginFragment();
+        homeViewModel = new ViewModelProvider(MainActivity.this).get(HomeViewModel.class);
         MainFragment mainFragment = new MainFragment();
         transactionFragment(mainFragment);
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRegisterSuccess(FirebaseUser firebaseUser) {
+        homeViewModel.saveUserToSharePreferences();
         MainFragment mainFragment = new MainFragment();
         transactionFragment(mainFragment);
     }
