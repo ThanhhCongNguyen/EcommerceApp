@@ -52,4 +52,6 @@
     <string name="table">Table</string>
     <string name="arm_chair">ArmChair</string>
     <string name="bed">Bed</string>
+    <string name="request_login">Bạn cần đăng nhập để sử dụng tính năng này</string>
+    <string name="cancel">Cancel</string>
 </resources>
