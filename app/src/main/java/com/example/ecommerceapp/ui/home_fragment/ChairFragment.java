@@ -18,6 +18,7 @@ import com.example.ecommerceapp.adapter.ChairAdapter;
 import com.example.ecommerceapp.adapter.ProductAdapter;
 import com.example.ecommerceapp.databinding.FragmentBedBinding;
 import com.example.ecommerceapp.databinding.FragmentChairBinding;
+import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class ChairFragment extends Fragment {
@@ -47,6 +48,13 @@ public class ChairFragment extends Fragment {
         homeViewModel.getAllChair().observe(requireActivity(), products -> {
             if(products != null){
                 productAdapter.setProducts(products);
+            }
+        });
+
+        productAdapter.setCallback(new ChairAdapter.Callback() {
+            @Override
+            public void onItemClick(Product product) {
+
             }
         });
     }

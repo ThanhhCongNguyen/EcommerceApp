@@ -43,7 +43,7 @@
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toEndOf="@+id/itemImage"
             app:layout_constraintTop_toTopOf="@+id/itemImage"
-            tools:text="Minimal Stand" />
+            android:text="Minimal Stand" />
 
         <TextView
             android:id="@+id/itemPrice"
@@ -56,7 +56,7 @@
             android:textSize="@dimen/_16sp"
             app:layout_constraintStart_toStartOf="@+id/itemName"
             app:layout_constraintTop_toBottomOf="@+id/itemName"
-            tools:text="$ 25.00" />
+            android:text="$ 25.00" />
 
         <ImageView
             android:id="@+id/itemCancel"

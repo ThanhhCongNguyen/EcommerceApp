@@ -21,11 +21,14 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
 
     private MutableLiveData<Product> productMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> productCount = new MutableLiveData<>();
 
     private FirebaseFirestore firebaseFirestore;
     private FurnitureRepository furnitureRepository;
 
     private Application application;
+
+    private int defaultCount = 1;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -45,6 +48,24 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void setProductMutableLiveData(Product product) {
         productMutableLiveData.setValue(product);
+    }
+
+    public void setProductCountMutableLiveData(int count) {
+        count++;
+        productCount.setValue(count);
+    }
+
+    public void setMinusProductCountMutableLiveData(int count) {
+        count--;
+        productCount.setValue(count);
+    }
+
+    public MutableLiveData<Integer> getProductCount() {
+        return productCount;
+    }
+
+    public int getDefaultCount() {
+        return defaultCount;
     }
 
     public LiveData<ArrayList<Product>> getAllChair() {

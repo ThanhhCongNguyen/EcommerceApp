@@ -1,4 +1,4 @@
-package com.example.ecommerceapp;
+package com.example.ecommerceapp.activities;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.ActivityMainBinding;
 import com.example.ecommerceapp.ui.LoginFragment;
 import com.example.ecommerceapp.ui.MainFragment;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     private void transactionFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

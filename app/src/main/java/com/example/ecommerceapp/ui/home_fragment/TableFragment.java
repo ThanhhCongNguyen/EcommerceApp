@@ -17,6 +17,7 @@ import com.example.ecommerceapp.adapter.ProductAdapter;
 import com.example.ecommerceapp.adapter.TableAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
 import com.example.ecommerceapp.databinding.FragmentTableBinding;
+import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class TableFragment extends Fragment {
@@ -46,6 +47,13 @@ public class TableFragment extends Fragment {
         homeViewModel.getAllTable().observe(requireActivity(), products -> {
             if(products != null){
                 productAdapter.setProducts(products);
+            }
+        });
+
+        productAdapter.setCallback(new TableAdapter.Callback() {
+            @Override
+            public void onItemClick(Product product) {
+
             }
         });
     }

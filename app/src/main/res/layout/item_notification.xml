@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_16dp"
@@ -23,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_test" />
+            android:src="@drawable/test1" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -31,17 +30,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/_4dp"
         android:layout_marginEnd="@dimen/_16dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:maxLines="2"
+        android:text="Your order #12345 has been shipped successfully"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/announcedAt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/itemImage"
-        app:layout_constraintTop_toTopOf="@+id/itemImage"
-        tools:text="Your order #12345 has been shipped successfully" />
+        app:layout_constraintTop_toTopOf="@+id/itemImage" />
 
     <TextView
         android:id="@+id/announcedAt"
@@ -50,23 +48,23 @@
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginEnd="@dimen/_16dp"
         android:fontFamily="sans-serif-medium"
+        android:text="Monday, 9 Match 2023 11:24 AM"
         android:textColor="@color/grey69"
         android:textSize="@dimen/_12sp"
         app:layout_constraintBottom_toBottomOf="@+id/itemImage"
         app:layout_constraintEnd_toStartOf="@id/priorityText"
-        app:layout_constraintStart_toEndOf="@+id/itemImage"
-        tools:text="Monday, 9 Match 2023 11:24 AM" />
+        app:layout_constraintStart_toEndOf="@+id/itemImage" />
 
     <TextView
         android:id="@+id/priorityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_16dp"
+        android:text="New"
         android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="@id/announcedAt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/announcedAt"
-        tools:text="New" />
+        app:layout_constraintTop_toTopOf="@+id/announcedAt" />
 
     <View
         android:id="@+id/line1"
@@ -75,7 +73,7 @@
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginTop="@dimen/_16dp"
         android:layout_marginEnd="@dimen/_16dp"
-        android:background="@color/greyC5"
+        android:background="@color/greyFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

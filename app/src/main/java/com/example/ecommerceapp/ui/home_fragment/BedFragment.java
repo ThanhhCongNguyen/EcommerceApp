@@ -16,6 +16,7 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.BedAdapter;
 import com.example.ecommerceapp.adapter.ProductAdapter;
 import com.example.ecommerceapp.databinding.FragmentBedBinding;
+import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class BedFragment extends Fragment {
@@ -46,6 +47,13 @@ public class BedFragment extends Fragment {
         homeViewModel.getAllBed().observe(requireActivity(), products -> {
             if(products != null){
                 productAdapter.setProducts(products);
+            }
+        });
+
+        productAdapter.setCallback(new BedAdapter.Callback() {
+            @Override
+            public void onItemClick(Product product) {
+
             }
         });
     }

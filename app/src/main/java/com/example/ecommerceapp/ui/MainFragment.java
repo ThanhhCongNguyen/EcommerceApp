@@ -20,10 +20,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
-    private HomeFragment homeFragment = new HomeFragment();
-    private MyCartFragment myCartFragment = new MyCartFragment();
-    private NotificationFragment notificationFragment = new NotificationFragment();
-    private SettingFragment settingFragment = new SettingFragment();
+    private final HomeFragment homeFragment = new HomeFragment();
+    private final FavoritesFragment favoritesFragment = new FavoritesFragment();
+    private final NotificationFragment notificationFragment = new NotificationFragment();
+    private final SettingFragment settingFragment = new SettingFragment();
 
     private FragmentManager fragmentManager;
     private Fragment active = homeFragment;
@@ -44,13 +44,11 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        HomeFragment homeFragment = new HomeFragment();
-//        Log.d(TAG, "1");
-//        transactionFragment(homeFragment);
+
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, settingFragment).hide(settingFragment).commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, notificationFragment).hide(notificationFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.frameLayout1, myCartFragment).hide(myCartFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, favoritesFragment).hide(favoritesFragment).commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, homeFragment).commit();
         binding.bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -66,8 +64,8 @@ public class MainFragment extends Fragment {
                     active = homeFragment;
                     return true;
                 case R.id.save:
-                    fragmentManager.beginTransaction().hide(active).show(myCartFragment).commit();
-                    active = myCartFragment;
+                    fragmentManager.beginTransaction().hide(active).show(favoritesFragment).commit();
+                    active = favoritesFragment;
                     return true;
                 case R.id.notifications:
                     fragmentManager.beginTransaction().hide(active).show(notificationFragment).commit();

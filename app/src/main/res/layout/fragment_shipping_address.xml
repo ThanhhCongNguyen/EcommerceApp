@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_16dp"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/my_orders"
+        android:text="@string/shipping_address"
         android:textColor="@color/light_black"
         android:textSize="@dimen/_20sp"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvMyOrder"
+        android:id="@+id/rcvShippingAddress"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_16dp"
@@ -41,7 +41,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_title"
-        tools:listitem="@layout/item_my_order" />
+        tools:listitem="@layout/item_shipping_address" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:layout_marginBottom="@dimen/_16dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_add" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

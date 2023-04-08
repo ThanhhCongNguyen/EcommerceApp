@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_16dp"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/my_orders"
+        android:text="@string/my_reviews"
         android:textColor="@color/light_black"
         android:textSize="@dimen/_20sp"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvMyOrder"
+        android:id="@+id/rcvMyReviews"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_16dp"
@@ -41,7 +41,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_title"
-        tools:listitem="@layout/item_my_order" />
-
+        tools:listitem="@layout/item_my_review" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

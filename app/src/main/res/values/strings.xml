@@ -56,4 +56,5 @@
     <string name="bed">Bed</string>
     <string name="request_login">Bạn cần đăng nhập \n để sử dụng tính năng này</string>
     <string name="cancel">Cancel</string>
+    <string name="use_as_the_shipping_address">Use as the shipping address</string>
 </resources>

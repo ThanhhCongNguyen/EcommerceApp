@@ -1,0 +1,64 @@
+package com.example.ecommerceapp.adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ecommerceapp.R;
+import com.example.ecommerceapp.model.Product;
+
+import java.util.ArrayList;
+
+public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddressAdapter.ArmChairViewHolder> {
+    private ArrayList<Product> products;
+    public Callback callback;
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+        notifyDataSetChanged();
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    @NonNull
+    @Override
+    public ArmChairViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shipping_address, parent, false);
+        return new ArmChairViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ArmChairViewHolder holder, int position) {
+//        Product product = products.get(position);
+//
+//        holder.productName.setText(product.getProductName());
+//        holder.productPrice.setText("$ ".concat(product.getPrice()));
+//
+//        Glide.with(holder.productImage.getContext())
+//                .load(product.getImage())
+//                .centerCrop()
+//                .into(holder.productImage);
+    }
+
+    @Override
+    public int getItemCount() {
+//        return products != null ? products.size() : 0;
+        return 3;
+    }
+
+    public class ArmChairViewHolder extends RecyclerView.ViewHolder {
+
+        public ArmChairViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    public interface Callback {
+        void onItemClick(Product product);
+    }
+}

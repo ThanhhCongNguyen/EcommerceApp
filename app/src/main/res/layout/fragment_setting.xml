@@ -45,7 +45,7 @@
                 android:layout_height="@dimen/_64dp"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:src="@drawable/img_test"
+                android:src="@drawable/test1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,10 +56,11 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:fontFamily="sans-serif-medium"
+                android:text="Thanh Nguyen Cong"
                 android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/userAvatar"
-                app:layout_constraintTop_toTopOf="@+id/userAvatar"
-                tools:text="Kistin Watson" />
+                app:layout_constraintTop_toTopOf="@+id/userAvatar" />
 
 
             <TextView
@@ -69,11 +70,11 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_4dp"
                 android:fontFamily="sans-serif-medium"
+                android:text="thanhnguyencong@gmail.com"
                 android:textColor="@color/grey69"
                 android:textSize="@dimen/_12sp"
                 app:layout_constraintStart_toEndOf="@+id/userAvatar"
-                app:layout_constraintTop_toBottomOf="@id/userName"
-                tools:text="KistinWatson@gmail.com" />
+                app:layout_constraintTop_toBottomOf="@id/userName" />
 
 
             <androidx.cardview.widget.CardView
@@ -88,6 +89,7 @@
                 app:layout_constraintTop_toBottomOf="@id/userAvatar">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/myOrderLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/_8dp">
@@ -142,6 +144,7 @@
                 app:layout_constraintTop_toBottomOf="@id/orderCardView">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/shippingAddressLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/_8dp">
@@ -196,6 +199,7 @@
                 app:layout_constraintTop_toBottomOf="@id/shippingAddressCardView">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/paymentMethodLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/_8dp">
@@ -250,6 +254,7 @@
                 app:layout_constraintTop_toBottomOf="@id/paymentMethodCardView">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/myReviewLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/_8dp">
@@ -299,11 +304,13 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/reviewsCardView">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settingLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="@dimen/_8dp">

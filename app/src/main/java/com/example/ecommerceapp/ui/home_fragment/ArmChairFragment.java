@@ -51,7 +51,7 @@ public class ArmChairFragment extends Fragment {
             homeViewModel.setProductMutableLiveData(product);
             FragmentManager fm = getParentFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayout, new DetailFragment());
+            fragmentTransaction.replace(R.id.frameLayout1, new DetailFragment());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         });

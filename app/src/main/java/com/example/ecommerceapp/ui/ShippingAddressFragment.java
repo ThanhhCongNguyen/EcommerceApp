@@ -1,23 +1,23 @@
 package com.example.ecommerceapp.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.MyOrderAdapter;
+import com.example.ecommerceapp.adapter.ShippingAddressAdapter;
 import com.example.ecommerceapp.databinding.FragmentMyOrderBinding;
+import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
 
-public class MyOrderFragment extends Fragment {
-    private FragmentMyOrderBinding binding;
-    private MyOrderAdapter myOrderAdapter;
+public class ShippingAddressFragment extends Fragment {
+    private FragmentShippingAddressBinding binding;
+    private ShippingAddressAdapter shippingAddressAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MyOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentMyOrderBinding.inflate(inflater, container, false);
+        binding = FragmentShippingAddressBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -43,8 +43,8 @@ public class MyOrderFragment extends Fragment {
     }
 
     private void initData() {
-        myOrderAdapter = new MyOrderAdapter();
-        binding.rcvMyOrder.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rcvMyOrder.setAdapter(myOrderAdapter);
+        shippingAddressAdapter = new ShippingAddressAdapter();
+        binding.rcvShippingAddress.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rcvShippingAddress.setAdapter(shippingAddressAdapter);
     }
 }

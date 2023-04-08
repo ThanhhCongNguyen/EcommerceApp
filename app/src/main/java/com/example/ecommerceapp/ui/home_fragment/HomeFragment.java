@@ -13,9 +13,10 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.CategoryAdapter;
 import com.example.ecommerceapp.adapter.ViewPagerAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
+import com.example.ecommerceapp.ui.MyCartFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding binding;
 
     private ViewPagerAdapter viewPagerAdapter;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        initView();
         viewPagerAdapter = new ViewPagerAdapter(requireActivity());
         binding.viewPager.setAdapter(viewPagerAdapter);
 
@@ -54,5 +55,24 @@ public class HomeFragment extends Fragment {
                 tab.setText(R.string.bed);
             }
         }).attach();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.cartBtn) {
+            openMyCartFragment();
+        }
+    }
+
+    private void initView() {
+        binding.cartBtn.setOnClickListener(this::onClick);
+    }
+
+    private void openMyCartFragment() {
+        MyCartFragment myCartFragment = new MyCartFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout1, myCartFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
