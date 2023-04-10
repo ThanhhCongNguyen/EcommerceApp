@@ -16,9 +16,16 @@ import com.example.ecommerceapp.adapter.MyCartAdapter;
 import com.example.ecommerceapp.databinding.FragmentLoginBinding;
 import com.example.ecommerceapp.databinding.FragmentMyCartBinding;
 
-public class MyCartFragment extends Fragment {
+public class MyCartFragment extends Fragment implements View.OnClickListener {
     private FragmentMyCartBinding binding;
     private MyCartAdapter myCartAdapter;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.backBtn) {
+            backToHomeFragment();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class MyCartFragment extends Fragment {
     }
 
     private void initView() {
+        binding.backBtn.setOnClickListener(this);
 
     }
 
@@ -48,4 +56,9 @@ public class MyCartFragment extends Fragment {
         binding.rcvCart.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcvCart.setAdapter(myCartAdapter);
     }
+
+    private void backToHomeFragment() {
+        getParentFragmentManager().popBackStack();
+    }
+
 }

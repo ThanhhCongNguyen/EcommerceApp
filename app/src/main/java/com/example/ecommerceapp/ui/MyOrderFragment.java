@@ -15,9 +15,16 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.MyOrderAdapter;
 import com.example.ecommerceapp.databinding.FragmentMyOrderBinding;
 
-public class MyOrderFragment extends Fragment {
+public class MyOrderFragment extends Fragment implements View.OnClickListener {
     private FragmentMyOrderBinding binding;
     private MyOrderAdapter myOrderAdapter;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.backBtn) {
+            backToSettingFragment();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,7 @@ public class MyOrderFragment extends Fragment {
     }
 
     private void initView() {
+        binding.backBtn.setOnClickListener(this::onClick);
 
     }
 
@@ -47,4 +55,9 @@ public class MyOrderFragment extends Fragment {
         binding.rcvMyOrder.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcvMyOrder.setAdapter(myOrderAdapter);
     }
+
+    private void backToSettingFragment() {
+        getParentFragmentManager().popBackStack();
+    }
+
 }

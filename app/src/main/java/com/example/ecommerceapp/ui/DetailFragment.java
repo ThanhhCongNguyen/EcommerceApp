@@ -1,5 +1,6 @@
 package com.example.ecommerceapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,10 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,8 +37,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetailBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -88,9 +92,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         homeViewModel.getProductMutableLiveData().observe(requireActivity(), product -> {
             binding.productName.setText(product.getProductName());
             binding.productPrice.setText("$ ".concat(product.getPrice()));
-            Glide.with(requireContext())
-                    .load(product.getImage())
-                    .into(binding.productImage);
+            if(getActivity() != null) {
+                Glide.with(getActivity())
+                        .load(product.getImage())
+                        .into(binding.productImage);
+            }
             binding.descriptionText.setText(product.getDescription());
 
         });

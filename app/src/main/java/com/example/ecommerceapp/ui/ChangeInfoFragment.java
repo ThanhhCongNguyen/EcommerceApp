@@ -10,13 +10,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.ShippingAddressAdapter;
 import com.example.ecommerceapp.databinding.FragmentChangeInfoBinding;
 import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
 
-public class ChangeInfoFragment extends Fragment {
+public class ChangeInfoFragment extends Fragment implements View.OnClickListener {
     private FragmentChangeInfoBinding binding;
     private ShippingAddressAdapter shippingAddressAdapter;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.backBtn) {
+            backToSettingFragment();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,9 +46,14 @@ public class ChangeInfoFragment extends Fragment {
     }
 
     private void initView() {
+        binding.backBtn.setOnClickListener(this::onClick);
 
     }
 
     private void initData() {
+    }
+
+    private void backToSettingFragment() {
+        getParentFragmentManager().popBackStack();
     }
 }

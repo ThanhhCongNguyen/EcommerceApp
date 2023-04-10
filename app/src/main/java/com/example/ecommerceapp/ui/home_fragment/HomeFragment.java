@@ -13,14 +13,16 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.CategoryAdapter;
 import com.example.ecommerceapp.adapter.ViewPagerAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
+import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.ui.MyCartFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding binding;
 
-    private ViewPagerAdapter viewPagerAdapter;
+    private HomeFragmentCallback homeFragmentCallback;
 
+    private ViewPagerAdapter viewPagerAdapter;
     private CategoryAdapter categoryAdapter;
 
     @Override
@@ -55,6 +57,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 tab.setText(R.string.bed);
             }
         }).attach();
+
+        if (homeFragmentCallback != null) {
+            homeFragmentCallback.onClickBackButton();
+        }
+
+        viewPagerAdapter.setViewPagerAdapterCallback(new ViewPagerAdapter.ViewPagerAdapterCallback() {
+            @Override
+            public void getCurrentFragment(Fragment fragment) {
+                if (fragment instanceof ArmChairFragment) {
+                    ArmChairFragment armChairFragment = (ArmChairFragment) fragment;
+                    armChairFragment.setArmChairFragmentCallback(new ArmChairFragment.ArmChairFragmentCallback() {
+                        @Override
+                        public void openDetailFragment(Product product) {
+                            homeFragmentCallback.openDetailFragment(product);
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     @Override
@@ -64,15 +86,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void setHomeFragmentCallback(HomeFragmentCallback homeFragmentCallback) {
+        this.homeFragmentCallback = homeFragmentCallback;
+    }
+
     private void initView() {
         binding.cartBtn.setOnClickListener(this::onClick);
     }
 
     private void openMyCartFragment() {
-        MyCartFragment myCartFragment = new MyCartFragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayout1, myCartFragment)
-                .addToBackStack(null)
-                .commit();
+        homeFragmentCallback.openMyCartFragment();
+    }
+
+    public interface HomeFragmentCallback {
+        void openMyCartFragment();
+
+        void openDetailFragment(Product product);
+
+        void onClickBackButton();
     }
 }

@@ -10,14 +10,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.MyReviewAdapter;
 import com.example.ecommerceapp.adapter.ShippingAddressAdapter;
 import com.example.ecommerceapp.databinding.FragmentMyReviewBinding;
 import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
 
-public class MyReviewFragment extends Fragment {
+public class MyReviewFragment extends Fragment implements View.OnClickListener {
     private FragmentMyReviewBinding binding;
     private MyReviewAdapter myReviewAdapter;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.backBtn) {
+            backToSettingFragment();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,12 +47,16 @@ public class MyReviewFragment extends Fragment {
     }
 
     private void initView() {
-
+        binding.backBtn.setOnClickListener(this::onClick);
     }
 
     private void initData() {
         myReviewAdapter = new MyReviewAdapter();
         binding.rcvMyReviews.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcvMyReviews.setAdapter(myReviewAdapter);
+    }
+
+    private void backToSettingFragment() {
+        getParentFragmentManager().popBackStack();
     }
 }

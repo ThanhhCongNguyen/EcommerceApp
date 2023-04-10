@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,11 @@ import com.example.ecommerceapp.databinding.FragmentSettingBinding;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
     private FragmentSettingBinding binding;
+    private SettingFragmentCallback settingFragmentCallback;
+
+    public void setSettingFragmentCallback(SettingFragmentCallback settingFragmentCallback) {
+        this.settingFragmentCallback = settingFragmentCallback;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,20 +42,28 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         initView();
         initData();
+        if (settingFragmentCallback != null) {
+            settingFragmentCallback.onClickBackButton();
+        }
+
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.myOrderLayout) {
-            openMyOrderFragment();
+//            openMyOrderFragment();
+            settingFragmentCallback.openMyOrderFragment();
         } else if (view.getId() == R.id.shippingAddressLayout) {
-            openShippingAddressFragment();
+//            openShippingAddressFragment();
+            settingFragmentCallback.openShippingAddressFragment();
         } else if (view.getId() == R.id.paymentMethodLayout) {
 
         } else if (view.getId() == R.id.myReviewLayout) {
-            openMyReviewsFragment();
+//            openMyReviewsFragment();
+            settingFragmentCallback.openMyReviewsFragment();
         } else if (view.getId() == R.id.settingLayout) {
-            openChangeInfoFragment();
+//            openChangeInfoFragment();
+            settingFragmentCallback.openChangeInfoFragment();
         }
     }
 
@@ -96,6 +110,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 .replace(R.id.frameLayout1, changeInfoFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public interface SettingFragmentCallback {
+        void openMyOrderFragment();
+
+        void openShippingAddressFragment();
+
+        void openMyReviewsFragment();
+
+        void openChangeInfoFragment();
+
+        void onClickBackButton();
     }
 
 

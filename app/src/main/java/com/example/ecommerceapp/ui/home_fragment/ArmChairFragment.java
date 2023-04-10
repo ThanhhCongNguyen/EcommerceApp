@@ -26,6 +26,7 @@ public class ArmChairFragment extends Fragment {
     private FragmentArmchairBinding binding;
     private HomeViewModel homeViewModel;
     private ArmChairAdapter productAdapter;
+    private ArmChairFragmentCallback armChairFragmentCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,7 @@ public class ArmChairFragment extends Fragment {
 
         productAdapter.setCallback(product -> {
             homeViewModel.setProductMutableLiveData(product);
-            FragmentManager fm = getParentFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.frameLayout1, new DetailFragment());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            armChairFragmentCallback.openDetailFragment(product);
         });
 
         homeViewModel.getAllArmChair().observe(requireActivity(), products -> {
@@ -61,5 +58,13 @@ public class ArmChairFragment extends Fragment {
                 productAdapter.setProducts(products);
             }
         });
+    }
+
+    public void setArmChairFragmentCallback(ArmChairFragmentCallback armChairFragmentCallback) {
+        this.armChairFragmentCallback = armChairFragmentCallback;
+    }
+
+    public interface ArmChairFragmentCallback {
+        void openDetailFragment(Product product);
     }
 }
