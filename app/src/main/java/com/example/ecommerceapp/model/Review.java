@@ -10,6 +10,14 @@ public class Review {
     public Review() {
     }
 
+    public Review(String userId, String productId, String time, String review, String rating) {
+        this.userId = userId;
+        this.productId = productId;
+        this.time = time;
+        this.review = review;
+        this.rating = rating;
+    }
+
     public String getUserId() {
         return userId;
     }

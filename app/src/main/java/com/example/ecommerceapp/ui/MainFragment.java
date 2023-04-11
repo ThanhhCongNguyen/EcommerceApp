@@ -18,6 +18,7 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentMainBinding;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.ui.home_fragment.HomeFragment;
+import com.example.ecommerceapp.utils.AddData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainFragment extends Fragment {
@@ -94,9 +95,11 @@ public class MainFragment extends Fragment {
         settingFragment.setSettingFragmentCallback(new SettingFragment.SettingFragmentCallback() {
             @Override
             public void openMyOrderFragment() {
-                binding.bottomNavigation.setVisibility(View.GONE);
-                MyOrderFragment myOrderFragment = new MyOrderFragment();
-                transactionFragment(myOrderFragment);
+//                binding.bottomNavigation.setVisibility(View.GONE);
+//                MyOrderFragment myOrderFragment = new MyOrderFragment();
+//                transactionFragment(myOrderFragment);
+                AddData addData = new AddData();
+                addData.addProductToFirestore();
             }
 
             @Override

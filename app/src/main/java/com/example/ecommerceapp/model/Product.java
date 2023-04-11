@@ -16,6 +16,17 @@ public class Product {
     public Product() {
     }
 
+    public Product(String productId, String productName, String price, String image, String width, String height, String description, String categoryName) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.image = image;
+        this.width = width;
+        this.height = height;
+        this.description = description;
+        this.categoryName = categoryName;
+    }
+
     public String getProductId() {
         return productId;
     }

@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-medium"
         android:text="@string/favorites"
-        android:textColor="@color/light_black"
+        android:textColor="@color/black"
         android:textSize="@dimen/_20sp"
         android:layout_marginTop="@dimen/_16dp"
         android:textStyle="bold"

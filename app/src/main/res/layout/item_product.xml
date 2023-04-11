@@ -57,20 +57,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8dp"
+        android:textColor="@color/black"
         android:textSize="@dimen/_16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/itemImage"
         app:layout_constraintTop_toBottomOf="@+id/itemImage"
         tools:text="Black Simple Lamp" />
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="@dimen/_12sp"
+        android:layout_height="@dimen/_12sp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/star_green"
+        app:layout_constraintStart_toStartOf="@+id/itemImage"
+        app:layout_constraintTop_toBottomOf="@+id/productName" />
+
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4dp"
+        android:layout_marginTop="@dimen/_6dp"
+        android:text="4.5"
+        android:textColor="@color/grey69"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintStart_toEndOf="@id/star"
+        app:layout_constraintTop_toBottomOf="@id/productName" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_8dp"
+        android:background="@color/grey69"
+        app:layout_constraintBottom_toBottomOf="@id/ratingText"
+        app:layout_constraintStart_toEndOf="@id/ratingText"
+        app:layout_constraintTop_toTopOf="@id/ratingText" />
+
+    <TextView
+        android:id="@+id/soldProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8dp"
+        android:layout_marginTop="@dimen/_6dp"
+        android:background="@drawable/bg_sold_product"
+        android:paddingStart="@dimen/_6dp"
+        android:paddingEnd="@dimen/_6dp"
+        android:text="5.277 sold"
+        android:textColor="@color/light_black"
+        android:textSize="@dimen/_14sp"
+        app:layout_constraintStart_toEndOf="@id/view1"
+        app:layout_constraintTop_toBottomOf="@id/productName" />
 
     <TextView
         android:id="@+id/productPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_2dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_6dp"
+        android:textColor="@color/light_black"
         android:textSize="@dimen/_16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/itemImage"
-        app:layout_constraintTop_toBottomOf="@+id/productName"
+        app:layout_constraintTop_toBottomOf="@+id/star"
         tools:text="$ 10.00" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

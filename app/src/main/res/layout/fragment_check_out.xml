@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:fontFamily="sans-serif-medium"
             android:text="@string/check_out"
-            android:textColor="@color/light_black"
+            android:textColor="@color/black"
             android:textSize="@dimen/_20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>

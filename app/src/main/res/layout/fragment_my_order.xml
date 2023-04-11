@@ -23,7 +23,7 @@
         android:layout_marginTop="@dimen/_16dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/my_orders"
-        android:textColor="@color/light_black"
+        android:textColor="@color/black"
         android:textSize="@dimen/_20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

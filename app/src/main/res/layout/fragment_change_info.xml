@@ -236,11 +236,17 @@
                 android:text="Delivery status changes" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_4dp"
+                android:id="@+id/switchShowAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_16dp"
                 android:checked="true"
-                android:gravity="end|center_horizontal" />
+                android:thumb="@drawable/custom_thumb"
+                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView5"
+                app:track="@drawable/custom_track" />
 
         </LinearLayout>
 
