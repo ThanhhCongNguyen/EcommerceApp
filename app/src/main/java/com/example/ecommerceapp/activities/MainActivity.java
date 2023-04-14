@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void navigateSignUp() {
         SignUpFragment signUpFragment = new SignUpFragment();
-        transactionFragment(signUpFragment);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, signUpFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+//        transactionFragment(signUpFragment);
     }
 
     @Override

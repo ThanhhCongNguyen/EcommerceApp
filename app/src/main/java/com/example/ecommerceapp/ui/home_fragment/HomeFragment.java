@@ -73,6 +73,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             homeFragmentCallback.openDetailFragment(product);
                         }
                     });
+                } else if (fragment instanceof BedFragment) {
+                    BedFragment bedFragment = (BedFragment) fragment;
+                    bedFragment.setBedFragmentCallback(new BedFragment.BedFragmentCallback() {
+                        @Override
+                        public void openDetailFragment(Product product) {
+                            homeFragmentCallback.openDetailFragment(product);
+                        }
+                    });
+                } else if (fragment instanceof TableFragment) {
+                    TableFragment bedFragment = (TableFragment) fragment;
+                    bedFragment.setTableFragmentCallback(new TableFragment.TableFragmentCallback() {
+                        @Override
+                        public void openDetailFragment(Product product) {
+                            homeFragmentCallback.openDetailFragment(product);
+                        }
+                    });
+                } else if (fragment instanceof ChairFragment) {
+                    ChairFragment bedFragment = (ChairFragment) fragment;
+                    bedFragment.setChairFragmentCallback(new ChairFragment.ChairFragmentCallback() {
+                        @Override
+                        public void openDetailFragment(Product product) {
+                            homeFragmentCallback.openDetailFragment(product);
+                        }
+                    });
                 }
             }
         });

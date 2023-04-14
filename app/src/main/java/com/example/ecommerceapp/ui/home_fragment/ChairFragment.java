@@ -25,6 +25,8 @@ public class ChairFragment extends Fragment {
     private FragmentChairBinding binding;
     private HomeViewModel homeViewModel;
     private ChairAdapter productAdapter;
+    private ChairFragmentCallback chairFragmentCallback;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class ChairFragment extends Fragment {
         binding.chairRecyclerView.setAdapter(productAdapter);
 
         homeViewModel.getAllChair().observe(requireActivity(), products -> {
-            if(products != null){
+            if (products != null) {
                 productAdapter.setProducts(products);
             }
         });
@@ -54,8 +56,17 @@ public class ChairFragment extends Fragment {
         productAdapter.setCallback(new ChairAdapter.Callback() {
             @Override
             public void onItemClick(Product product) {
-
+                homeViewModel.setProductMutableLiveData(product);
+                chairFragmentCallback.openDetailFragment(product);
             }
         });
+    }
+
+    public void setChairFragmentCallback(ChairFragmentCallback chairFragmentCallback) {
+        this.chairFragmentCallback = chairFragmentCallback;
+    }
+
+    public interface ChairFragmentCallback {
+        void openDetailFragment(Product product);
     }
 }

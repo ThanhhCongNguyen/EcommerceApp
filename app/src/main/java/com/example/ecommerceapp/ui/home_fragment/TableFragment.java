@@ -24,6 +24,7 @@ public class TableFragment extends Fragment {
     private FragmentTableBinding binding;
     private HomeViewModel homeViewModel;
     private TableAdapter productAdapter;
+    private TableFragmentCallback tableFragmentCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class TableFragment extends Fragment {
         binding.tableRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
         binding.tableRecyclerView.setAdapter(productAdapter);
         homeViewModel.getAllTable().observe(requireActivity(), products -> {
-            if(products != null){
+            if (products != null) {
                 productAdapter.setProducts(products);
             }
         });
@@ -53,8 +54,17 @@ public class TableFragment extends Fragment {
         productAdapter.setCallback(new TableAdapter.Callback() {
             @Override
             public void onItemClick(Product product) {
-
+                homeViewModel.setProductMutableLiveData(product);
+                tableFragmentCallback.openDetailFragment(product);
             }
         });
+    }
+
+    public void setTableFragmentCallback(TableFragmentCallback tableFragmentCallback) {
+        this.tableFragmentCallback = tableFragmentCallback;
+    }
+
+    public interface TableFragmentCallback {
+        void openDetailFragment(Product product);
     }
 }

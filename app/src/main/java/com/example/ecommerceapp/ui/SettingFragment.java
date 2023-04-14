@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,10 +18,12 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.MyOrderAdapter;
 import com.example.ecommerceapp.databinding.FragmentNotificationBinding;
 import com.example.ecommerceapp.databinding.FragmentSettingBinding;
+import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
     private FragmentSettingBinding binding;
     private SettingFragmentCallback settingFragmentCallback;
+    private HomeViewModel homeViewModel;
 
     public void setSettingFragmentCallback(SettingFragmentCallback settingFragmentCallback) {
         this.settingFragmentCallback = settingFragmentCallback;
@@ -27,12 +32,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentSettingBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -51,33 +56,52 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.myOrderLayout) {
-//            openMyOrderFragment();
             settingFragmentCallback.openMyOrderFragment();
         } else if (view.getId() == R.id.shippingAddressLayout) {
-//            openShippingAddressFragment();
             settingFragmentCallback.openShippingAddressFragment();
         } else if (view.getId() == R.id.paymentMethodLayout) {
 
         } else if (view.getId() == R.id.myReviewLayout) {
-//            openMyReviewsFragment();
             settingFragmentCallback.openMyReviewsFragment();
         } else if (view.getId() == R.id.settingLayout) {
-//            openChangeInfoFragment();
             settingFragmentCallback.openChangeInfoFragment();
+        } else if (view.getId() == R.id.requestLoginButton) {
+            openLoginFragment();
         }
     }
 
     private void initView() {
-        binding.myOrderLayout.setOnClickListener(this::onClick);
-        binding.shippingAddressLayout.setOnClickListener(this::onClick);
-        binding.paymentMethodLayout.setOnClickListener(this::onClick);
-        binding.myReviewLayout.setOnClickListener(this::onClick);
-        binding.settingLayout.setOnClickListener(this::onClick);
+        if (!homeViewModel.isLogin()) {
+            binding.nestedScrollView.setVisibility(View.GONE);
+            binding.icNotLogin.setVisibility(View.VISIBLE);
+            binding.requestLoginText.setVisibility(View.VISIBLE);
+            binding.requestLoginButton.setVisibility(View.VISIBLE);
+        } else {
+            binding.nestedScrollView.setVisibility(View.VISIBLE);
+            binding.icNotLogin.setVisibility(View.GONE);
+            binding.requestLoginText.setVisibility(View.GONE);
+            binding.requestLoginButton.setVisibility(View.GONE);
+        }
+
+
+        binding.myOrderLayout.setOnClickListener(this);
+        binding.shippingAddressLayout.setOnClickListener(this);
+        binding.paymentMethodLayout.setOnClickListener(this);
+        binding.myReviewLayout.setOnClickListener(this);
+        binding.settingLayout.setOnClickListener(this);
+        binding.requestLoginButton.setOnClickListener(this);
 
     }
 
     private void initData() {
 
+    }
+
+    private void openLoginFragment() {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
+        fragmentTransaction.commit();
     }
 
     private void openMyOrderFragment() {

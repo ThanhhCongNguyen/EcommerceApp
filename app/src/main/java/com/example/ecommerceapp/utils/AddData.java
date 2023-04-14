@@ -14,13 +14,13 @@ public class AddData {
     }
 
     public void addProductToFirestore() {
-        for (int i = 100; i < 110; i++) {
-            String categoryName = "ArmChair";
-            String description = "This is CS50x , Harvard University's introduction to the intellectual enterprises of computer science and the art of programming for majors and non-majors alike, with or without prior programming experience. An entry-level course taught by David J. Malan, CS50x teaches students how to think algorithmically and solve problems efficiently. Topics include abstraction, algorithms, data structures, encapsulation, resource management, security, software engineering, and web development. Languages include C, Python, SQL, and JavaScript plus CSS and HTML. Problem sets inspired by real-world domains of biology, cryptography, finance, forensics, and gaming. The on-campus version of CS50x , CS50, is Harvard's largest course. ";
-            String image = "https://firebasestorage.googleapis.com/v0/b/ecommerceapp-30308.appspot.com/o/1-1589382726.jpg?alt=media&token=f988d3d1-ef01-45ca-b2e3-fb8989738061";
-            String price = "124";
+        for (int i = 130; i < 140; i++) {
+            String categoryName = "HangingGardens";
+            String description = "Chậu treo Hoa dừa cạn còn có tên tiếng Việt là hoa hải đăng, trường xuân hoa, bông dừa, dương giác, nhật nhật thảo, hoa đồng hồ… Hoa dừa cạn có cánh đơn, mỏng. Có nhiều mầu sắc như trắng, tím, hồng, đỏ.";
+            String image = "https://firebasestorage.googleapis.com/v0/b/ecommerceapp-30308.appspot.com/o/cay-hoa-dua-can-chau-treo-6.jpg?alt=media&token=a7cbf634-0dda-450c-9c2f-2d57421af686";
+            String price = "229000";
             String productId = String.valueOf(i);
-            String productName = "Sunny";
+            String productName = "Cây Chậu Treo Dừa Cạn nhiều màu sắc";
             Product product = new Product(productId, productName, price, image, description, categoryName);
             Review revieww = null;
 
@@ -31,10 +31,9 @@ public class AddData {
                 String review = "Very good";
                 String rating = "5";
                 revieww = new Review(userId, productIdd, time, review, rating);
-                db.collection("ArmChair").document(String.valueOf(i)).collection("reviews").document().set(revieww);
+                db.collection("HangingGardens").document(String.valueOf(i)).collection("reviews").document().set(revieww);
             }
-
-            db.collection("ArmChair").document(String.valueOf(i)).set(product);
+            db.collection("HangingGardens").document(String.valueOf(i)).set(product);
         }
     }
 }

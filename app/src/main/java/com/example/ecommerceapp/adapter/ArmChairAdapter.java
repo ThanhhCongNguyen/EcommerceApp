@@ -40,7 +40,10 @@ public class ArmChairAdapter extends RecyclerView.Adapter<ArmChairAdapter.ArmCha
         Product product = products.get(position);
 
         holder.productName.setText(product.getProductName());
-        holder.productPrice.setText("$ ".concat(product.getPrice()));
+
+        String s1 = product.getPrice().substring(0,3);
+        String s2 = product.getPrice().substring(3);
+        holder.productPrice.setText(s1.concat(",").concat(s2).concat(" VND"));
 
         Glide.with(holder.productImage.getContext())
                 .load(product.getImage())

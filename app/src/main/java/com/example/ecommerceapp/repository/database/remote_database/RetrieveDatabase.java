@@ -49,8 +49,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     @Override
     public MutableLiveData<ArrayList<Product>> getAllChair() {
-        firebaseFirestore.collection("myShop").document("Category").collection("Product")
-                .whereEqualTo("categoryName", "chair")
+        firebaseFirestore.collection("OfficePlants")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -59,14 +58,27 @@ public class RetrieveDatabase implements FurnitureService {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
-                                chairs.add(product);
+
+                                firebaseFirestore.collection("OfficePlants")
+                                        .document(document.getId())
+                                        .collection("reviews")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    ArrayList<Review> reviews = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                        Review review = document.toObject(Review.class);
+                                                        reviews.add(review);
+                                                    }
+                                                    product.setReviews(reviews);
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
                                 chairs.add(product);
                             }
                             chairListMutableLiveData.postValue(chairs);
@@ -80,8 +92,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     @Override
     public MutableLiveData<ArrayList<Product>> getAllTable() {
-        firebaseFirestore.collection("myShop").document("Category").collection("Product")
-                .whereEqualTo("categoryName", "table")
+        firebaseFirestore.collection("DesktopPlants")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -90,14 +101,27 @@ public class RetrieveDatabase implements FurnitureService {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
-                                tables.add(product);
+
+                                firebaseFirestore.collection("DesktopPlants")
+                                        .document(document.getId())
+                                        .collection("reviews")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    ArrayList<Review> reviews = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                        Review review = document.toObject(Review.class);
+                                                        reviews.add(review);
+                                                    }
+                                                    product.setReviews(reviews);
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
                                 tables.add(product);
                             }
                             tableListMutableLiveData.postValue(tables);
@@ -111,7 +135,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     @Override
     public MutableLiveData<ArrayList<Product>> getAllArmChair() {
-        firebaseFirestore.collection("ArmChair")
+        firebaseFirestore.collection("WaterPlants")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -121,7 +145,7 @@ public class RetrieveDatabase implements FurnitureService {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
 
-                                firebaseFirestore.collection("ArmChair")
+                                firebaseFirestore.collection("WaterPlants")
                                         .document(document.getId())
                                         .collection("reviews")
                                         .get()
@@ -142,14 +166,6 @@ public class RetrieveDatabase implements FurnitureService {
                                                     }
                                                 });
                                 armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
-//                                armChairs.add(product);
                             }
                             armChairListMutableLiveData.postValue(armChairs);
                         } else {
@@ -162,8 +178,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     @Override
     public MutableLiveData<ArrayList<Product>> getAllBed() {
-        firebaseFirestore.collection("myShop").document("Category").collection("Product")
-                .whereEqualTo("categoryName", "bed")
+        firebaseFirestore.collection("HangingGardens")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -172,14 +187,27 @@ public class RetrieveDatabase implements FurnitureService {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
-                                beds.add(product);
+
+                                firebaseFirestore.collection("HangingGardens")
+                                        .document(document.getId())
+                                        .collection("reviews")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    ArrayList<Review> reviews = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                        Review review = document.toObject(Review.class);
+                                                        reviews.add(review);
+                                                    }
+                                                    product.setReviews(reviews);
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
                                 beds.add(product);
                             }
                             bedListMutableLiveData.postValue(beds);

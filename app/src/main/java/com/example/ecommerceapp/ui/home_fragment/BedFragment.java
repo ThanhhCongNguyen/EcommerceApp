@@ -23,6 +23,7 @@ public class BedFragment extends Fragment {
     private FragmentBedBinding binding;
     private HomeViewModel homeViewModel;
     private BedAdapter productAdapter;
+    private BedFragmentCallback bedFragmentCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,22 @@ public class BedFragment extends Fragment {
         binding.bedRecyclerView.setAdapter(productAdapter);
 
         homeViewModel.getAllBed().observe(requireActivity(), products -> {
-            if(products != null){
+            if (products != null) {
                 productAdapter.setProducts(products);
             }
         });
 
-        productAdapter.setCallback(new BedAdapter.Callback() {
-            @Override
-            public void onItemClick(Product product) {
-
-            }
+        productAdapter.setCallback(product -> {
+            homeViewModel.setProductMutableLiveData(product);
+            bedFragmentCallback.openDetailFragment(product);
         });
+    }
+
+    public void setBedFragmentCallback(BedFragmentCallback bedFragmentCallback) {
+        this.bedFragmentCallback = bedFragmentCallback;
+    }
+
+    public interface BedFragmentCallback {
+        void openDetailFragment(Product product);
     }
 }

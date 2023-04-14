@@ -30,6 +30,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     public interface Callback {
         void onRegisterSuccess(FirebaseUser firebaseUser);
+        void navigateLoginFragment();
     }
 
     @Override
