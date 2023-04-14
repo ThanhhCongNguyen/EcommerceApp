@@ -68,6 +68,10 @@ public class HomeViewModel extends AndroidViewModel {
         return defaultCount;
     }
 
+    public void setDefaultCount(int defaultCount) {
+        this.defaultCount = defaultCount;
+    }
+
     public LiveData<ArrayList<Product>> getAllChair() {
         return chairListMutableLiveData;
     }

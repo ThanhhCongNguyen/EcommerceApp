@@ -21,6 +21,7 @@ import com.example.ecommerceapp.viewmodel.HomeViewModel;
 public class DetailFragment extends Fragment implements View.OnClickListener{
     private FragmentDetailBinding binding;
     private HomeViewModel homeViewModel;
+    private int count = 1;
 
     public DetailFragment() {
 
@@ -58,38 +59,35 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-//        binding.plusButton.setOnClickListener(v -> {
-//            int count = homeViewModel.getDefaultCount();
-//            count++;
+        binding.plusButton.setOnClickListener(v -> {
+            int count = homeViewModel.getDefaultCount();
+            homeViewModel.setDefaultCount(count++);
 //            homeViewModel.setProductCountMutableLiveData(count);
-//            binding.countText.setText(String.valueOf(count));
-//        });
-//
-//        binding.minusButton.setOnClickListener(v -> {
-//            int count = homeViewModel.getDefaultCount();
-//            count--;
+            binding.countText.setText(String.valueOf(homeViewModel.getDefaultCount()));
+        });
+
+        binding.minusButton.setOnClickListener(v -> {
+            int count = homeViewModel.getDefaultCount();
+            homeViewModel.setDefaultCount(count--);
 //            homeViewModel.setProductCountMutableLiveData(count);
-//            binding.countText.setText(String.valueOf(count));
-//        });
+            binding.countText.setText(String.valueOf(homeViewModel.getDefaultCount()));
+        });
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.plusButton) {
+            Log.d("thanh1", "11100");
             plusCount(view);
         } else if(view.getId() == R.id.minusButton) {
+            Log.d("thanh1", "00");
             minusCount(view);
         }
     }
 
     private void initView() {
-        if( ((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_back);
-        }
-        binding.plusButton.setOnClickListener(this::onClick);
-        binding.minusButton.setOnClickListener(this::onClick);
+        binding.plusButton.setOnClickListener(this);
+        binding.minusButton.setOnClickListener(this);
     }
 
     private void initData() {
@@ -110,20 +108,24 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     }
 
     private void plusCount(View view) {
-        int count = homeViewModel.getDefaultCount();
-        Log.d("thanh1", "count 1: " + count);
-//        count++;
-        homeViewModel.setProductCountMutableLiveData(count);
-//        homeViewModel.setProductCountMutableLiveData(count);
+        count++;
+        Log.d("thanh1", "count: " + count);
         binding.countText.setText(String.valueOf(count));
+//        int count = homeViewModel.getDefaultCount();
+//        Log.d("thanh1", "count 1: " + count);
+////        count++;
+//        homeViewModel.setProductCountMutableLiveData(count);
+////        homeViewModel.setProductCountMutableLiveData(count);
+//        binding.countText.setText(String.valueOf(count));
     }
 
     private void minusCount(View view) {
-        int count = homeViewModel.getDefaultCount();
-        Log.d("thanh1", "count 2: " + count);
+//        int count = homeViewModel.getDefaultCount();
+//        Log.d("thanh1", "count 2: " + count);
         if(count > 1) {
-//            count--;
-            homeViewModel.setMinusProductCountMutableLiveData(count);
+            count--;
+            Log.d("thanh1", "count: " + count);
+//            homeViewModel.setMinusProductCountMutableLiveData(count);
             binding.countText.setText(String.valueOf(count));
             binding.minusButton.setEnabled(true);
         }else {

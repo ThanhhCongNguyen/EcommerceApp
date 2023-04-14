@@ -5,6 +5,9 @@ public class Address {
     private String street;
     private String city;
 
+    public Address() {
+    }
+
     public Address(String userId, String street, String city) {
         this.userId = userId;
         this.street = street;
