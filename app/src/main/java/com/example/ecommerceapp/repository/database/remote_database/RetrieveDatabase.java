@@ -111,8 +111,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     @Override
     public MutableLiveData<ArrayList<Product>> getAllArmChair() {
-        firebaseFirestore.collection("myShop").document("Category").collection("Product")
-                .whereEqualTo("categoryName", "armChair")
+        firebaseFirestore.collection("ArmChair")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -122,9 +121,7 @@ public class RetrieveDatabase implements FurnitureService {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Product product = document.toObject(Product.class);
 
-                                firebaseFirestore.collection("myShop")
-                                        .document("Category")
-                                        .collection("Product")
+                                firebaseFirestore.collection("ArmChair")
                                         .document(document.getId())
                                         .collection("reviews")
                                         .get()
@@ -145,14 +142,14 @@ public class RetrieveDatabase implements FurnitureService {
                                                     }
                                                 });
                                 armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
-                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
+//                                armChairs.add(product);
                             }
                             armChairListMutableLiveData.postValue(armChairs);
                         } else {

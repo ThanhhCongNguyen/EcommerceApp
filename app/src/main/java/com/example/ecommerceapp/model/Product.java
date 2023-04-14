@@ -7,8 +7,6 @@ public class Product {
     private String productName;
     private String price;
     private String image;
-    private String width;
-    private String height;
     private String description;
     private String categoryName;
     private ArrayList<Review> reviews;
@@ -16,13 +14,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productId, String productName, String price, String image, String width, String height, String description, String categoryName) {
+    public Product(String productId, String productName, String price, String image, String description, String categoryName) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.image = image;
-        this.width = width;
-        this.height = height;
         this.description = description;
         this.categoryName = categoryName;
     }
@@ -57,22 +53,6 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public String getWidth() {
-        return width;
-    }
-
-    public void setWidth(String width) {
-        this.width = width;
-    }
-
-    public String getHeight() {
-        return height;
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
     }
 
     public String getDescription() {

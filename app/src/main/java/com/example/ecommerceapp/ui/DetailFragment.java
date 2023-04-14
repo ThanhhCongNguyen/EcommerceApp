@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -82,6 +83,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView() {
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(true);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_back);
+        }
         binding.plusButton.setOnClickListener(this::onClick);
         binding.minusButton.setOnClickListener(this::onClick);
     }
@@ -91,11 +97,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
         homeViewModel.getProductMutableLiveData().observe(requireActivity(), product -> {
             binding.productName.setText(product.getProductName());
-            binding.productPrice.setText("$ ".concat(product.getPrice()));
+            binding.totalPriceText.setText("$ ".concat(product.getPrice()));
             if(getActivity() != null) {
                 Glide.with(getActivity())
                         .load(product.getImage())
-                        .into(binding.productImage);
+                        .into(binding.expandedImage);
             }
             binding.descriptionText.setText(product.getDescription());
 
