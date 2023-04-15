@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.ActivityMainBinding;
+import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.ui.LoginFragment;
 import com.example.ecommerceapp.ui.MainFragment;
 import com.example.ecommerceapp.ui.SignUpFragment;
@@ -59,9 +60,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRegisterSuccess(FirebaseUser firebaseUser) {
+    public void onRegisterSuccess(User user) {
         homeViewModel.saveUserToSharePreferences();
+        homeViewModel.saveUserIdToSharePreferences(user.getUserId());
         MainFragment mainFragment = new MainFragment();
         transactionFragment(mainFragment);
+    }
+
+    @Override
+    public void navigateLoginFragment() {
+
     }
 }

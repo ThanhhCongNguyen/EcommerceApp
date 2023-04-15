@@ -96,6 +96,14 @@ public class HomeViewModel extends AndroidViewModel {
         furnitureRepository.saveUserToSharePreferences(application);
     }
 
+    public void saveUserIdToSharePreferences(String userId) {
+        furnitureRepository.saveUserIdToSharePreferences(application, userId);
+    }
+
+    public void clearUserIdToSharePreferences() {
+        furnitureRepository.clearUserIdToSharePreferences(application);
+    }
+
     public boolean isLogin() {
         return furnitureRepository.isLogin(application);
     }

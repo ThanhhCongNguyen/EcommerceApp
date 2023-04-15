@@ -49,6 +49,14 @@ public class FurnitureRepository {
         localDatabase.saveUserToSharePreferences(application);
     }
 
+    public void saveUserIdToSharePreferences(Application application, String userId) {
+        localDatabase.saveUserIdToSharePreferences(application, userId);
+    }
+
+    public void clearUserIdToSharePreferences(Application application) {
+        localDatabase.clearUserIdToSharePreferences(application);
+    }
+
     public boolean isLogin(Application application) {
         return localDatabase.isLogin(application);
     }

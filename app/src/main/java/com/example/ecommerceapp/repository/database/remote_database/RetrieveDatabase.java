@@ -11,8 +11,11 @@ import com.example.ecommerceapp.model.Category;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.Review;
 import com.example.ecommerceapp.model.Shop;
+import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.service.FurnitureService;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -149,22 +152,22 @@ public class RetrieveDatabase implements FurnitureService {
                                         .document(document.getId())
                                         .collection("reviews")
                                         .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            ArrayList<Review> reviews = new ArrayList<>();
-                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                                                Review review = document.toObject(Review.class);
-                                                                reviews.add(review);
-                                                            }
-                                                            product.setReviews(reviews);
-                                                        } else {
-                                                            Log.d(TAG, "Error getting documents: ", task.getException());
-                                                        }
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    ArrayList<Review> reviews = new ArrayList<>();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                        Review review = document.toObject(Review.class);
+                                                        reviews.add(review);
                                                     }
-                                                });
+                                                    product.setReviews(reviews);
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
                                 armChairs.add(product);
                             }
                             armChairListMutableLiveData.postValue(armChairs);
@@ -217,5 +220,21 @@ public class RetrieveDatabase implements FurnitureService {
                     }
                 });
         return bedListMutableLiveData;
+    }
+
+    public void signUpUser(User user) {
+        firebaseFirestore.collection("user").document(user.getUserId())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error writing document", e);
+                    }
+                });
     }
 }

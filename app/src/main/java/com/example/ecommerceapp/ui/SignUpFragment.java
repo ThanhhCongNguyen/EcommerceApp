@@ -1,5 +1,7 @@
 package com.example.ecommerceapp.ui;
 
+import static com.example.ecommerceapp.utils.Utilities.TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -15,38 +17,42 @@ import android.view.ViewGroup;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentSignUpBinding;
+import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.utils.Utilities;
 import com.example.ecommerceapp.utils.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.UUID;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
     private FragmentSignUpBinding binding;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore database;
     private Callback callback;
 
     public interface Callback {
-        void onRegisterSuccess(FirebaseUser firebaseUser);
+        void onRegisterSuccess(User user);
+
         void navigateLoginFragment();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            this.callback = (Callback) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement Callback");
-        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -77,6 +83,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             case R.id.signUpButton:
                 registerNewUser();
         }
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
     private void registerNewUser() {
@@ -121,23 +131,41 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             binding.confirmPasswordTextField.setErrorEnabled(false);
         }
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        String userId = UUID.randomUUID().toString();
+        User user = new User(userId, userName, email, password);
+        database.collection("users").document(userId)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            binding.progressBar.setVisibility(View.GONE);
-                            Log.d("thanh", "createUserWithEmail:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            callback.onRegisterSuccess(user);
-                        } else {
-                            //Fail
-                            binding.progressBar.setVisibility(View.GONE);
-                            Log.d("thanh", "createUserWithEmail:failure", task.getException());
-                            Utilities.toast(getString(R.string.authen_fail), getActivity());
-                        }
+                    public void onSuccess(Void unused) {
+                        callback.onRegisterSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error writing document", e);
                     }
                 });
+
+
+//        firebaseAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            binding.progressBar.setVisibility(View.GONE);
+//                            Log.d("thanh", "createUserWithEmail:success");
+//                            FirebaseUser user = firebaseAuth.getCurrentUser();
+//                            callback.onRegisterSuccess(user);
+//                        } else {
+//                            //Fail
+//                            binding.progressBar.setVisibility(View.GONE);
+//                            Log.d("thanh", "createUserWithEmail:failure", task.getException());
+//                            Utilities.toast(getString(R.string.authen_fail), getActivity());
+//                        }
+//                    }
+//                });
     }
 
 }

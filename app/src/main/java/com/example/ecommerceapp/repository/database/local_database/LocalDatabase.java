@@ -19,6 +19,20 @@ public class LocalDatabase {
         editor.apply();
     }
 
+    public void saveUserIdToSharePreferences(Application application, String userId) {
+        SharedPreferences sharedpreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("userId", userId);
+        editor.apply();
+    }
+
+    public void clearUserIdToSharePreferences(Application application) {
+        SharedPreferences sharedpreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("userId", null);
+        editor.apply();
+    }
+
     public void clearUserToSharePreferences(Application application) {
         SharedPreferences sharedpreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();

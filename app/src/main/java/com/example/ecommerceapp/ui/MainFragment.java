@@ -95,11 +95,11 @@ public class MainFragment extends Fragment {
         settingFragment.setSettingFragmentCallback(new SettingFragment.SettingFragmentCallback() {
             @Override
             public void openMyOrderFragment() {
-//                binding.bottomNavigation.setVisibility(View.GONE);
-//                MyOrderFragment myOrderFragment = new MyOrderFragment();
-//                transactionFragment(myOrderFragment);
-                AddData addData = new AddData();
-                addData.addProductToFirestore();
+                binding.bottomNavigation.setVisibility(View.GONE);
+                MyOrderFragment myOrderFragment = new MyOrderFragment();
+                transactionFragment(myOrderFragment);
+//                AddData addData = new AddData();
+//                addData.addProductToFirestore();
             }
 
             @Override
