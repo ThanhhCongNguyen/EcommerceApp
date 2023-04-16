@@ -226,23 +226,24 @@
                 android:id="@+id/totalPriceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_6dp"
                 android:text="$72"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/tv3"
-                app:layout_constraintStart_toStartOf="@id/tv3"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv3" />
 
             <TextView
-                android:id="@+id/addToCartButton"
+                android:id="@+id/addToCart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginStart="@dimen/_32dp"
                 android:layout_marginEnd="@dimen/_16dp"
                 android:layout_marginBottom="@dimen/_8dp"
                 android:background="@drawable/bg_login_btn"
+                android:enabled="true"
                 android:gravity="center"
                 android:paddingStart="@dimen/_32dp"
                 android:paddingTop="@dimen/_8dp"
@@ -254,7 +255,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv3" />
+                app:layout_constraintStart_toEndOf="@+id/totalPriceText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

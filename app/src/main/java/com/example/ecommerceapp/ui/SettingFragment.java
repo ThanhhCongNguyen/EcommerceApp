@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.MyOrderAdapter;
-import com.example.ecommerceapp.databinding.FragmentNotificationBinding;
 import com.example.ecommerceapp.databinding.FragmentSettingBinding;
+import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class SettingFragment extends Fragment implements View.OnClickListener {
@@ -77,12 +77,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             binding.requestLoginText.setVisibility(View.VISIBLE);
             binding.requestLoginButton.setVisibility(View.VISIBLE);
         } else {
+            binding.view1.setVisibility(View.GONE);
             binding.nestedScrollView.setVisibility(View.VISIBLE);
             binding.icNotLogin.setVisibility(View.GONE);
             binding.requestLoginText.setVisibility(View.GONE);
             binding.requestLoginButton.setVisibility(View.GONE);
         }
-
 
         binding.myOrderLayout.setOnClickListener(this);
         binding.shippingAddressLayout.setOnClickListener(this);
@@ -94,7 +94,22 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-
+        User user = homeViewModel.getUserMutableLiveData().getValue();
+        if (user != null) {
+            binding.userName.setText(user.getUserName());
+            binding.userEmail.setText(user.getEmail());
+//            if (user.getAddresses() == null || user.getAddresses().size() == 0) {
+//                binding.addressDetail.setText(R.string.no_order);
+//            } else {
+//                binding.addressDetail.setText(String.valueOf(user.getAddresses().size()).concat(" Addresses"));
+//            }
+//
+//            if (user.getReviews() == null || user.getReviews().size() == 0) {
+//                binding.reviewDetail.setText(R.string.no_review);
+//            } else {
+//                binding.reviewDetail.setText(String.valueOf(user.getReviews().size()).concat(" Reviews"));
+//            }
+        }
     }
 
     private void openLoginFragment() {

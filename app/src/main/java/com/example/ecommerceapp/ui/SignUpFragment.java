@@ -46,6 +46,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        try {
+            this.callback = (Callback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context + " must implement OnItemClickedListener");
+        }
     }
 
     @Override

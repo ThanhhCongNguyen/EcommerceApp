@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ecommerceapp.model.Category;
+import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.Review;
 import com.example.ecommerceapp.model.Shop;
@@ -23,8 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RetrieveDatabase implements FurnitureService {
     private FirebaseFirestore firebaseFirestore;
@@ -40,14 +44,21 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> tableListMutableLiveData;
+    private MutableLiveData<User> userMutableLiveData;
+    private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
 
-    public RetrieveDatabase(FirebaseFirestore firebaseFirestore) {
+    private Callback callback;
+
+    public RetrieveDatabase(FirebaseFirestore firebaseFirestore, Callback callback) {
         this.firebaseFirestore = firebaseFirestore;
+        this.callback = callback;
         categoryListMutableLiveData = new MutableLiveData<>();
         chairListMutableLiveData = new MutableLiveData<>();
         armChairListMutableLiveData = new MutableLiveData<>();
         tableListMutableLiveData = new MutableLiveData<>();
         bedListMutableLiveData = new MutableLiveData<>();
+        userMutableLiveData = new MutableLiveData<>();
+        myCartMutableLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -222,6 +233,21 @@ public class RetrieveDatabase implements FurnitureService {
         return bedListMutableLiveData;
     }
 
+    public MutableLiveData<User> getUser(String userId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+                        userMutableLiveData.postValue(user);
+                        callback.getUserCallback(user);
+                    }
+                });
+        return userMutableLiveData;
+    }
+
     public void signUpUser(User user) {
         firebaseFirestore.collection("user").document(user.getUserId())
                 .set(user)
@@ -236,5 +262,51 @@ public class RetrieveDatabase implements FurnitureService {
                         Log.d(TAG, "Error writing document", e);
                     }
                 });
+    }
+
+    public void addMyCart(String userId, ArrayList<MyCart> currentCart, MyCart myCart, String cartId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyCarts")
+                .document(cartId)
+                .set(myCart)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        currentCart.add(myCart);
+                        myCartMutableLiveData.postValue(currentCart);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    public MutableLiveData<ArrayList<MyCart>> getMyCart(String userId) {
+        firebaseFirestore.collection("users").document(userId)
+                .collection("MyCarts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<MyCart> myCarts = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                MyCart object = document.toObject(MyCart.class);
+                                myCarts.add(object);
+                            }
+                            myCartMutableLiveData.postValue(myCarts);
+                        }
+                    }
+                });
+        return myCartMutableLiveData;
+    }
+
+    public interface Callback {
+        void getUserCallback(User user);
+
+
     }
 }

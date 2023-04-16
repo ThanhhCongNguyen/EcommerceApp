@@ -27,13 +27,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        LoginFragment loginFragment = new LoginFragment();
         homeViewModel = new ViewModelProvider(MainActivity.this).get(HomeViewModel.class);
         MainFragment mainFragment = new MainFragment();
         transactionFragment(mainFragment);
 
-//        @SuppressLint("HardwareIds") String deviceID = Settings.Secure.getString(MainActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
-//        Toast.makeText(this, deviceID, Toast.LENGTH_SHORT).show();
     }
 
     private void transactionFragment(Fragment fragment) {

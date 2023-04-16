@@ -20,6 +20,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:background="@color/grey97"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleFragment" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
@@ -41,7 +53,7 @@
                 android:layout_height="@dimen/_64dp"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
-                android:src="@drawable/test1"
+                android:src="@drawable/google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -159,7 +171,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv2"
+                        android:id="@+id/addressDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_8dp"
@@ -269,7 +281,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv6"
+                        android:id="@+id/reviewDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_8dp"
@@ -396,12 +408,12 @@
         android:id="@+id/requestLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginTop="@dimen/_16dp"
         android:background="@drawable/bg_login_btn"
-        android:paddingStart="@dimen/_24dp"
-        android:paddingTop="@dimen/_8dp"
-        android:paddingEnd="@dimen/_24dp"
-        android:paddingBottom="@dimen/_8dp"
+        android:paddingStart="@dimen/_32dp"
+        android:paddingTop="@dimen/_10dp"
+        android:paddingEnd="@dimen/_32dp"
+        android:paddingBottom="@dimen/_10dp"
         android:text="Đăng nhập"
         android:textColor="@color/white"
         android:textStyle="bold"

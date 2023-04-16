@@ -27,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
@@ -79,7 +80,7 @@
             app:layout_constraintStart_toEndOf="@+id/itemImage">
 
             <ImageView
-                android:id="@+id/addBtn"
+                android:id="@+id/plusButton"
                 android:layout_width="@dimen/_24dp"
                 android:layout_height="@dimen/_24dp"
                 android:background="@drawable/bg_add_minus"
@@ -87,7 +88,7 @@
                 android:src="@drawable/ic_add" />
 
             <TextView
-                android:id="@+id/accountText"
+                android:id="@+id/quantityText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10dp"

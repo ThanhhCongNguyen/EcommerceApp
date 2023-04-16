@@ -57,4 +57,6 @@
     <string name="request_login">Bạn cần đăng nhập \n để sử dụng tính năng này</string>
     <string name="cancel">Cancel</string>
     <string name="use_as_the_shipping_address">Use as the shipping address</string>
+    <string name="no_order">You don\'t have any orders yet</string>
+    <string name="no_review">You don\'t have any reviews yet</string>
 </resources>

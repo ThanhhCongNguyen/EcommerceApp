@@ -46,4 +46,10 @@ public class LocalDatabase {
         return isLogin;
     }
 
+    public String getUserId(Application application) {
+        SharedPreferences shared = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String userId = (shared.getString("userId", "default"));
+        return userId;
+    }
+
 }

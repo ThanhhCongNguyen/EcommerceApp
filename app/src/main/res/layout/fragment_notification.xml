@@ -6,26 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".ui.FavoritesFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:textAlignment="center"
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_16dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/notifications"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/notifications"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_20sp"
-            android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:background="@color/grey97"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvNotification"
@@ -35,8 +42,47 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_title"
         tools:listitem="@layout/item_notification" />
 
+    <ImageView
+        android:id="@+id/ic_not_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_note_alt_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/requestLoginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
+        android:src="@drawable/ic_baseline_note_alt_24"
+        android:text="Bạn cần đăng nhập để sử dụng tính năng này"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ic_not_login" />
+
+    <TextView
+        android:id="@+id/requestLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:background="@drawable/bg_login_btn"
+        android:paddingStart="@dimen/_32dp"
+        android:paddingTop="@dimen/_10dp"
+        android:paddingEnd="@dimen/_32dp"
+        android:paddingBottom="@dimen/_10dp"
+        android:text="Đăng nhập"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/requestLoginText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

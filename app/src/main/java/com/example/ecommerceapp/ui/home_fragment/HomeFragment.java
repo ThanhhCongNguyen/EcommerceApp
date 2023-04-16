@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.CategoryAdapter;
@@ -15,6 +16,7 @@ import com.example.ecommerceapp.adapter.ViewPagerAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.ui.MyCartFragment;
+import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -24,10 +26,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private ViewPagerAdapter viewPagerAdapter;
     private CategoryAdapter categoryAdapter;
+    private HomeViewModel homeViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         categoryAdapter = new CategoryAdapter();
     }
 
@@ -42,7 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
+        init();
         viewPagerAdapter = new ViewPagerAdapter(requireActivity());
         binding.viewPager.setAdapter(viewPagerAdapter);
 
@@ -114,8 +118,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         this.homeFragmentCallback = homeFragmentCallback;
     }
 
-    private void initView() {
+    private void init() {
         binding.cartBtn.setOnClickListener(this::onClick);
+
+        if (homeViewModel.isLogin()) {
+            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
+                if (myCarts != null && myCarts.size() > 0) {
+                    binding.quantityItemInCart.setVisibility(View.VISIBLE);
+                    binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
+                } else {
+                    binding.quantityItemInCart.setVisibility(View.GONE);
+                }
+            });
+        } else {
+            binding.quantityItemInCart.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void openMyCartFragment() {
