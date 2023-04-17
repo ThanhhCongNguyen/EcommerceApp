@@ -24,6 +24,7 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> armChairListMutableLiveData;
     private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
+    private MutableLiveData<ArrayList<User>> userLiveData;
     private MutableLiveData<User> userMutableLiveData;
 
     private MutableLiveData<Product> productMutableLiveData = new MutableLiveData<>();
@@ -107,6 +108,22 @@ public class HomeViewModel extends AndroidViewModel {
         furnitureRepository.addProductToCart(userId, Objects.requireNonNull(myCartMutableLiveData.getValue()), myCart, cartId);
     }
 
+    public void createNewUser(User user) {
+        furnitureRepository.createNewUser(user);
+    }
+
+    public void signInWithEmailAndPassword(String email, String password) {
+        furnitureRepository.signInWithEmailAndPassword(email, password);
+    }
+
+    public LiveData<User> getUserLiveData() {
+        return furnitureRepository.getUserMutableLiveData();
+    }
+
+    public LiveData<User> getUserFromShare() {
+        return furnitureRepository.getUserFromShare();
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -179,8 +196,16 @@ public class HomeViewModel extends AndroidViewModel {
         return furnitureRepository.isLogin(application);
     }
 
+    public void clearUserCache() {
+        furnitureRepository.clearUserCache(application);
+    }
+
     public MutableLiveData<User> getUserMutableLiveData() {
         return userMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<User>> getAllUser(String email, String password) {
+        return furnitureRepository.getAllUser(email, password);
     }
 
     public void setUserMutableLiveData(MutableLiveData<User> userMutableLiveData) {
@@ -198,6 +223,7 @@ public class HomeViewModel extends AndroidViewModel {
     public String getUserId() {
         return furnitureRepository.getUserId(application);
     }
+
 
     public interface HomeViewModelCallback {
         void getUserHomeViewModelCallback(User user);

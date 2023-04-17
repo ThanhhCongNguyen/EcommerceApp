@@ -20,6 +20,8 @@ import com.example.ecommerceapp.databinding.FragmentSettingBinding;
 import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
+import java.util.Objects;
+
 public class SettingFragment extends Fragment implements View.OnClickListener {
     private FragmentSettingBinding binding;
     private SettingFragmentCallback settingFragmentCallback;
@@ -70,6 +72,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+//        homeViewModel.getUserLiveData().removeObservers(getViewLifecycleOwner());
+    }
+
     private void initView() {
         if (!homeViewModel.isLogin()) {
             binding.nestedScrollView.setVisibility(View.GONE);
@@ -94,10 +102,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-        User user = homeViewModel.getUserMutableLiveData().getValue();
-        if (user != null) {
-            binding.userName.setText(user.getUserName());
-            binding.userEmail.setText(user.getEmail());
+//        User user = homeViewModel.getUserMutableLiveData().getValue();
+        homeViewModel.getUserFromShare().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                binding.userName.setText(user.getUserName());
+                binding.userEmail.setText(user.getEmail());
+            }
+        });
+//        if (user != null) {
+//            binding.userName.setText(user.getUserName());
+//            binding.userEmail.setText(user.getEmail());
 //            if (user.getAddresses() == null || user.getAddresses().size() == 0) {
 //                binding.addressDetail.setText(R.string.no_order);
 //            } else {
@@ -109,10 +123,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 //            } else {
 //                binding.reviewDetail.setText(String.valueOf(user.getReviews().size()).concat(" Reviews"));
 //            }
-        }
+//        }
     }
 
     private void openLoginFragment() {
+        homeViewModel.clearUserCache();
         FragmentManager fm = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
@@ -150,6 +165,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 .addToBackStack(null)
                 .commit();
     }
+
 
     public interface SettingFragmentCallback {
         void openMyOrderFragment();

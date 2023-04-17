@@ -3,6 +3,7 @@ package com.example.ecommerceapp.repository.database.remote_database;
 import static com.example.ecommerceapp.utils.Utilities.TAG;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +36,7 @@ import java.util.UUID;
 
 public class RetrieveDatabase implements FurnitureService {
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;
 
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Product> chairs = new ArrayList<>();
@@ -45,12 +50,15 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<ArrayList<Product>> bedListMutableLiveData;
     private MutableLiveData<ArrayList<Product>> tableListMutableLiveData;
     private MutableLiveData<User> userMutableLiveData;
+    private MutableLiveData<User> userMutableLiveDataLogin;
     private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
+    private MutableLiveData<ArrayList<User>> usersLiveData;
 
     private Callback callback;
 
     public RetrieveDatabase(FirebaseFirestore firebaseFirestore, Callback callback) {
         this.firebaseFirestore = firebaseFirestore;
+        this.mAuth = FirebaseAuth.getInstance();
         this.callback = callback;
         categoryListMutableLiveData = new MutableLiveData<>();
         chairListMutableLiveData = new MutableLiveData<>();
@@ -59,6 +67,8 @@ public class RetrieveDatabase implements FurnitureService {
         bedListMutableLiveData = new MutableLiveData<>();
         userMutableLiveData = new MutableLiveData<>();
         myCartMutableLiveData = new MutableLiveData<>();
+        usersLiveData = new MutableLiveData<>();
+        userMutableLiveDataLogin = new MutableLiveData<>();
     }
 
     @Override
@@ -237,31 +247,74 @@ public class RetrieveDatabase implements FurnitureService {
         firebaseFirestore.collection("users")
                 .document(userId)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
-                        userMutableLiveData.postValue(user);
-                        callback.getUserCallback(user);
-                    }
+                .addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+                    userMutableLiveData.postValue(user);
+                    callback.getUserCallback(user);
                 });
         return userMutableLiveData;
     }
 
-    public void signUpUser(User user) {
-        firebaseFirestore.collection("user").document(user.getUserId())
+    public void getUserAfterLogin(String userId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+                    userMutableLiveDataLogin.postValue(user);
+                });
+    }
+
+
+    public void createNewUser(User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String userId = task.getResult().getUser().getUid();
+                        addUserToDatabase(userId, user);
+                    } else {
+                        Log.d(TAG, "createUserWithEmail:failure", task.getException());
+                    }
+                });
+
+    }
+
+    public void signInWithEmailAndPassword(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            getUserAfterLogin(user.getUid());
+                        } else {
+
+                        }
+                    }
+                });
+
+    }
+
+    private void addUserToDatabase(String userId, User user) {
+        user.setUserId(userId);
+        firebaseFirestore.collection("users").document(user.getUserId())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void unused) {
-
+                    public void onSuccess(Void aVoid) {
+                        userMutableLiveDataLogin.postValue(user);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                })
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Error writing document", e);
                     }
                 });
+
     }
 
     public void addMyCart(String userId, ArrayList<MyCart> currentCart, MyCart myCart, String cartId) {
@@ -302,6 +355,33 @@ public class RetrieveDatabase implements FurnitureService {
                     }
                 });
         return myCartMutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<User>> getUserByEmailAndPass(String email, String password) {
+        firebaseFirestore.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<User> users = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                User object = document.toObject(User.class);
+                                users.add(object);
+                            }
+                            usersLiveData.postValue(users);
+                        }
+                    }
+                });
+        return usersLiveData;
+    }
+
+    public MutableLiveData<User> getUserFromShare() {
+        return userMutableLiveData;
+    }
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveDataLogin;
     }
 
     public interface Callback {

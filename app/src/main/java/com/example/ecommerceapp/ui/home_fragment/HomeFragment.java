@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init() {
-        binding.cartBtn.setOnClickListener(this::onClick);
+        binding.cartBtn.setOnClickListener(this);
 
         if (homeViewModel.isLogin()) {
             homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
@@ -133,8 +133,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else {
             binding.quantityItemInCart.setVisibility(View.GONE);
         }
-
-
     }
 
     private void openMyCartFragment() {

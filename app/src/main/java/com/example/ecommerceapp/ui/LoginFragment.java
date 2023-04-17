@@ -12,9 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentLoginBinding;
+import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,54 +36,18 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private FragmentLoginBinding binding;
-    private static final int RC_SIGN_IN = 100;
-    private GoogleSignInClient googleSignInClient;
-    private FirebaseAuth firebaseAuth;
-    private static final String TAG = "GOOGLE_SIGN_IN_TAG";
-    private OnItemSelectedListener listener;
+    private HomeViewModel homeViewModel;
 
-    public interface OnItemSelectedListener {
-        void loginSuccess();
-        void navigateSignUp();
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            this.listener = (OnItemSelectedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement OnItemClickedListener");
-        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(getActivity());
-
-        //configure the Google Sign in
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getResources().getString(R.string.client_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
-
-        //init firebase auth
-        firebaseAuth = FirebaseAuth.getInstance();
-        // Initialize firebase user
-//        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//        // Check condition
-//        if (firebaseUser != null) {
-//            // When user already sign in redirect to profile activity
-////            startActivity(new Intent(, ProfileActivity.class)
-////                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-//            listener.loginSuccess();
-//            getActivity().finish();
-//            Log.d("thanh","already sign in");
-//
-//        }
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
     }
 
     @Override
@@ -93,15 +60,15 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.signInWithGoogle.setOnClickListener(this);
-        binding.signUpButton.setOnClickListener(this);
+        init();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.loginButton:
+                login();
             case R.id.signInWithGoogle:
-                initSignInIntent();
                 return;
             case R.id.signUpButton:
                 navigateSignUp();
@@ -112,69 +79,33 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
     }
 
-    private void initSignInIntent() {
-        // Initialize sign in intent
-        Intent intent = googleSignInClient.getSignInIntent();
-        // Start activity for result
-        startActivityForResult(intent, RC_SIGN_IN);
+
+    private void init() {
+        binding.signInWithGoogle.setOnClickListener(this);
+        binding.signUpButton.setOnClickListener(this);
+        binding.loginButton.setOnClickListener(this);
+
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Check condition
-        if (requestCode == RC_SIGN_IN) {
-            Log.d("thanh", "google sign in intent result");
-            Task<GoogleSignInAccount> accountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+    private void login() {
+        String email = binding.emailEdittext.getText().toString().trim();
+        String password = binding.passwordEdittext.getText().toString().trim();
 
-            try {
-                GoogleSignInAccount account = accountTask.getResult(ApiException.class);
-                firebaseAuthWithGoogleAccount(account);
-            } catch (Exception e) {
-                Log.d("thanh", "Result: " + e.getMessage());
-            }
-
-
-        }
+        homeViewModel.signInWithEmailAndPassword(email, password);
     }
 
-    private void firebaseAuthWithGoogleAccount(GoogleSignInAccount account) {
-        Log.d("thanh","begin auth...");
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Log.d("thanh","success");
-
-                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                        String userId = firebaseUser.getUid();
-                        String email = firebaseUser.getEmail();
-
-                        if(authResult.getAdditionalUserInfo().isNewUser()){
-                            displayToast("Account created..." + email);
-                        }else {
-                            displayToast("Existing user..." + email);
-                        }
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("thanh","fail: " + e.getMessage());
-                    }
-                });
+    private void navigateSignUp() {
+        SignUpFragment signUpFragment = new SignUpFragment();
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, signUpFragment);
+        fragmentTransaction.commit();
     }
+
 
     private void displayToast(String s) {
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
-    private void navigateSignUp() {
-        listener.navigateSignUp();
-    }
 }

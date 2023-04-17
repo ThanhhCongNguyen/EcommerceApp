@@ -62,9 +62,30 @@ public class FurnitureRepository {
         return retrieveDatabase.getMyCart(userId);
     }
 
+    public MutableLiveData<ArrayList<User>> getAllUser(String email, String password) {
+        return retrieveDatabase.getUserByEmailAndPass(email, password);
+    }
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return retrieveDatabase.getUserMutableLiveData();
+    }
+
+    public MutableLiveData<User> getUserFromShare() {
+        return retrieveDatabase.getUserFromShare();
+    }
+
     public void addProductToCart(String userId, ArrayList<MyCart> currentCart, MyCart myCart, String cartId) {
         retrieveDatabase.addMyCart(userId, currentCart, myCart, cartId);
     }
+
+    public void createNewUser(User user) {
+        retrieveDatabase.createNewUser(user);
+    }
+
+    public void signInWithEmailAndPassword(String email, String password) {
+        retrieveDatabase.signInWithEmailAndPassword(email, password);
+    }
+
 
     public void saveUserToSharePreferences(Application application) {
         localDatabase.saveUserToSharePreferences(application);
@@ -84,6 +105,10 @@ public class FurnitureRepository {
 
     public boolean isLogin(Application application) {
         return localDatabase.isLogin(application);
+    }
+
+    public void clearUserCache(Application application) {
+        localDatabase.clearUserToSharePreferences(application);
     }
 
     public String getUserId(Application application) {

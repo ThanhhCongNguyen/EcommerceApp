@@ -1,30 +1,23 @@
 package com.example.ecommerceapp.ui;
 
-import static com.example.ecommerceapp.utils.Utilities.TAG;
-
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentSignUpBinding;
 import com.example.ecommerceapp.model.User;
-import com.example.ecommerceapp.utils.Utilities;
 import com.example.ecommerceapp.utils.Validate;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +26,7 @@ import java.util.UUID;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
     private FragmentSignUpBinding binding;
+    private HomeViewModel homeViewModel;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore database;
     private Callback callback;
@@ -58,6 +52,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
+        homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
     }
 
     @Override
@@ -87,6 +82,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.signUpButton:
                 registerNewUser();
+            case R.id.loginButton:
+                navigateLogin();
         }
     }
 
@@ -138,39 +135,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         String userId = UUID.randomUUID().toString();
         User user = new User(userId, userName, email, password);
-        database.collection("users").document(userId)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        callback.onRegisterSuccess(user);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error writing document", e);
-                    }
-                });
+        homeViewModel.createNewUser(user);
+    }
 
-
-//        firebaseAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            binding.progressBar.setVisibility(View.GONE);
-//                            Log.d("thanh", "createUserWithEmail:success");
-//                            FirebaseUser user = firebaseAuth.getCurrentUser();
-//                            callback.onRegisterSuccess(user);
-//                        } else {
-//                            //Fail
-//                            binding.progressBar.setVisibility(View.GONE);
-//                            Log.d("thanh", "createUserWithEmail:failure", task.getException());
-//                            Utilities.toast(getString(R.string.authen_fail), getActivity());
-//                        }
-//                    }
-//                });
+    private void navigateLogin() {
+        LoginFragment loginFragment = new LoginFragment();
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, loginFragment);
+        fragmentTransaction.commit();
     }
 
 }

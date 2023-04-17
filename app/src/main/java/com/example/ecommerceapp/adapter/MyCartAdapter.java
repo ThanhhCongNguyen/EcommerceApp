@@ -74,9 +74,10 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
             plusButton = itemView.findViewById(R.id.plusButton);
             minusButton = itemView.findViewById(R.id.minusBtn);
 
-//            int currentQuantity = myCarts.get(getAdapterPosition()).getQuantity();
             plusButton.setOnClickListener(view -> {
+                int currentQuantity = myCarts.get(getAdapterPosition()).getQuantity();
                 currentQuantity++;
+                myCarts.get(getAdapterPosition()).setQuantity(currentQuantity);
                 quantityText.setText(String.valueOf(currentQuantity));
 
                 int currentPrice = myCarts.get(getAdapterPosition()).getTotalPrice();
@@ -95,6 +96,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
                     minusButton.setEnabled(false);
                 } else {
                     currentQuantity--;
+                    myCarts.get(getAdapterPosition()).setQuantity(currentQuantity);
                     quantityText.setText(String.valueOf(currentQuantity));
 
                     int currentPrice = myCarts.get(getAdapterPosition()).getTotalPrice();

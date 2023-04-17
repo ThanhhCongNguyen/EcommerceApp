@@ -94,22 +94,15 @@ public class MainFragment extends Fragment {
     };
 
     private void initData() {
+        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(2);
+        binding.bottomNavigation.getOrCreateBadge(R.id.notifications).setNumber(4);
         if (homeViewModel.isLogin()) {
-            homeViewModel.setCallback(new HomeViewModel.HomeViewModelCallback() {
-                @Override
-                public void getUserHomeViewModelCallback(User user) {
-//
-//                    fragmentManager = requireActivity().getSupportFragmentManager();
-//                    fragmentManager.beginTransaction().add(R.id.frameLayout1, settingFragment).hide(settingFragment).commit();
-//                    fragmentManager.beginTransaction().add(R.id.frameLayout1, notificationFragment).hide(notificationFragment).commit();
-//                    fragmentManager.beginTransaction().add(R.id.frameLayout1, favoritesFragment).hide(favoritesFragment).commit();
-//                    fragmentManager.beginTransaction().add(R.id.frameLayout1, homeFragment).commit();
+            homeViewModel.getUserFromShare().observe(getViewLifecycleOwner(), user -> {
+                if (user != null) {
+
                 }
             });
 
-            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
-                Log.d("thanh1", "getViewLifecycleOwner: " + myCarts.size());
-            });
         } else {
 
         }
