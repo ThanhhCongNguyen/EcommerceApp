@@ -14,10 +14,13 @@ import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.CategoryAdapter;
 import com.example.ecommerceapp.adapter.ViewPagerAdapter;
 import com.example.ecommerceapp.databinding.FragmentHomeBinding;
+import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.ui.MyCartFragment;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding binding;
@@ -123,11 +126,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         if (homeViewModel.isLogin()) {
             homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
-                if (myCarts != null && myCarts.size() > 0) {
+                if (myCarts != null) {
+                    homeViewModel.setMyCartObserve(myCarts);
                     binding.quantityItemInCart.setVisibility(View.VISIBLE);
                     binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
                 } else {
+                    ArrayList<MyCart> list = new ArrayList<>();
+                    homeViewModel.setMyCartObserve(list);
                     binding.quantityItemInCart.setVisibility(View.GONE);
+                }
+            });
+
+            homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    ArrayList<MyCart> myCarts = homeViewModel.getMyCartObserve();
+                    myCarts.add(myCart);
+                    homeViewModel.setMyCartObserve(myCarts);
+                    binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartObserve().size()));
                 }
             });
         } else {

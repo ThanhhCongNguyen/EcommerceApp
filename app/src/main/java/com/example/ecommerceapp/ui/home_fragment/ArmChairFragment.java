@@ -8,18 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.adapter.ArmChairAdapter;
-import com.example.ecommerceapp.adapter.ProductAdapter;
 import com.example.ecommerceapp.databinding.FragmentArmchairBinding;
-import com.example.ecommerceapp.databinding.FragmentTableBinding;
 import com.example.ecommerceapp.model.Product;
-import com.example.ecommerceapp.ui.DetailFragment;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class ArmChairFragment extends Fragment {

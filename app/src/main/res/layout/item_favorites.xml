@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_8dp"
-    android:layout_marginEnd="@dimen/_8dp"
     android:layout_marginTop="@dimen/_8dp"
+    android:layout_marginEnd="@dimen/_8dp"
     app:cardCornerRadius="@dimen/_8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_6dp">
@@ -28,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
@@ -36,15 +36,19 @@
 
         <TextView
             android:id="@+id/itemName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16dp"
+            android:layout_marginEnd="@dimen/_16dp"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:textSize="@dimen/_16sp"
+            android:maxLines="1"
+            android:text="Minimal Stand"
             android:textColor="@color/black"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintEnd_toStartOf="@+id/itemCancel"
             app:layout_constraintStart_toEndOf="@+id/itemImage"
-            app:layout_constraintTop_toTopOf="@+id/itemImage"
-            android:text="Minimal Stand" />
+            app:layout_constraintTop_toTopOf="@+id/itemImage" />
 
         <TextView
             android:id="@+id/itemPrice"
@@ -52,12 +56,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4dp"
             android:fontFamily="sans-serif-medium"
+            android:text="$ 25.00"
             android:textColor="@color/light_black"
-            android:textStyle="bold"
             android:textSize="@dimen/_16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/itemName"
-            app:layout_constraintTop_toBottomOf="@+id/itemName"
-            android:text="$ 25.00" />
+            app:layout_constraintTop_toBottomOf="@+id/itemName" />
 
         <ImageView
             android:id="@+id/itemCancel"

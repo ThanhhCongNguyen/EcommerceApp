@@ -19,6 +19,8 @@ import com.example.ecommerceapp.adapter.MyFavoritesAdapter;
 import com.example.ecommerceapp.databinding.FragmentLoginBinding;
 import com.example.ecommerceapp.databinding.FragmentMyCartBinding;
 import com.example.ecommerceapp.model.MyCart;
+import com.example.ecommerceapp.model.Product;
+import com.example.ecommerceapp.utils.Utilities;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
@@ -54,6 +56,12 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         init();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        homeViewModel.setTotalPriceToCheckout(0);
+    }
+
     private void init() {
         binding.backBtn.setOnClickListener(this);
 
@@ -69,13 +77,20 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             binding.cartEmptyText.setVisibility(View.GONE);
             binding.purchaseNow.setVisibility(View.GONE);
         } else {
-            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
-                if (myCarts != null && myCarts.size() > 0) {
-                    myCartIsNotEmpty(myCarts);
-                } else {
-                    myCartIsEmpty();
-                }
-            });
+            Log.d("thanh1", "MyCartFragment: " + homeViewModel.getMyCartObserve().size());
+            if (homeViewModel.getMyCartObserve().size() > 0) {
+                myCartIsNotEmpty(homeViewModel.getMyCartObserve());
+            } else {
+                myCartIsEmpty();
+            }
+//            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
+//                if (myCarts != null && myCarts.size() > 0) {
+//                    homeViewModel.setMyCarts(myCarts);
+//                    myCartIsNotEmpty(myCarts);
+//                } else {
+//                    myCartIsEmpty();
+//                }
+//            });
         }
     }
 
@@ -110,8 +125,38 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         myCartAdapter.setProducts(myCarts);
         binding.rcvCart.setAdapter(myCartAdapter);
 
+        setTotalPriceToCheckout(homeViewModel.getMyCartObserve());
+
+        homeViewModel.getCartUpdate().observe(getViewLifecycleOwner(), myCart -> {
+            if (myCart != null) {
+                Log.d("thanh1", "update: " + homeViewModel.getPositionUpdate());
+                setTotalPriceToCheckout(homeViewModel.getMyCartObserve());
+            }
+        });
+
+        myCartAdapter.setCallback(new MyCartAdapter.Callback() {
+            @Override
+            public void onItemClick(Product product) {
+
+            }
+
+            @Override
+            public void onCartChanged(MyCart myCart, int position) {
+                homeViewModel.updateCart(position, myCart);
+                homeViewModel.setPositionUpdate(position);
+                homeViewModel.updateCart(homeViewModel.getUserId(), myCart, myCart.getCartId());
+            }
+        });
     }
 
+    private void setTotalPriceToCheckout(ArrayList<MyCart> myCarts) {
+        int totalPrice = homeViewModel.getTotalPriceToCheckout();
+        for (int i = 0; i < myCarts.size(); i++) {
+            totalPrice += myCarts.get(i).getTotalPrice();
+        }
+        homeViewModel.setTotalPriceToCheckout(totalPrice);
+        binding.totalPriceText.setText(Utilities.convertCurrency(String.valueOf(homeViewModel.getTotalPriceToCheckout())).concat(" VND"));
+    }
 
     private void backToHomeFragment() {
         getParentFragmentManager().popBackStack();

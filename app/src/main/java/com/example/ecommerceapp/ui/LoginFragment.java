@@ -90,6 +90,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void login() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         String email = binding.emailEdittext.getText().toString().trim();
         String password = binding.passwordEdittext.getText().toString().trim();
 

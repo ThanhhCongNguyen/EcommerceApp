@@ -6,9 +6,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ecommerceapp.model.Category;
+import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.Review;
@@ -52,6 +54,11 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<User> userMutableLiveData;
     private MutableLiveData<User> userMutableLiveDataLogin;
     private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
+    private MutableLiveData<MyCart> myCartMutableLiveDataAddSuccess;
+    private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveData;
+    private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddSuccess;
+    private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddFail;
+    private MutableLiveData<MyCart> myCartUpdate;
     private MutableLiveData<ArrayList<User>> usersLiveData;
 
     private Callback callback;
@@ -69,6 +76,11 @@ public class RetrieveDatabase implements FurnitureService {
         myCartMutableLiveData = new MutableLiveData<>();
         usersLiveData = new MutableLiveData<>();
         userMutableLiveDataLogin = new MutableLiveData<>();
+        myCartUpdate = new MutableLiveData<>();
+        myFavoritesLiveData = new MutableLiveData<>();
+        myFavoritesLiveDataAddSuccess = new MutableLiveData<>();
+        myFavoritesLiveDataAddFail = new MutableLiveData<>();
+        myCartMutableLiveDataAddSuccess = new MutableLiveData<>();
     }
 
     @Override
@@ -302,39 +314,79 @@ public class RetrieveDatabase implements FurnitureService {
         user.setUserId(userId);
         firebaseFirestore.collection("users").document(user.getUserId())
                 .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        userMutableLiveDataLogin.postValue(user);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error writing document", e);
-                    }
-                });
-
+                .addOnSuccessListener(aVoid -> userMutableLiveDataLogin.postValue(user))
+                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
-    public void addMyCart(String userId, ArrayList<MyCart> currentCart, MyCart myCart, String cartId) {
+    public void addMyCart(String userId, MyCart myCart, String cartId) {
         firebaseFirestore.collection("users")
                 .document(userId)
                 .collection("MyCarts")
                 .document(cartId)
                 .set(myCart)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        currentCart.add(myCart);
-                        myCartMutableLiveData.postValue(currentCart);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error writing document", e);
+                .addOnSuccessListener(unused -> {
+                    myCartMutableLiveDataAddSuccess.postValue(myCart);
+                }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public LiveData<MyCart> getCartAfterAdd() {
+        return myCartMutableLiveDataAddSuccess;
+    }
+
+    public void updateMyCart(String userId, MyCart myCart, String cartId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyCarts")
+                .document(cartId)
+                .set(myCart)
+                .addOnSuccessListener(unused -> myCartUpdate.postValue(myCart))
+                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public void addProductToFavorites(String userId, ArrayList<Favorites> currentFavorites, Favorites favorites) {
+        ArrayList<Favorites> list = null;
+        if (currentFavorites == null) {
+            list = new ArrayList<>();
+        } else {
+            list = currentFavorites;
+        }
+        ArrayList<Favorites> finalList = list;
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyFavorites")
+                .document(favorites.getProduct().getProductId())
+                .set(favorites)
+                .addOnSuccessListener(unused -> {
+                    finalList.add(favorites);
+                    myFavoritesLiveDataAddSuccess.postValue(currentFavorites);
+                })
+                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+        return myFavoritesLiveDataAddSuccess;
+    }
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyFavorites")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<Favorites> myFavorites = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Favorites object = document.toObject(Favorites.class);
+                            myFavorites.add(object);
+                        }
+                        myFavoritesLiveData.postValue(myFavorites);
                     }
                 });
+        return myFavoritesLiveData;
+    }
+
+    public LiveData<MyCart> getCartUpdate() {
+        return myCartUpdate;
     }
 
     public MutableLiveData<ArrayList<MyCart>> getMyCart(String userId) {
@@ -386,7 +438,5 @@ public class RetrieveDatabase implements FurnitureService {
 
     public interface Callback {
         void getUserCallback(User user);
-
-
     }
 }

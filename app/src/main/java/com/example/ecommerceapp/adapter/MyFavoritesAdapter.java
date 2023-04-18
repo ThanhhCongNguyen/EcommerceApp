@@ -3,21 +3,27 @@ package com.example.ecommerceapp.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ecommerceapp.R;
+import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.Product;
+import com.example.ecommerceapp.utils.Utilities;
 
 import java.util.ArrayList;
 
 public class MyFavoritesAdapter extends RecyclerView.Adapter<MyFavoritesAdapter.ArmChairViewHolder> {
-    private ArrayList<Product> products;
+    private ArrayList<Favorites> favorites;
     public Callback callback;
 
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
+    public void setProducts(ArrayList<Favorites> favorites) {
+        this.favorites = favorites;
         notifyDataSetChanged();
     }
 
@@ -34,31 +40,48 @@ public class MyFavoritesAdapter extends RecyclerView.Adapter<MyFavoritesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ArmChairViewHolder holder, int position) {
-//        Product product = products.get(position);
-//
-//        holder.productName.setText(product.getProductName());
-//        holder.productPrice.setText("$ ".concat(product.getPrice()));
-//
-//        Glide.with(holder.productImage.getContext())
-//                .load(product.getImage())
-//                .centerCrop()
-//                .into(holder.productImage);
+        Favorites favorite = favorites.get(position);
+
+        holder.itemName.setText(favorite.getProduct().getProductName());
+        holder.itemPrice.setText(Utilities.convertCurrency(favorite.getProduct().getPrice()).concat(" VND"));
+
+        Glide.with(holder.imageView.getContext())
+                .load(favorite.getProduct().getImage())
+                .centerCrop()
+                .into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-//        return products != null ? products.size() : 0;
-        return 10;
+        return favorites != null ? favorites.size() : 0;
     }
 
     public class ArmChairViewHolder extends RecyclerView.ViewHolder {
+        TextView itemName, itemPrice;
+        ImageView imageView, deleteItem;
+        LinearLayout orderButton;
 
         public ArmChairViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemName = itemView.findViewById(R.id.itemName);
+            itemPrice = itemView.findViewById(R.id.itemPrice);
+            imageView = itemView.findViewById(R.id.imageView);
+            deleteItem = itemView.findViewById(R.id.itemCancel);
+            orderButton = itemView.findViewById(R.id.orderButton);
+
+            orderButton.setOnClickListener(view -> {
+                callback.onOrderProduct(favorites.get(getAdapterPosition()));
+            });
+
+            deleteItem.setOnClickListener(view -> {
+                callback.onDeleteItem(favorites.get(getAdapterPosition()));
+            });
         }
     }
 
     public interface Callback {
-        void onItemClick(Product product);
+        void onOrderProduct(Favorites favorites);
+
+        void onDeleteItem(Favorites favorites);
     }
 }

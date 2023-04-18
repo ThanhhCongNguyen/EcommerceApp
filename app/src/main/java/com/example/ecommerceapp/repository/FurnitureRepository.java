@@ -3,8 +3,10 @@ package com.example.ecommerceapp.repository;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.Shop;
@@ -62,6 +64,14 @@ public class FurnitureRepository {
         return retrieveDatabase.getMyCart(userId);
     }
 
+    public LiveData<MyCart> getMyCartUpdate() {
+        return retrieveDatabase.getCartUpdate();
+    }
+
+    public void updateCart(String userId, MyCart myCart, String cartId) {
+        retrieveDatabase.updateMyCart(userId, myCart, cartId);
+    }
+
     public MutableLiveData<ArrayList<User>> getAllUser(String email, String password) {
         return retrieveDatabase.getUserByEmailAndPass(email, password);
     }
@@ -74,8 +84,26 @@ public class FurnitureRepository {
         return retrieveDatabase.getUserFromShare();
     }
 
-    public void addProductToCart(String userId, ArrayList<MyCart> currentCart, MyCart myCart, String cartId) {
-        retrieveDatabase.addMyCart(userId, currentCart, myCart, cartId);
+    public void addProductToCart(String userId, MyCart myCart, String cartId) {
+        retrieveDatabase.addMyCart(userId, myCart, cartId);
+    }
+
+    public LiveData<MyCart> getCartAfterAdd() {
+        return retrieveDatabase.getCartAfterAdd();
+    }
+
+
+    public void addProductToFavorites(String userId, ArrayList<Favorites> currentFavorites, Favorites favorites) {
+        retrieveDatabase.addProductToFavorites(userId, currentFavorites, favorites);
+    }
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
+        return retrieveDatabase.getFavoritesLiveDataFromServer(userId);
+    }
+
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+        return retrieveDatabase.getFavoritesLiveData();
     }
 
     public void createNewUser(User user) {

@@ -1,5 +1,7 @@
 package com.example.ecommerceapp.adapter;
 
+import static com.example.ecommerceapp.utils.Utilities.convertCurrency;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +43,7 @@ public class BedAdapter extends RecyclerView.Adapter<BedAdapter.BedViewHolder> {
 
         holder.productName.setText(product.getProductName());
 
-        String s1 = product.getPrice().substring(0,3);
-        String s2 = product.getPrice().substring(3);
-        holder.productPrice.setText(s1.concat(",").concat(s2).concat(" VND"));
+        holder.productPrice.setText(convertCurrency(product.getPrice()).concat(" VND"));
 
         Glide.with(holder.productImage.getContext())
                 .load(product.getImage())

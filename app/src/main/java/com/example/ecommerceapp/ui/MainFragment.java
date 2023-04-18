@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentMainBinding;
+import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.User;
@@ -37,7 +38,6 @@ public class MainFragment extends Fragment {
 
     private FragmentManager fragmentManager;
     private Fragment active = homeFragment;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class MainFragment extends Fragment {
         homeFragmentCallback();
         settingFragmentCallback();
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -103,8 +104,20 @@ public class MainFragment extends Fragment {
                 }
             });
 
-        } else {
+            homeViewModel.getFavoritesLiveDataFromServer(homeViewModel.getUserId()).observe(getViewLifecycleOwner(), favorites -> {
+                if (favorites != null) {
+                    binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(favorites.size());
+                    homeViewModel.setMyFavoritesList(favorites);
+                    ArrayList<Integer> list = new ArrayList<>();
+                    for (int i = 0; i < favorites.size(); i++) {
+                        list.add(Integer.parseInt(favorites.get(i).getProduct().getProductId()));
+                    }
+                    homeViewModel.setIdOfFavorites(list);
+                }
+            });
 
+        } else {
+            // Anonymous User
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.model.User;
@@ -43,10 +44,15 @@ public class HomeViewModel extends AndroidViewModel {
     private int defaultCount = 1;
     private int totalPrice;
     private int finalQuantity;
-
     private int quantityDefault = 1;
-
     private String cartId;
+    private int positionUpdate;
+    private ArrayList<MyCart> myCarts;
+    private int totalPriceToCheckout = 0;
+    private ArrayList<Integer> idOfFavorites;
+    private ArrayList<Favorites> myFavoritesList;
+    private ArrayList<MyCart> myCartObserve;
+    private boolean isObserve;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -105,7 +111,11 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void addProductToCart(String userId, MyCart myCart, String cartId) {
-        furnitureRepository.addProductToCart(userId, Objects.requireNonNull(myCartMutableLiveData.getValue()), myCart, cartId);
+        furnitureRepository.addProductToCart(userId, myCart, cartId);
+    }
+
+    public LiveData<MyCart> getCartAfterAdd() {
+        return furnitureRepository.getCartAfterAdd();
     }
 
     public void createNewUser(User user) {
@@ -148,6 +158,14 @@ public class HomeViewModel extends AndroidViewModel {
         this.totalPrice = totalPrice;
     }
 
+    public ArrayList<MyCart> getMyCartObserve() {
+        return myCartObserve;
+    }
+
+    public void setMyCartObserve(ArrayList<MyCart> myCartObserve) {
+        this.myCartObserve = myCartObserve;
+    }
+
     public MutableLiveData<Integer> getProductCount() {
         return productCount;
     }
@@ -180,8 +198,24 @@ public class HomeViewModel extends AndroidViewModel {
         furnitureRepository.saveUserToSharePreferences(application);
     }
 
+    public ArrayList<Favorites> getMyFavoritesList() {
+        return myFavoritesList;
+    }
+
+    public void setMyFavoritesList(ArrayList<Favorites> myFavoritesList) {
+        this.myFavoritesList = myFavoritesList;
+    }
+
     public void clearUserToSharePreferences() {
         furnitureRepository.saveUserToSharePreferences(application);
+    }
+
+    public int getPositionUpdate() {
+        return positionUpdate;
+    }
+
+    public void setPositionUpdate(int positionUpdate) {
+        this.positionUpdate = positionUpdate;
     }
 
     public void saveUserIdToSharePreferences(String userId) {
@@ -190,6 +224,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void clearUserIdToSharePreferences() {
         furnitureRepository.clearUserIdToSharePreferences(application);
+    }
+
+    public int getTotalPriceToCheckout() {
+        return totalPriceToCheckout;
+    }
+
+    public void setTotalPriceToCheckout(int totalPriceToCheckout) {
+        this.totalPriceToCheckout = totalPriceToCheckout;
     }
 
     public boolean isLogin() {
@@ -212,6 +254,30 @@ public class HomeViewModel extends AndroidViewModel {
         this.userMutableLiveData = userMutableLiveData;
     }
 
+    public void updateCart(String userId, MyCart myCart, String cartId) {
+        furnitureRepository.updateCart(userId, myCart, cartId);
+    }
+
+    public boolean isObserve() {
+        return isObserve;
+    }
+
+    public void setObserve(boolean observe) {
+        isObserve = observe;
+    }
+
+    public ArrayList<Integer> getIdOfFavorites() {
+        return idOfFavorites;
+    }
+
+    public void setIdOfFavorites(ArrayList<Integer> idOfFavorites) {
+        this.idOfFavorites = idOfFavorites;
+    }
+
+    public LiveData<MyCart> getCartUpdate() {
+        return furnitureRepository.getMyCartUpdate();
+    }
+
     public int getFinalQuantity() {
         return finalQuantity;
     }
@@ -224,6 +290,29 @@ public class HomeViewModel extends AndroidViewModel {
         return furnitureRepository.getUserId(application);
     }
 
+    public ArrayList<MyCart> getMyCarts() {
+        return myCarts;
+    }
+
+    public void setMyCarts(ArrayList<MyCart> myCarts) {
+        this.myCarts = myCarts;
+    }
+
+    public void updateCart(int index, MyCart myCart) {
+        myCartObserve.set(index, myCart);
+    }
+
+    public void addProductToFavorites(String userId, Favorites favorite) {
+        furnitureRepository.addProductToFavorites(userId, myFavoritesList, favorite);
+    }
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+        return furnitureRepository.getFavoritesLiveData();
+    }
+
+    public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
+        return furnitureRepository.getFavoritesLiveDataFromServer(userId);
+    }
 
     public interface HomeViewModelCallback {
         void getUserHomeViewModelCallback(User user);

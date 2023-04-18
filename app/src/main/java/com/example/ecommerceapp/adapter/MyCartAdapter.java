@@ -1,5 +1,7 @@
 package com.example.ecommerceapp.adapter;
 
+import static com.example.ecommerceapp.utils.Utilities.convertCurrency;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,13 +43,8 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
     @Override
     public void onBindViewHolder(@NonNull ArmChairViewHolder holder, int position) {
         MyCart myCart = myCarts.get(position);
-
         holder.itemName.setText(myCart.getProduct().getProductName());
-
-        String s1 = myCart.getProduct().getPrice().substring(0, 3);
-        String s2 = myCart.getProduct().getPrice().substring(3);
-        holder.itemPrice.setText(s1.concat(",").concat(s2).concat(" VND"));
-
+        holder.itemPrice.setText(convertCurrency(String.valueOf(myCart.getTotalPrice())).concat(" VND"));
         holder.quantityText.setText(String.valueOf(myCart.getQuantity()));
 
         Glide.with(holder.imageView.getContext())
@@ -79,12 +76,12 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
                 currentQuantity++;
                 myCarts.get(getAdapterPosition()).setQuantity(currentQuantity);
                 quantityText.setText(String.valueOf(currentQuantity));
-
-                int currentPrice = myCarts.get(getAdapterPosition()).getTotalPrice();
-                int price = currentPrice * currentQuantity;
-                String s1 = String.valueOf(price).substring(0, 3);
-                String s2 = String.valueOf(price).substring(3);
-                itemPrice.setText(s1.concat(",").concat(s2).concat(" VND"));
+                int originPrice = Integer.parseInt(myCarts.get(getAdapterPosition()).getProduct().getPrice());
+                int price = originPrice * currentQuantity;
+                myCarts.get(getAdapterPosition()).setTotalPrice(price);
+                Log.d("thanh1", "price: " + price);
+                itemPrice.setText(convertCurrency(String.valueOf(price)).concat(" VND"));
+                callback.onCartChanged(myCarts.get(getAdapterPosition()), getAdapterPosition());
                 if (!minusButton.isEnabled()) {
                     minusButton.setEnabled(true);
                 }
@@ -98,12 +95,12 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
                     currentQuantity--;
                     myCarts.get(getAdapterPosition()).setQuantity(currentQuantity);
                     quantityText.setText(String.valueOf(currentQuantity));
-
-                    int currentPrice = myCarts.get(getAdapterPosition()).getTotalPrice();
-                    int price = currentPrice * currentQuantity;
-                    String s1 = String.valueOf(price).substring(0, 3);
-                    String s2 = String.valueOf(price).substring(3);
-                    itemPrice.setText(s1.concat(",").concat(s2).concat(" VND"));
+                    int originPrice = Integer.parseInt(myCarts.get(getAdapterPosition()).getProduct().getPrice());
+                    int price = originPrice * currentQuantity;
+                    myCarts.get(getAdapterPosition()).setTotalPrice(price);
+                    Log.d("thanh1", "price: " + price);
+                    itemPrice.setText(convertCurrency(String.valueOf(price)).concat(" VND"));
+                    callback.onCartChanged(myCarts.get(getAdapterPosition()), getAdapterPosition());
 
                 }
             });
@@ -114,8 +111,6 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
     public interface Callback {
         void onItemClick(Product product);
 
-        void onMinusQuantity();
-
-        void onPlusQuantity();
+        void onCartChanged(MyCart myCart, int position);
     }
 }

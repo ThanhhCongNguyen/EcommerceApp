@@ -59,4 +59,7 @@
     <string name="use_as_the_shipping_address">Use as the shipping address</string>
     <string name="no_order">You don\'t have any orders yet</string>
     <string name="no_review">You don\'t have any reviews yet</string>
+    <string name="added_to_your_favorites">Added to your favorites</string>
+    <string name="added_to_your_cart">Added to your cart</string>
+    <string name="detail">Details</string>
 </resources>

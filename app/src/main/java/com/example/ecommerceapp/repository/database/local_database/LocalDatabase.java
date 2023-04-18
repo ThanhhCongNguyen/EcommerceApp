@@ -29,7 +29,7 @@ public class LocalDatabase {
     public void clearUserIdToSharePreferences(Application application) {
         SharedPreferences sharedpreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("userId", null);
+        editor.putString("userId", "");
         editor.apply();
     }
 
