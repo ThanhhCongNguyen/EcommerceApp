@@ -86,9 +86,17 @@ public class FavoritesFragment extends Fragment {
 
                         @Override
                         public void onDeleteItem(Favorites favorites) {
-                            Log.d("thanh1", "delete");
+                            String userId = homeViewModel.getUserId();
+                            String favoriteId = favorites.getProduct().getProductId();
+                            homeViewModel.deleteFavorite(userId, favoriteId);
                         }
                     });
+                }
+            });
+
+            homeViewModel.isDeletedFavorite().observe(getViewLifecycleOwner(), favoriteId -> {
+                if (favoriteId != null) {
+                    Log.d("thanh1", "is deleted: " + favoriteId);
                 }
             });
 

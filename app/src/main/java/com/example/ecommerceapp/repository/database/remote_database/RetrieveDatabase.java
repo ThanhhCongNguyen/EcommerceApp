@@ -55,8 +55,10 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<User> userMutableLiveDataLogin;
     private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
     private MutableLiveData<MyCart> myCartMutableLiveDataAddSuccess;
+    private MutableLiveData<MyCart> myCartMutableLiveDataDeleteSuccess;
     private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveData;
-    private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddSuccess;
+    private MutableLiveData<Favorites> myFavoritesLiveDataAddSuccess;
+    private MutableLiveData<String> isDeletedFavorite;
     private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddFail;
     private MutableLiveData<MyCart> myCartUpdate;
     private MutableLiveData<ArrayList<User>> usersLiveData;
@@ -81,6 +83,8 @@ public class RetrieveDatabase implements FurnitureService {
         myFavoritesLiveDataAddSuccess = new MutableLiveData<>();
         myFavoritesLiveDataAddFail = new MutableLiveData<>();
         myCartMutableLiveDataAddSuccess = new MutableLiveData<>();
+        isDeletedFavorite = new MutableLiveData<>();
+        myCartMutableLiveDataDeleteSuccess = new MutableLiveData<>();
     }
 
     @Override
@@ -329,6 +333,21 @@ public class RetrieveDatabase implements FurnitureService {
                 }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
+    public void removeMyCart(String userId, MyCart myCart) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyCarts")
+                .document(myCart.getCartId())
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    myCartMutableLiveDataDeleteSuccess.postValue(myCart);
+                }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public LiveData<MyCart> getLiveDataAfterDeleted() {
+        return myCartMutableLiveDataDeleteSuccess;
+    }
+
     public LiveData<MyCart> getCartAfterAdd() {
         return myCartMutableLiveDataAddSuccess;
     }
@@ -343,27 +362,39 @@ public class RetrieveDatabase implements FurnitureService {
                 .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
-    public void addProductToFavorites(String userId, ArrayList<Favorites> currentFavorites, Favorites favorites) {
-        ArrayList<Favorites> list = null;
-        if (currentFavorites == null) {
-            list = new ArrayList<>();
-        } else {
-            list = currentFavorites;
-        }
-        ArrayList<Favorites> finalList = list;
+    public void addProductToFavorites(String userId, Favorites favorites) {
         firebaseFirestore.collection("users")
                 .document(userId)
                 .collection("MyFavorites")
                 .document(favorites.getProduct().getProductId())
                 .set(favorites)
                 .addOnSuccessListener(unused -> {
-                    finalList.add(favorites);
-                    myFavoritesLiveDataAddSuccess.postValue(currentFavorites);
+                    myFavoritesLiveDataAddSuccess.postValue(favorites);
                 })
                 .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
-    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+    public void deleteFavorite(String userId, String favoriteId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyFavorites")
+                .document(favoriteId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        isDeletedFavorite.postValue(favoriteId);
+                    }
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
+
+    }
+
+    public LiveData<String> isDeletedFavorite() {
+        return isDeletedFavorite;
+    }
+
+    public LiveData<Favorites> getFavoritesLiveData() {
         return myFavoritesLiveDataAddSuccess;
     }
 

@@ -75,8 +75,15 @@ public class MyFavoritesAdapter extends RecyclerView.Adapter<MyFavoritesAdapter.
 
             deleteItem.setOnClickListener(view -> {
                 callback.onDeleteItem(favorites.get(getAdapterPosition()));
+                removeAt(getAdapterPosition());
             });
         }
+    }
+
+    public void removeAt(int position) {
+        favorites.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, favorites.size());
     }
 
     public interface Callback {

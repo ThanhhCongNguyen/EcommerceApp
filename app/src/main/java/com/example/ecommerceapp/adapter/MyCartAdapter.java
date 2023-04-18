@@ -89,7 +89,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
 
             minusButton.setOnClickListener(view -> {
                 int currentQuantity = myCarts.get(getAdapterPosition()).getQuantity();
-                if (currentQuantity < 1) {
+                if (currentQuantity <= 1) {
                     minusButton.setEnabled(false);
                 } else {
                     currentQuantity--;
@@ -105,6 +105,15 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ArmChairVi
                 }
             });
         }
+    }
+
+    public void removeItem(int position) {
+        myCarts.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public ArrayList<MyCart> getData() {
+        return myCarts;
     }
 
 

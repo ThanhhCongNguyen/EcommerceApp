@@ -92,9 +92,17 @@ public class FurnitureRepository {
         return retrieveDatabase.getCartAfterAdd();
     }
 
+    public void removeMyCart(String userId, MyCart myCart) {
+        retrieveDatabase.removeMyCart(userId, myCart);
+    }
 
-    public void addProductToFavorites(String userId, ArrayList<Favorites> currentFavorites, Favorites favorites) {
-        retrieveDatabase.addProductToFavorites(userId, currentFavorites, favorites);
+    public LiveData<MyCart> getLiveDataAfterDeleted() {
+        return retrieveDatabase.getLiveDataAfterDeleted();
+    }
+
+
+    public void addProductToFavorites(String userId, Favorites favorites) {
+        retrieveDatabase.addProductToFavorites(userId, favorites);
     }
 
     public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
@@ -102,7 +110,7 @@ public class FurnitureRepository {
     }
 
 
-    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+    public LiveData<Favorites> getFavoritesLiveData() {
         return retrieveDatabase.getFavoritesLiveData();
     }
 
@@ -114,6 +122,13 @@ public class FurnitureRepository {
         retrieveDatabase.signInWithEmailAndPassword(email, password);
     }
 
+    public void deleteFavorite(String userId, String favoriteId) {
+        retrieveDatabase.deleteFavorite(userId, favoriteId);
+    }
+
+    public LiveData<String> isDeletedFavorite() {
+        return retrieveDatabase.isDeletedFavorite();
+    }
 
     public void saveUserToSharePreferences(Application application) {
         localDatabase.saveUserToSharePreferences(application);

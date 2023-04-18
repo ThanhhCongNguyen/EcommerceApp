@@ -3,6 +3,7 @@ package com.example.ecommerceapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,6 +94,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         binding.progressBar.setVisibility(View.VISIBLE);
         String email = binding.emailEdittext.getText().toString().trim();
         String password = binding.passwordEdittext.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            binding.emailTextField.setError("You need to enter your name");
+            binding.progressBar.setVisibility(View.GONE);
+            return;
+        } else {
+            binding.emailTextField.setErrorEnabled(false);
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            binding.passwordTextField.setError("You need to enter your name");
+            binding.progressBar.setVisibility(View.GONE);
+            return;
+        } else {
+            binding.passwordTextField.setErrorEnabled(false);
+        }
 
         homeViewModel.signInWithEmailAndPassword(email, password);
     }

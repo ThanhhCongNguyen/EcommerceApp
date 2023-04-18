@@ -46,7 +46,7 @@
             android:text="Minimal Stand"
             android:textColor="@color/black"
             android:textSize="@dimen/_16sp"
-            app:layout_constraintEnd_toStartOf="@+id/itemCancel"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemImage"
             app:layout_constraintTop_toTopOf="@+id/itemImage" />
 
@@ -63,15 +63,6 @@
             app:layout_constraintStart_toStartOf="@+id/itemName"
             app:layout_constraintTop_toBottomOf="@+id/itemName" />
 
-        <ImageView
-            android:id="@+id/itemCancel"
-            android:layout_width="@dimen/_24dp"
-            android:layout_height="@dimen/_24dp"
-            android:layout_marginTop="@dimen/_16dp"
-            android:layout_marginEnd="@dimen/_16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_cancel" />
 
         <LinearLayout
             android:id="@+id/orderButton"

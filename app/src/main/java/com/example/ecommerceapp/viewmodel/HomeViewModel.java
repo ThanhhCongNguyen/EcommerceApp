@@ -1,6 +1,7 @@
 package com.example.ecommerceapp.viewmodel;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,6 +18,7 @@ import com.example.ecommerceapp.repository.database.remote_database.RetrieveData
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class HomeViewModel extends AndroidViewModel {
@@ -50,9 +52,16 @@ public class HomeViewModel extends AndroidViewModel {
     private ArrayList<MyCart> myCarts;
     private int totalPriceToCheckout = 0;
     private ArrayList<Integer> idOfFavorites;
-    private ArrayList<Favorites> myFavoritesList;
+    private HashMap<String, Favorites> myFavoritesList;
     private ArrayList<MyCart> myCartObserve;
     private boolean isObserve;
+    private boolean isObserveFavorite;
+
+    // New implementation
+    private HashMap<String, MyCart> myCartHashMap;
+    private boolean isObserveMyCartAdded;
+    private boolean isObserveMyCartUpdate;
+    private boolean isObserveMyCartDelete;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -86,7 +95,7 @@ public class HomeViewModel extends AndroidViewModel {
         return productMutableLiveData;
     }
 
-    public MutableLiveData<ArrayList<MyCart>> getMyCartMutableLiveData() {
+    public MutableLiveData<ArrayList<MyCart>> getMyCartMutableLiveDataFromServer() {
         return myCartMutableLiveData;
     }
 
@@ -128,6 +137,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     public LiveData<User> getUserLiveData() {
         return furnitureRepository.getUserMutableLiveData();
+    }
+
+    public void deleteFavorite(String userId, String favoriteId) {
+        furnitureRepository.deleteFavorite(userId, favoriteId);
+    }
+
+    public LiveData<String> isDeletedFavorite() {
+        return furnitureRepository.isDeletedFavorite();
     }
 
     public LiveData<User> getUserFromShare() {
@@ -198,12 +215,16 @@ public class HomeViewModel extends AndroidViewModel {
         furnitureRepository.saveUserToSharePreferences(application);
     }
 
-    public ArrayList<Favorites> getMyFavoritesList() {
+    public HashMap<String, Favorites> getMyFavoritesList() {
         return myFavoritesList;
     }
 
     public void setMyFavoritesList(ArrayList<Favorites> myFavoritesList) {
-        this.myFavoritesList = myFavoritesList;
+        HashMap<String, Favorites> hashMap = new HashMap<>();
+        for (int i = 0; i < myFavoritesList.size(); i++) {
+            hashMap.put(myFavoritesList.get(i).getProduct().getProductId(), myFavoritesList.get(i));
+        }
+        this.myFavoritesList = hashMap;
     }
 
     public void clearUserToSharePreferences() {
@@ -266,6 +287,14 @@ public class HomeViewModel extends AndroidViewModel {
         isObserve = observe;
     }
 
+    public boolean isObserveFavorite() {
+        return isObserveFavorite;
+    }
+
+    public void setObserveFavorite(boolean observeFavorite) {
+        isObserveFavorite = observeFavorite;
+    }
+
     public ArrayList<Integer> getIdOfFavorites() {
         return idOfFavorites;
     }
@@ -303,15 +332,71 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void addProductToFavorites(String userId, Favorites favorite) {
-        furnitureRepository.addProductToFavorites(userId, myFavoritesList, favorite);
+        furnitureRepository.addProductToFavorites(userId, favorite);
     }
 
-    public LiveData<ArrayList<Favorites>> getFavoritesLiveData() {
+    public LiveData<Favorites> getFavoritesLiveData() {
         return furnitureRepository.getFavoritesLiveData();
     }
 
     public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
         return furnitureRepository.getFavoritesLiveDataFromServer(userId);
+    }
+
+    // New implementation
+
+    public void setMyCartHashMap(HashMap<String, MyCart> myCartHashMap) {
+        this.myCartHashMap = myCartHashMap;
+    }
+
+    public void addMyCartHashMap(MyCart myCart) {
+        myCartHashMap.put(myCart.getCartId(), myCart);
+    }
+
+    public void removeMyCart(String userId, MyCart myCart) {
+        furnitureRepository.removeMyCart(userId, myCart);
+    }
+
+    public LiveData<MyCart> getLiveDataAfterDeleted() {
+        return furnitureRepository.getLiveDataAfterDeleted();
+    }
+
+    public void replaceMyCartHashMap(MyCart myCart) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            myCartHashMap.replace(myCart.getCartId(), myCart);
+        }
+    }
+
+    public void removeItemInMyCartHashMap(MyCart myCart) {
+        myCartHashMap.remove(myCart.getCartId());
+    }
+
+    public HashMap<String, MyCart> getMyCartHashMap() {
+        return myCartHashMap;
+    }
+
+    public boolean isObserveMyCartUpdate() {
+        return isObserveMyCartUpdate;
+    }
+
+    public void setObserveMyCartUpdate(boolean observeMyCartUpdate) {
+        isObserveMyCartUpdate = observeMyCartUpdate;
+    }
+
+    public boolean isObserveMyCartAdded() {
+        return isObserveMyCartAdded;
+    }
+
+    public void setObserveMyCartAdded(boolean observeMyCartAdded) {
+        isObserveMyCartAdded = observeMyCartAdded;
+    }
+
+    public boolean isObserveMyCartDelete() {
+        return isObserveMyCartDelete;
+    }
+
+    public void setObserveMyCartDelete(boolean observeMyCartDelete) {
+        isObserveMyCartDelete = observeMyCartDelete;
     }
 
     public interface HomeViewModelCallback {

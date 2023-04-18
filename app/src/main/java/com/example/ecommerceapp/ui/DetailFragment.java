@@ -70,6 +70,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         super.onPause();
         homeViewModel.setObserve(false);
+        homeViewModel.setObserveFavorite(false);
         homeViewModel.setQuantityDefault(1);
     }
 
@@ -134,12 +135,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        homeViewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorites -> {
-            if (favorites != null) {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.saveProduct.setImageResource(R.drawable.bookmark_added);
-                binding.saveProduct.setEnabled(false);
-                Toast.makeText(getContext(), R.string.added_to_your_favorites, Toast.LENGTH_LONG).show();
+        homeViewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorite -> {
+            if (favorite != null) {
+                if (homeViewModel.isObserveFavorite()) {
+                    Log.d("thanh1", "detail: " + homeViewModel.getMyFavoritesList().size());
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.saveProduct.setImageResource(R.drawable.bookmark_added);
+                    binding.saveProduct.setEnabled(false);
+                    Toast.makeText(getContext(), R.string.added_to_your_favorites, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -207,11 +211,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     }
 
     private void saveProductToFavorites() {
+        homeViewModel.setObserveFavorite(true);
         binding.progressBar.setVisibility(View.VISIBLE);
         String userId = homeViewModel.getUserId();
         Product product = homeViewModel.getProduct();
         Favorites favorite = new Favorites(userId, product);
 
+        ArrayList<Favorites> favorites = new ArrayList<>(homeViewModel.getMyFavoritesList().values());
+        favorites.add(favorite);
+        homeViewModel.setMyFavoritesList(favorites);
         homeViewModel.addProductToFavorites(userId, favorite);
 
     }

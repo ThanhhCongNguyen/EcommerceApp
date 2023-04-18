@@ -1,6 +1,7 @@
 package com.example.ecommerceapp.ui.home_fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding binding;
@@ -111,6 +113,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (homeViewModel.isLogin() && homeViewModel.getMyCartHashMap() != null) {
+            Log.d("thanh1", "from home: " + homeViewModel.getMyCartHashMap().size());
+            binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartHashMap().size()));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.cartBtn) {
             openMyCartFragment();
@@ -125,24 +148,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         binding.cartBtn.setOnClickListener(this);
 
         if (homeViewModel.isLogin()) {
-            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
+//            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
+//                if (myCarts != null) {
+//                    homeViewModel.setMyCartObserve(myCarts);
+//                    binding.quantityItemInCart.setVisibility(View.VISIBLE);
+//                    binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
+//                } else {
+//                    ArrayList<MyCart> list = new ArrayList<>();
+//                    homeViewModel.setMyCartObserve(list);
+//                    binding.quantityItemInCart.setVisibility(View.GONE);
+//                }
+//            });
+            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
+                HashMap<String, MyCart> myCartHashMap = new HashMap<>();
                 if (myCarts != null) {
-                    homeViewModel.setMyCartObserve(myCarts);
+                    for (int i = 0; i < myCarts.size(); i++) {
+                        myCartHashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
+                    }
                     binding.quantityItemInCart.setVisibility(View.VISIBLE);
                     binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
                 } else {
-                    ArrayList<MyCart> list = new ArrayList<>();
-                    homeViewModel.setMyCartObserve(list);
                     binding.quantityItemInCart.setVisibility(View.GONE);
                 }
+                homeViewModel.setMyCartHashMap(myCartHashMap);
+                Log.d("thanh1", "hash map: " + homeViewModel.getMyCartHashMap().size());
             });
 
             homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
                 if (myCart != null) {
-                    ArrayList<MyCart> myCarts = homeViewModel.getMyCartObserve();
-                    myCarts.add(myCart);
-                    homeViewModel.setMyCartObserve(myCarts);
-                    binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartObserve().size()));
+//                    ArrayList<MyCart> myCarts = homeViewModel.getMyCartObserve();
+//                    myCarts.add(myCart);
+//                    homeViewModel.setMyCartObserve(myCarts);
+                    homeViewModel.addMyCartHashMap(myCart);
+                    binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartHashMap().size()));
                 }
             });
         } else {

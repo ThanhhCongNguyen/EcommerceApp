@@ -1,12 +1,15 @@
 package com.example.ecommerceapp.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +23,10 @@ import com.example.ecommerceapp.databinding.FragmentLoginBinding;
 import com.example.ecommerceapp.databinding.FragmentMyCartBinding;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
+import com.example.ecommerceapp.utils.SwipeToDeleteCallback;
 import com.example.ecommerceapp.utils.Utilities;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -54,12 +59,15 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
+        enableSwipeToDelete();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         homeViewModel.setTotalPriceToCheckout(0);
+        homeViewModel.setObserveMyCartUpdate(false);
+        homeViewModel.setObserveMyCartDelete(false);
     }
 
     private void init() {
@@ -77,20 +85,29 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             binding.cartEmptyText.setVisibility(View.GONE);
             binding.purchaseNow.setVisibility(View.GONE);
         } else {
-            Log.d("thanh1", "MyCartFragment: " + homeViewModel.getMyCartObserve().size());
-            if (homeViewModel.getMyCartObserve().size() > 0) {
-                myCartIsNotEmpty(homeViewModel.getMyCartObserve());
+            Log.d("thanh1", "getMyCartHashMap: " + homeViewModel.getMyCartHashMap().size());
+//            if (homeViewModel.getMyCartObserve().size() > 0) {
+//                myCartIsNotEmpty(homeViewModel.getMyCartObserve());
+//            } else {
+//                myCartIsEmpty();
+//            }
+
+            if (homeViewModel.getMyCartHashMap().size() > 0) {
+                ArrayList<MyCart> myCarts = new ArrayList<>(homeViewModel.getMyCartHashMap().values());
+                myCartIsNotEmpty(myCarts);
             } else {
                 myCartIsEmpty();
             }
-//            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
-//                if (myCarts != null && myCarts.size() > 0) {
-//                    homeViewModel.setMyCarts(myCarts);
-//                    myCartIsNotEmpty(myCarts);
-//                } else {
-//                    myCartIsEmpty();
-//                }
-//            });
+
+            homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    if (homeViewModel.isObserveMyCartDelete()) {
+                        homeViewModel.removeItemInMyCartHashMap(myCart);
+                        Log.d("thanh1", "from my cart: " + homeViewModel.getMyCartHashMap().size());
+                        setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
+                    }
+                }
+            });
         }
     }
 
@@ -125,14 +142,17 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         myCartAdapter.setProducts(myCarts);
         binding.rcvCart.setAdapter(myCartAdapter);
 
-        setTotalPriceToCheckout(homeViewModel.getMyCartObserve());
+        setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
 
-        homeViewModel.getCartUpdate().observe(getViewLifecycleOwner(), myCart -> {
-            if (myCart != null) {
-                Log.d("thanh1", "update: " + homeViewModel.getPositionUpdate());
-                setTotalPriceToCheckout(homeViewModel.getMyCartObserve());
-            }
-        });
+//        homeViewModel.getCartUpdate().observe(getViewLifecycleOwner(), myCart -> {
+//            if (myCart != null) {
+//                if (homeViewModel.isObserveMyCartUpdate()) {
+//                    Log.d("thanh1", "update: " + myCart.getCartId());
+//                    homeViewModel.replaceMyCartHashMap(myCart);
+//                    setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
+//                }
+//            }
+//        });
 
         myCartAdapter.setCallback(new MyCartAdapter.Callback() {
             @Override
@@ -142,11 +162,33 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCartChanged(MyCart myCart, int position) {
-                homeViewModel.updateCart(position, myCart);
-                homeViewModel.setPositionUpdate(position);
-                homeViewModel.updateCart(homeViewModel.getUserId(), myCart, myCart.getCartId());
+                homeViewModel.setObserveMyCartUpdate(true);
+                updateMyCartHashMap(myCart);
+//                setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
+//                homeViewModel.updateCart(homeViewModel.getUserId(), myCart, myCart.getCartId());
             }
         });
+    }
+
+    private void enableSwipeToDelete() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                final int position = viewHolder.getAdapterPosition();
+                final MyCart item = myCartAdapter.getData().get(position);
+                myCartAdapter.removeItem(position);
+                homeViewModel.setObserveMyCartDelete(true);
+                homeViewModel.removeMyCart(homeViewModel.getUserId(), item);
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(binding.rcvCart);
+    }
+
+    private void updateMyCartHashMap(MyCart myCart) {
+        homeViewModel.replaceMyCartHashMap(myCart);
+        setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
     }
 
     private void setTotalPriceToCheckout(ArrayList<MyCart> myCarts) {
@@ -154,6 +196,14 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         for (int i = 0; i < myCarts.size(); i++) {
             totalPrice += myCarts.get(i).getTotalPrice();
         }
+        homeViewModel.setTotalPriceToCheckout(totalPrice);
+        binding.totalPriceText.setText(Utilities.convertCurrency(String.valueOf(homeViewModel.getTotalPriceToCheckout())).concat(" VND"));
+        homeViewModel.setTotalPriceToCheckout(0);
+    }
+
+    private void setTotalPriceToCheckoutAfterUpdate(MyCart myCart) {
+        int totalPrice = homeViewModel.getTotalPriceToCheckout();
+
         homeViewModel.setTotalPriceToCheckout(totalPrice);
         binding.totalPriceText.setText(Utilities.convertCurrency(String.valueOf(homeViewModel.getTotalPriceToCheckout())).concat(" VND"));
     }

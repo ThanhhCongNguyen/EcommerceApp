@@ -27,6 +27,7 @@ import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
@@ -115,6 +116,24 @@ public class MainFragment extends Fragment {
                     homeViewModel.setIdOfFavorites(list);
                 }
             });
+
+            homeViewModel.isDeletedFavorite().observe(getViewLifecycleOwner(), favoriteId -> {
+                if (favoriteId != null) {
+                    Log.d("thanh1", "is deleted from main: " + favoriteId);
+                    homeViewModel.getMyFavoritesList().remove(favoriteId);
+                    binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesList().size() - 1);
+                }
+            });
+
+//            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
+//                HashMap<String, MyCart> myCartHashMap = new HashMap<>();
+//                if (myCarts != null) {
+//                    for (int i = 0; i < myCarts.size(); i++) {
+//                        myCartHashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
+//                    }
+//                }
+//                homeViewModel.setMyCartHashMap(myCartHashMap);
+//            });
 
         } else {
             // Anonymous User
