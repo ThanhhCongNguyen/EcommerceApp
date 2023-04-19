@@ -68,18 +68,65 @@
             android:id="@+id/orderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16dp"
             android:layout_marginBottom="@dimen/_16dp"
             android:background="@drawable/bg_shopping_bag"
             android:padding="@dimen/_4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/itemCancel"
-            app:layout_constraintStart_toStartOf="@+id/itemCancel">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:layout_width="@dimen/_24dp"
                 android:layout_height="@dimen/_24dp"
                 android:src="@drawable/ic_shopping_bag" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="@dimen/_12sp"
+            android:layout_height="@dimen/_12sp"
+            android:layout_marginStart="@dimen/_16dp"
+            android:layout_marginTop="@dimen/_24dp"
+            android:src="@drawable/star_green"
+            app:layout_constraintStart_toEndOf="@id/itemImage"
+            app:layout_constraintTop_toBottomOf="@id/itemPrice" />
+
+        <TextView
+            android:id="@+id/ratingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4dp"
+            android:text="4.5"
+            android:textColor="@color/grey69"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintBottom_toBottomOf="@id/star"
+            app:layout_constraintStart_toEndOf="@id/star"
+            app:layout_constraintTop_toTopOf="@id/star" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="0.5dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_8dp"
+            android:background="@color/grey69"
+            app:layout_constraintBottom_toBottomOf="@id/ratingText"
+            app:layout_constraintStart_toEndOf="@id/ratingText"
+            app:layout_constraintTop_toTopOf="@id/ratingText" />
+
+        <TextView
+            android:id="@+id/soldProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8dp"
+            android:background="@drawable/bg_sold_product"
+            android:paddingStart="@dimen/_6dp"
+            android:paddingEnd="@dimen/_6dp"
+            android:text="5.277 sold"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintBottom_toBottomOf="@id/star"
+            app:layout_constraintStart_toEndOf="@id/view1"
+            app:layout_constraintTop_toTopOf="@id/star" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

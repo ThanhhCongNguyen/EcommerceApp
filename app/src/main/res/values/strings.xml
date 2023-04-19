@@ -22,6 +22,7 @@
     <string name="my_cart">My cart</string>
     <string name="submit_order">Submit order</string>
     <string name="shipping_address">Shipping address</string>
+    <string name="add_shipping_address">Add Shipping address</string>
     <string name="payment">Payment</string>
     <string name="delivery_method">Delivery method</string>
     <string name="your_order_will_be_delivered_soon_n_thank_you_for_choosing_our_app">Your order will be delivered soon.\n Thank you for choosing our app!</string>

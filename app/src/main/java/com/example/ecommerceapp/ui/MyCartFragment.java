@@ -85,13 +85,6 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             binding.cartEmptyText.setVisibility(View.GONE);
             binding.purchaseNow.setVisibility(View.GONE);
         } else {
-            Log.d("thanh1", "getMyCartHashMap: " + homeViewModel.getMyCartHashMap().size());
-//            if (homeViewModel.getMyCartObserve().size() > 0) {
-//                myCartIsNotEmpty(homeViewModel.getMyCartObserve());
-//            } else {
-//                myCartIsEmpty();
-//            }
-
             if (homeViewModel.getMyCartHashMap().size() > 0) {
                 ArrayList<MyCart> myCarts = new ArrayList<>(homeViewModel.getMyCartHashMap().values());
                 myCartIsNotEmpty(myCarts);
@@ -102,7 +95,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
                 if (myCart != null) {
                     if (homeViewModel.isObserveMyCartDelete()) {
-                        homeViewModel.removeItemInMyCartHashMap(myCart);
+//                        homeViewModel.addMyCartHashMap(myCart);
                         Log.d("thanh1", "from my cart: " + homeViewModel.getMyCartHashMap().size());
                         setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
                     }
@@ -164,8 +157,6 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             public void onCartChanged(MyCart myCart, int position) {
                 homeViewModel.setObserveMyCartUpdate(true);
                 updateMyCartHashMap(myCart);
-//                setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
-//                homeViewModel.updateCart(homeViewModel.getUserId(), myCart, myCart.getCartId());
             }
         });
     }

@@ -1,17 +1,21 @@
 package com.example.ecommerceapp.model;
 
 public class Address {
+    private String addressId;
     private String userId;
     private String street;
     private String city;
+    private String country;
 
     public Address() {
     }
 
-    public Address(String userId, String street, String city) {
+    public Address(String addressId, String userId, String street, String city, String country) {
+        this.addressId = addressId;
         this.userId = userId;
         this.street = street;
         this.city = city;
+        this.country = country;
     }
 
     public String getUserId() {
@@ -36,5 +40,21 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

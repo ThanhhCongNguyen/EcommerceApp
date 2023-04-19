@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ecommerceapp.model.Address;
 import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
@@ -109,6 +110,21 @@ public class FurnitureRepository {
         return retrieveDatabase.getFavoritesLiveDataFromServer(userId);
     }
 
+    public LiveData<Favorites> getFavoritesLiveDataAfterDeleted() {
+        return retrieveDatabase.getFavoritesLiveDataAfterDeleted();
+    }
+
+    public LiveData<Address> getMyAddressAfterCreate() {
+        return retrieveDatabase.getMyAddressAfterCreate();
+    }
+
+    public void createNewAddress(String userId, Address address) {
+        retrieveDatabase.createShippingAddress(userId, address);
+    }
+
+    public void removeMyFavorites(String userId, Favorites favorites) {
+        retrieveDatabase.removeMyFavorites(userId, favorites);
+    }
 
     public LiveData<Favorites> getFavoritesLiveData() {
         return retrieveDatabase.getFavoritesLiveData();
@@ -120,6 +136,10 @@ public class FurnitureRepository {
 
     public void signInWithEmailAndPassword(String email, String password) {
         retrieveDatabase.signInWithEmailAndPassword(email, password);
+    }
+
+    public LiveData<String> getLiveDataLoginFail() {
+        return retrieveDatabase.getLiveDataLoginFail();
     }
 
     public void deleteFavorite(String userId, String favoriteId) {

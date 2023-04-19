@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init();
         viewPagerAdapter = new ViewPagerAdapter(requireActivity());
         binding.viewPager.setAdapter(viewPagerAdapter);
 
@@ -110,15 +109,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        init();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (homeViewModel.isLogin() && homeViewModel.getMyCartHashMap() != null) {
-            Log.d("thanh1", "from home: " + homeViewModel.getMyCartHashMap().size());
-            binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartHashMap().size()));
-        }
     }
 
     @Override
@@ -148,20 +145,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         binding.cartBtn.setOnClickListener(this);
 
         if (homeViewModel.isLogin()) {
-//            homeViewModel.getMyCartMutableLiveData().observe(getViewLifecycleOwner(), myCarts -> {
-//                if (myCarts != null) {
-//                    homeViewModel.setMyCartObserve(myCarts);
-//                    binding.quantityItemInCart.setVisibility(View.VISIBLE);
-//                    binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
-//                } else {
-//                    ArrayList<MyCart> list = new ArrayList<>();
-//                    homeViewModel.setMyCartObserve(list);
-//                    binding.quantityItemInCart.setVisibility(View.GONE);
-//                }
-//            });
             homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
                 HashMap<String, MyCart> myCartHashMap = new HashMap<>();
-                if (myCarts != null) {
+                if (myCarts != null && myCarts.size() > 0) {
                     for (int i = 0; i < myCarts.size(); i++) {
                         myCartHashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
                     }
@@ -171,16 +157,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     binding.quantityItemInCart.setVisibility(View.GONE);
                 }
                 homeViewModel.setMyCartHashMap(myCartHashMap);
-                Log.d("thanh1", "hash map: " + homeViewModel.getMyCartHashMap().size());
             });
 
             homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
                 if (myCart != null) {
-//                    ArrayList<MyCart> myCarts = homeViewModel.getMyCartObserve();
-//                    myCarts.add(myCart);
-//                    homeViewModel.setMyCartObserve(myCarts);
-                    homeViewModel.addMyCartHashMap(myCart);
+//                    homeViewModel.addMyCartHashMap(myCart);
+                    Log.d("thanh1", "homeViewModel: " + homeViewModel.getMyCartHashMap().size());
                     binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartHashMap().size()));
+                }
+            });
+
+            homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    homeViewModel.removeItemInMyCartHashMap(myCart);
+                    Log.d("thanh1", "getLiveDataAfterDeleted: " + homeViewModel.getMyCartHashMap().size());
                 }
             });
         } else {

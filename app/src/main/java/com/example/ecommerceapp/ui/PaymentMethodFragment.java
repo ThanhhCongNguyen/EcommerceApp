@@ -1,18 +1,17 @@
 package com.example.ecommerceapp.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.ecommerceapp.R;
 
-public class CheckOutFragment extends Fragment {
+public class PaymentMethodFragment extends Fragment {
 
-    public CheckOutFragment() {
+    public PaymentMethodFragment() {
     }
 
     @Override

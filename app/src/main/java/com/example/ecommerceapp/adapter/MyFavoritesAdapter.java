@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.model.Favorites;
+import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
 import com.example.ecommerceapp.utils.Utilities;
 
@@ -66,24 +67,22 @@ public class MyFavoritesAdapter extends RecyclerView.Adapter<MyFavoritesAdapter.
             itemName = itemView.findViewById(R.id.itemName);
             itemPrice = itemView.findViewById(R.id.itemPrice);
             imageView = itemView.findViewById(R.id.imageView);
-            deleteItem = itemView.findViewById(R.id.itemCancel);
             orderButton = itemView.findViewById(R.id.orderButton);
 
             orderButton.setOnClickListener(view -> {
                 callback.onOrderProduct(favorites.get(getAdapterPosition()));
             });
 
-            deleteItem.setOnClickListener(view -> {
-                callback.onDeleteItem(favorites.get(getAdapterPosition()));
-                removeAt(getAdapterPosition());
-            });
         }
     }
 
-    public void removeAt(int position) {
+    public void removeItem(int position) {
         favorites.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, favorites.size());
+    }
+
+    public ArrayList<Favorites> getData() {
+        return favorites;
     }
 
     public interface Callback {

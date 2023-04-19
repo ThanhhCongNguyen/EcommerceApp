@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.ecommerceapp.model.Address;
 import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
 import com.example.ecommerceapp.model.Product;
@@ -59,9 +60,11 @@ public class HomeViewModel extends AndroidViewModel {
 
     // New implementation
     private HashMap<String, MyCart> myCartHashMap;
+    private HashMap<String, Favorites> myFavoritesHashMap;
     private boolean isObserveMyCartAdded;
     private boolean isObserveMyCartUpdate;
     private boolean isObserveMyCartDelete;
+    private boolean isObserveMyFavorites;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -133,6 +136,18 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void signInWithEmailAndPassword(String email, String password) {
         furnitureRepository.signInWithEmailAndPassword(email, password);
+    }
+
+    public LiveData<String> getLiveDataLoginFail() {
+        return furnitureRepository.getLiveDataLoginFail();
+    }
+
+    public LiveData<Address> getAddressAfterCreate() {
+        return furnitureRepository.getMyAddressAfterCreate();
+    }
+
+    public void createShippingAddress(String userId, Address address) {
+        furnitureRepository.createNewAddress(userId, address);
     }
 
     public LiveData<User> getUserLiveData() {
@@ -357,8 +372,33 @@ public class HomeViewModel extends AndroidViewModel {
         furnitureRepository.removeMyCart(userId, myCart);
     }
 
+    public void setMyFavoritesHashMap(HashMap<String, Favorites> myFavoritesHashMap) {
+        this.myFavoritesHashMap = myFavoritesHashMap;
+    }
+
+    public void addMyFavoritesHashMap(Favorites favorites) {
+        myFavoritesHashMap.put(favorites.getFavoriteId(), favorites);
+    }
+
+    public void removeItemInFavoritesHashMap(String favoriteId) {
+        myFavoritesHashMap.remove(favoriteId);
+    }
+
+    public void removeMyFavorites(String userId, Favorites favorites) {
+        furnitureRepository.removeMyFavorites(userId, favorites);
+    }
+
+    public HashMap<String, Favorites> getMyFavoritesHashMap() {
+        return myFavoritesHashMap;
+    }
+
+
     public LiveData<MyCart> getLiveDataAfterDeleted() {
         return furnitureRepository.getLiveDataAfterDeleted();
+    }
+
+    public LiveData<Favorites> getLiveDataAfterDeleteFavorite() {
+        return furnitureRepository.getFavoritesLiveDataAfterDeleted();
     }
 
     public void replaceMyCartHashMap(MyCart myCart) {
@@ -397,6 +437,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void setObserveMyCartDelete(boolean observeMyCartDelete) {
         isObserveMyCartDelete = observeMyCartDelete;
+    }
+
+    public boolean isObserveMyFavorites() {
+        return isObserveMyFavorites;
+    }
+
+    public void setObserveMyFavorites(boolean observeMyFavorites) {
+        isObserveMyFavorites = observeMyFavorites;
     }
 
     public interface HomeViewModelCallback {

@@ -88,6 +88,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         binding.signUpButton.setOnClickListener(this);
         binding.loginButton.setOnClickListener(this);
 
+        homeViewModel.getLiveDataLoginFail().observe(getViewLifecycleOwner(), s -> {
+            Toast.makeText(getContext(), "Please try again: " + s, Toast.LENGTH_LONG).show();
+        });
+
     }
 
     private void login() {

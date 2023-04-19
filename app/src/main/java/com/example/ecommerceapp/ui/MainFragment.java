@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentMainBinding;
@@ -67,6 +68,10 @@ public class MainFragment extends Fragment {
         settingFragmentCallback();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,7 +101,7 @@ public class MainFragment extends Fragment {
     };
 
     private void initData() {
-        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(2);
+//        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(2);
         binding.bottomNavigation.getOrCreateBadge(R.id.notifications).setNumber(4);
         if (homeViewModel.isLogin()) {
             homeViewModel.getUserFromShare().observe(getViewLifecycleOwner(), user -> {
@@ -107,8 +112,14 @@ public class MainFragment extends Fragment {
 
             homeViewModel.getFavoritesLiveDataFromServer(homeViewModel.getUserId()).observe(getViewLifecycleOwner(), favorites -> {
                 if (favorites != null) {
-                    binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(favorites.size());
-                    homeViewModel.setMyFavoritesList(favorites);
+                    if (favorites.size() > 0) {
+                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(favorites.size());
+                    }
+                    HashMap<String, Favorites> favoritesHashMap = new HashMap<>();
+                    for (int i = 0; i < favorites.size(); i++) {
+                        favoritesHashMap.put(favorites.get(i).getFavoriteId(), favorites.get(i));
+                    }
+                    homeViewModel.setMyFavoritesHashMap(favoritesHashMap);
                     ArrayList<Integer> list = new ArrayList<>();
                     for (int i = 0; i < favorites.size(); i++) {
                         list.add(Integer.parseInt(favorites.get(i).getProduct().getProductId()));
@@ -125,15 +136,32 @@ public class MainFragment extends Fragment {
                 }
             });
 
-//            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
-//                HashMap<String, MyCart> myCartHashMap = new HashMap<>();
-//                if (myCarts != null) {
-//                    for (int i = 0; i < myCarts.size(); i++) {
-//                        myCartHashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
-//                    }
-//                }
-//                homeViewModel.setMyCartHashMap(myCartHashMap);
-//            });
+            homeViewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorite -> {
+                if (favorite != null) {
+                    if (homeViewModel.isObserveFavorite()) {
+                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesHashMap().size());
+                    }
+                }
+            });
+
+            homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    homeViewModel.addMyCartHashMap(myCart);
+                    Log.d("thanh1", "main fragment: " + homeViewModel.getMyCartHashMap().size());
+                }
+            });
+
+
+            homeViewModel.getLiveDataAfterDeleteFavorite().observe(getViewLifecycleOwner(), favorites -> {
+                if (favorites != null) {
+                    homeViewModel.removeItemInFavoritesHashMap(favorites.getFavoriteId());
+                    if (homeViewModel.getMyFavoritesHashMap().size() == 0) {
+                        binding.bottomNavigation.removeBadge(R.id.save);
+                    } else {
+                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesHashMap().size());
+                    }
+                }
+            });
 
         } else {
             // Anonymous User

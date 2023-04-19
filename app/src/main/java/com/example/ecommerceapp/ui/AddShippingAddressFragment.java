@@ -13,13 +13,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.ecommerceapp.R;
-import com.example.ecommerceapp.adapter.MyOrderAdapter;
 import com.example.ecommerceapp.adapter.ShippingAddressAdapter;
-import com.example.ecommerceapp.databinding.FragmentMyOrderBinding;
 import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
-public class ShippingAddressFragment extends Fragment implements View.OnClickListener {
+public class AddShippingAddressFragment extends Fragment implements View.OnClickListener {
     private FragmentShippingAddressBinding binding;
     private HomeViewModel homeViewModel;
     private ShippingAddressAdapter shippingAddressAdapter;

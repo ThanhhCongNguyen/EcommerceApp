@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ecommerceapp.model.Address;
 import com.example.ecommerceapp.model.Category;
 import com.example.ecommerceapp.model.Favorites;
 import com.example.ecommerceapp.model.MyCart;
@@ -53,11 +54,14 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<ArrayList<Product>> tableListMutableLiveData;
     private MutableLiveData<User> userMutableLiveData;
     private MutableLiveData<User> userMutableLiveDataLogin;
+    private MutableLiveData<String> userMutableLiveDataLoginFail;
     private MutableLiveData<ArrayList<MyCart>> myCartMutableLiveData;
     private MutableLiveData<MyCart> myCartMutableLiveDataAddSuccess;
     private MutableLiveData<MyCart> myCartMutableLiveDataDeleteSuccess;
+    private MutableLiveData<Favorites> myFavoritesMutableLiveDataDeleteSuccess;
     private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveData;
     private MutableLiveData<Favorites> myFavoritesLiveDataAddSuccess;
+    private MutableLiveData<Address> myAddressCreatedSuccess;
     private MutableLiveData<String> isDeletedFavorite;
     private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddFail;
     private MutableLiveData<MyCart> myCartUpdate;
@@ -85,6 +89,9 @@ public class RetrieveDatabase implements FurnitureService {
         myCartMutableLiveDataAddSuccess = new MutableLiveData<>();
         isDeletedFavorite = new MutableLiveData<>();
         myCartMutableLiveDataDeleteSuccess = new MutableLiveData<>();
+        userMutableLiveDataLoginFail = new MutableLiveData<>();
+        myFavoritesMutableLiveDataDeleteSuccess = new MutableLiveData<>();
+        myAddressCreatedSuccess = new MutableLiveData<>();
     }
 
     @Override
@@ -278,7 +285,14 @@ public class RetrieveDatabase implements FurnitureService {
                 .addOnSuccessListener(documentSnapshot -> {
                     User user = documentSnapshot.toObject(User.class);
                     userMutableLiveDataLogin.postValue(user);
+                })
+                .addOnFailureListener(e -> {
+                    userMutableLiveDataLoginFail.postValue(e.getMessage());
                 });
+    }
+
+    public LiveData<String> getLiveDataLoginFail() {
+        return userMutableLiveDataLoginFail;
     }
 
 
@@ -314,6 +328,7 @@ public class RetrieveDatabase implements FurnitureService {
 
     }
 
+
     private void addUserToDatabase(String userId, User user) {
         user.setUserId(userId);
         firebaseFirestore.collection("users").document(user.getUserId())
@@ -344,8 +359,23 @@ public class RetrieveDatabase implements FurnitureService {
                 }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
+    public void removeMyFavorites(String userId, Favorites favorites) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("MyFavorites")
+                .document(favorites.getFavoriteId())
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    myFavoritesMutableLiveDataDeleteSuccess.postValue(favorites);
+                }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
     public LiveData<MyCart> getLiveDataAfterDeleted() {
         return myCartMutableLiveDataDeleteSuccess;
+    }
+
+    public LiveData<Favorites> getFavoritesLiveDataAfterDeleted() {
+        return myFavoritesMutableLiveDataDeleteSuccess;
     }
 
     public LiveData<MyCart> getCartAfterAdd() {
@@ -372,6 +402,23 @@ public class RetrieveDatabase implements FurnitureService {
                     myFavoritesLiveDataAddSuccess.postValue(favorites);
                 })
                 .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+
+    public void createShippingAddress(String userId, Address address) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("ShippingAddresses")
+                .document(address.getAddressId())
+                .set(address)
+                .addOnSuccessListener(unused -> {
+                    myAddressCreatedSuccess.postValue(address);
+                })
+                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public LiveData<Address> getMyAddressAfterCreate() {
+        return myAddressCreatedSuccess;
     }
 
     public void deleteFavorite(String userId, String favoriteId) {
