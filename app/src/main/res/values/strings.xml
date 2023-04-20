@@ -65,4 +65,5 @@
     <string name="added_to_your_cart">Added to your cart</string>
     <string name="detail">Details</string>
     <string name="select_a_delivery_method">SELECT A DELIVERY METHOD</string>
+    <string name="payment_methods">Payment Methods</string>
 </resources>

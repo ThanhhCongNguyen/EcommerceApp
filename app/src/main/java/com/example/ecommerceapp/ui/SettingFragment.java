@@ -62,7 +62,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         } else if (view.getId() == R.id.shippingAddressLayout) {
             settingFragmentCallback.openShippingAddressFragment();
         } else if (view.getId() == R.id.paymentMethodLayout) {
-
+            settingFragmentCallback.openPaymentMethodFragment();
         } else if (view.getId() == R.id.myReviewLayout) {
             settingFragmentCallback.openMyReviewsFragment();
         } else if (view.getId() == R.id.settingLayout) {
@@ -173,6 +173,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         void openShippingAddressFragment();
 
         void openMyReviewsFragment();
+
+        void openPaymentMethodFragment();
 
         void openChangeInfoFragment();
 

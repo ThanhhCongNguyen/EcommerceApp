@@ -1,8 +1,11 @@
 package com.example.ecommerceapp.model;
 
+import com.firebase.ui.auth.data.model.PhoneNumber;
+
 public class Address {
     private String addressId;
     private String userId;
+    private String phoneNumber;
     private String street;
     private String city;
     private String country;
@@ -10,12 +13,21 @@ public class Address {
     public Address() {
     }
 
-    public Address(String addressId, String userId, String street, String city, String country) {
+    public Address(String addressId, String phoneNumber, String userId, String street, String city, String country) {
         this.addressId = addressId;
         this.userId = userId;
+        this.phoneNumber = phoneNumber;
         this.street = street;
         this.city = city;
         this.country = country;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUserId() {

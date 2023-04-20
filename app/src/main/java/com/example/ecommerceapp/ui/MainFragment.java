@@ -176,6 +176,13 @@ public class MainFragment extends Fragment {
                 binding.bottomNavigation.setVisibility(View.GONE);
                 ShippingAddressFragment shippingAddressFragment = new ShippingAddressFragment();
                 transactionFragment(shippingAddressFragment);
+                shippingAddressFragment.setCallback(new ShippingAddressFragment.Callback() {
+                    @Override
+                    public void openAddAddressFragment() {
+                        AddShippingAddressFragment addShippingAddressFragment = new AddShippingAddressFragment();
+                        transactionFragment(addShippingAddressFragment);
+                    }
+                });
             }
 
             @Override
@@ -183,6 +190,13 @@ public class MainFragment extends Fragment {
                 binding.bottomNavigation.setVisibility(View.GONE);
                 MyReviewFragment myReviewFragment = new MyReviewFragment();
                 transactionFragment(myReviewFragment);
+            }
+
+            @Override
+            public void openPaymentMethodFragment() {
+                binding.bottomNavigation.setVisibility(View.GONE);
+                PaymentMethodFragment paymentMethodFragment = new PaymentMethodFragment();
+                transactionFragment(paymentMethodFragment);
             }
 
             @Override

@@ -26,6 +26,7 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
     private FragmentShippingAddressBinding binding;
     private HomeViewModel homeViewModel;
     private ShippingAddressAdapter shippingAddressAdapter;
+    private Callback callback;
 
     @Override
     public void onClick(View view) {
@@ -54,6 +55,10 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
 
     }
 
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
     private void init() {
         binding.backBtn.setOnClickListener(this::onClick);
 
@@ -78,7 +83,15 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
             }
         });
 
+        binding.floatingActionButton.setOnClickListener(view -> {
+            createNewAddress();
+        });
 
+
+    }
+
+    private void createNewAddress() {
+        callback.openAddAddressFragment();
     }
 
     private void addressNotEmpty(ArrayList<Address> addresses) {
@@ -95,5 +108,9 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
 
     private void backToSettingFragment() {
         getParentFragmentManager().popBackStack();
+    }
+
+    public interface Callback {
+        void openAddAddressFragment();
     }
 }

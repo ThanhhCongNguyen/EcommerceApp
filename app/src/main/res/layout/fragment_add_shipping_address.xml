@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -66,7 +67,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailTextField"
+        android:id="@+id/streetTextField"
         style="@style/LoginTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@id/nameTextField">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailEdittext"
+            android:id="@+id/streetEdittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
@@ -89,44 +90,78 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordTextField"
+        android:id="@+id/cityTextField"
         style="@style/LoginTextInputLayoutStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginTop="@dimen/_16dp"
-        android:layout_marginEnd="@dimen/_16dp"
-        android:hint="City"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Phone number"
+        app:layout_constraintEnd_toStartOf="@id/view10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailTextField">
+        app:layout_constraintTop_toBottomOf="@id/streetTextField">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordEdittext"
+            android:id="@+id/cityEdittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <View
+        android:id="@+id/view10"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cityTextField" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_16dp"
+        android:background="@drawable/border"
+        android:layout_marginTop="@dimen/_4dp"
+        android:layout_marginBottom="@dimen/_4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cityTextField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/view10"
+        app:layout_constraintTop_toTopOf="@+id/cityTextField">
+
+        <Spinner
+            android:id="@+id/spinnerCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/black"
+            android:overlapAnchor="false"
+            android:spinnerMode="dropdown" />
+
+    </LinearLayout>
+
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/confirmPasswordTextField"
-        style="@style/LoginTextInputLayoutStyle"
+        android:id="@+id/countryTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16dp"
         android:layout_marginTop="@dimen/_16dp"
         android:layout_marginEnd="@dimen/_16dp"
-        android:hint="Country"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordTextField">
+        app:layout_constraintTop_toBottomOf="@id/cityTextField">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/confirmPasswordEdittext"
+            android:id="@+id/countryPasswordEdittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1" />
+            android:enabled="false"
+            android:maxLines="1"
+            android:text="VietNam"
+            app:endIconDrawable="@drawable/ic_baseline_arrow_drop_down_24" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,7 +175,7 @@
         android:layout_marginBottom="@dimen/_16dp"
         android:background="@drawable/bg_login_btn"
         android:padding="@dimen/_14dp"
-        android:text="@string/sign_up"
+        android:text="@string/save"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="@dimen/_18sp"
