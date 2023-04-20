@@ -51,6 +51,7 @@
     <string name="confirm_password_not_correct">Confirm password is not correct</string>
     <string name="authen_fail">Authentication failed.</string>
     <string name="add_to_cart">Add to cart</string>
+    <string name="buy_now">Buy now</string>
     <string name="chair">Chair</string>
     <string name="table">Table</string>
     <string name="arm_chair">ArmChair</string>
@@ -63,4 +64,5 @@
     <string name="added_to_your_favorites">Added to your favorites</string>
     <string name="added_to_your_cart">Added to your cart</string>
     <string name="detail">Details</string>
+    <string name="select_a_delivery_method">SELECT A DELIVERY METHOD</string>
 </resources>

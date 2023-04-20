@@ -17,7 +17,10 @@ import com.example.ecommerceapp.adapter.MyOrderAdapter;
 import com.example.ecommerceapp.adapter.ShippingAddressAdapter;
 import com.example.ecommerceapp.databinding.FragmentMyOrderBinding;
 import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
+import com.example.ecommerceapp.model.Address;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
+
+import java.util.ArrayList;
 
 public class ShippingAddressFragment extends Fragment implements View.OnClickListener {
     private FragmentShippingAddressBinding binding;
@@ -54,9 +57,20 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
     private void init() {
         binding.backBtn.setOnClickListener(this::onClick);
 
-        shippingAddressAdapter = new ShippingAddressAdapter();
-        binding.rcvShippingAddress.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rcvShippingAddress.setAdapter(shippingAddressAdapter);
+        homeViewModel.getAllShippingAddress(homeViewModel.getUserId()).observe(getViewLifecycleOwner(), addresses -> {
+            if (addresses != null) {
+                if (addresses.size() > 0) {
+                    if (addresses.size() <= 3) {
+                        addressNotEmpty(addresses);
+                    } else {
+                        binding.floatingActionButton.setVisibility(View.GONE);
+                    }
+                } else {
+                    addressEmpty();
+                }
+            }
+        });
+
 
         homeViewModel.getAddressAfterCreate().observe(getViewLifecycleOwner(), address -> {
             if (address != null) {
@@ -65,6 +79,18 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
         });
 
 
+    }
+
+    private void addressNotEmpty(ArrayList<Address> addresses) {
+        shippingAddressAdapter = new ShippingAddressAdapter();
+        binding.rcvShippingAddress.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rcvShippingAddress.setAdapter(shippingAddressAdapter);
+    }
+
+    private void addressEmpty() {
+        binding.rcvShippingAddress.setVisibility(View.GONE);
+        binding.icNoItem.setVisibility(View.VISIBLE);
+        binding.noItemText.setVisibility(View.VISIBLE);
     }
 
     private void backToSettingFragment() {

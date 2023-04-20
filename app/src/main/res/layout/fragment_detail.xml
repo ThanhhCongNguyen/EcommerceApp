@@ -75,7 +75,7 @@
                 android:layout_marginEnd="@dimen/_16dp"
                 android:background="@drawable/bg_add_minus"
                 android:padding="@dimen/_4dp"
-                android:src="@drawable/ic_bookmark_border"
+                android:src="@drawable/ic_shopping_bag_green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -252,7 +252,7 @@
                 android:paddingTop="@dimen/_8dp"
                 android:paddingEnd="@dimen/_32dp"
                 android:paddingBottom="@dimen/_8dp"
-                android:text="@string/add_to_cart"
+                android:text="@string/buy_now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textStyle="bold"

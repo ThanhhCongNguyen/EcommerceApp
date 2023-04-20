@@ -34,7 +34,7 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private HomeViewModel homeViewModel;
     private final HomeFragment homeFragment = new HomeFragment();
-    private final FavoritesFragment favoritesFragment = new FavoritesFragment();
+    private final MyCartFragment myCartFragment = new MyCartFragment();
     private final NotificationFragment notificationFragment = new NotificationFragment();
     private final SettingFragment settingFragment = new SettingFragment();
 
@@ -60,11 +60,12 @@ public class MainFragment extends Fragment {
         fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, settingFragment).hide(settingFragment).commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, notificationFragment).hide(notificationFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.frameLayout1, favoritesFragment).hide(favoritesFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.frameLayout1, myCartFragment).hide(myCartFragment).commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout1, homeFragment).commit();
         binding.bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         initData();
         homeFragmentCallback();
+        myCartFragmentCallback();
         settingFragmentCallback();
     }
 
@@ -84,8 +85,8 @@ public class MainFragment extends Fragment {
                     active = homeFragment;
                     return true;
                 case R.id.save:
-                    fragmentManager.beginTransaction().hide(active).show(favoritesFragment).commit();
-                    active = favoritesFragment;
+                    fragmentManager.beginTransaction().hide(active).show(myCartFragment).commit();
+                    active = myCartFragment;
                     return true;
                 case R.id.notifications:
                     fragmentManager.beginTransaction().hide(active).show(notificationFragment).commit();
@@ -101,7 +102,6 @@ public class MainFragment extends Fragment {
     };
 
     private void initData() {
-//        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(2);
         binding.bottomNavigation.getOrCreateBadge(R.id.notifications).setNumber(4);
         if (homeViewModel.isLogin()) {
             homeViewModel.getUserFromShare().observe(getViewLifecycleOwner(), user -> {
@@ -109,56 +109,38 @@ public class MainFragment extends Fragment {
 
                 }
             });
-
-            homeViewModel.getFavoritesLiveDataFromServer(homeViewModel.getUserId()).observe(getViewLifecycleOwner(), favorites -> {
-                if (favorites != null) {
-                    if (favorites.size() > 0) {
-                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(favorites.size());
-                    }
-                    HashMap<String, Favorites> favoritesHashMap = new HashMap<>();
-                    for (int i = 0; i < favorites.size(); i++) {
-                        favoritesHashMap.put(favorites.get(i).getFavoriteId(), favorites.get(i));
-                    }
-                    homeViewModel.setMyFavoritesHashMap(favoritesHashMap);
-                    ArrayList<Integer> list = new ArrayList<>();
-                    for (int i = 0; i < favorites.size(); i++) {
-                        list.add(Integer.parseInt(favorites.get(i).getProduct().getProductId()));
-                    }
-                    homeViewModel.setIdOfFavorites(list);
-                }
-            });
-
-            homeViewModel.isDeletedFavorite().observe(getViewLifecycleOwner(), favoriteId -> {
-                if (favoriteId != null) {
-                    Log.d("thanh1", "is deleted from main: " + favoriteId);
-                    homeViewModel.getMyFavoritesList().remove(favoriteId);
-                    binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesList().size() - 1);
-                }
-            });
-
-            homeViewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorite -> {
-                if (favorite != null) {
-                    if (homeViewModel.isObserveFavorite()) {
-                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesHashMap().size());
+            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
+                if (myCarts != null) {
+                    if (myCarts.size() > 0) {
+                        HashMap<String, MyCart> hashMap = new HashMap<>();
+                        for (int i = 0; i < myCarts.size(); i++) {
+                            hashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
+                        }
+                        homeViewModel.setMyCartHashMap(hashMap);
+                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(myCarts.size());
+                    } else {
+                        homeViewModel.setMyCartHashMap(new HashMap<>());
+                        binding.bottomNavigation.removeBadge(R.id.save);
                     }
                 }
             });
 
             homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
                 if (myCart != null) {
+                    Log.d("thanh1", "main fragment: " + myCart.getCartId());
                     homeViewModel.addMyCartHashMap(myCart);
-                    Log.d("thanh1", "main fragment: " + homeViewModel.getMyCartHashMap().size());
+                    binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyCartHashMap().size());
                 }
             });
 
-
-            homeViewModel.getLiveDataAfterDeleteFavorite().observe(getViewLifecycleOwner(), favorites -> {
-                if (favorites != null) {
-                    homeViewModel.removeItemInFavoritesHashMap(favorites.getFavoriteId());
-                    if (homeViewModel.getMyFavoritesHashMap().size() == 0) {
-                        binding.bottomNavigation.removeBadge(R.id.save);
+            homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    homeViewModel.removeItemInMyCartHashMap(myCart);
+                    Log.d("thanh1", "remove: " + homeViewModel.getMyCartHashMap().size());
+                    if (homeViewModel.getMyCartHashMap().size() > 0) {
+                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyCartHashMap().size());
                     } else {
-                        binding.bottomNavigation.getOrCreateBadge(R.id.save).setNumber(homeViewModel.getMyFavoritesHashMap().size());
+                        binding.bottomNavigation.removeBadge(R.id.save);
                     }
                 }
             });
@@ -171,6 +153,8 @@ public class MainFragment extends Fragment {
 
     private void transactionFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         fragmentTransaction.replace(R.id.frameLayout1, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -234,6 +218,17 @@ public class MainFragment extends Fragment {
             @Override
             public void onClickBackButton() {
                 binding.bottomNavigation.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void myCartFragmentCallback() {
+        myCartFragment.setMyCartFragmentCallback(new MyCartFragment.MyCartCallback() {
+            @Override
+            public void openCheckOutFragment() {
+                binding.bottomNavigation.setVisibility(View.GONE);
+                CheckOutFragment checkOutFragment = new CheckOutFragment();
+                transactionFragment(checkOutFragment);
             }
         });
     }

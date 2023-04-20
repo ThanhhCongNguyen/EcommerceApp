@@ -29,11 +29,13 @@ import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyCartFragment extends Fragment implements View.OnClickListener {
     private FragmentMyCartBinding binding;
     private MyCartAdapter myCartAdapter;
     private HomeViewModel homeViewModel;
+    private MyCartCallback callback;
 
     @Override
     public void onClick(View view) {
@@ -63,11 +65,15 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         homeViewModel.setTotalPriceToCheckout(0);
         homeViewModel.setObserveMyCartUpdate(false);
         homeViewModel.setObserveMyCartDelete(false);
+    }
+
+    public void setMyCartFragmentCallback(MyCartCallback myCartFragmentCallback) {
+        this.callback = myCartFragmentCallback;
     }
 
     private void init() {
@@ -83,25 +89,56 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             binding.requestLoginButton.setVisibility(View.VISIBLE);
             binding.cartEmptyImage.setVisibility(View.GONE);
             binding.cartEmptyText.setVisibility(View.GONE);
-            binding.purchaseNow.setVisibility(View.GONE);
         } else {
-            if (homeViewModel.getMyCartHashMap().size() > 0) {
-                ArrayList<MyCart> myCarts = new ArrayList<>(homeViewModel.getMyCartHashMap().values());
-                myCartIsNotEmpty(myCarts);
-            } else {
-                myCartIsEmpty();
-            }
+            myCartAdapter = new MyCartAdapter();
+            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
+                if (myCarts != null) {
+                    if (myCarts.size() > 0) {
+                        HashMap<String, MyCart> hashMap = new HashMap<>();
+                        for (int i = 0; i < myCarts.size(); i++) {
+                            hashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
+                        }
+                        homeViewModel.setMyCartHashMap(hashMap);
+                        ArrayList<MyCart> list = new ArrayList<>(homeViewModel.getMyCartHashMap().values());
+                        myCartIsNotEmpty(list);
+                    } else {
+                        myCartIsEmpty();
+                    }
+                }
+            });
+
+            homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
+                if (myCart != null) {
+                    binding.view1.setVisibility(View.GONE);
+                    binding.tv1.setVisibility(View.VISIBLE);
+                    binding.checkOutBtn.setVisibility(View.VISIBLE);
+                    binding.totalPriceText.setVisibility(View.VISIBLE);
+                    binding.rcvCart.setVisibility(View.VISIBLE);
+                    binding.icNotLogin.setVisibility(View.GONE);
+                    binding.requestLoginText.setVisibility(View.GONE);
+                    binding.requestLoginButton.setVisibility(View.GONE);
+                    binding.cartEmptyImage.setVisibility(View.GONE);
+                    binding.cartEmptyText.setVisibility(View.GONE);
+
+                    homeViewModel.addMyCartHashMap(myCart);
+                    myCartAdapter.setProducts(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
+                }
+            });
 
             homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
                 if (myCart != null) {
-                    if (homeViewModel.isObserveMyCartDelete()) {
-//                        homeViewModel.addMyCartHashMap(myCart);
-                        Log.d("thanh1", "from my cart: " + homeViewModel.getMyCartHashMap().size());
+                    if (homeViewModel.getMyCartHashMap().size() > 0) {
                         setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
+                    } else {
+                        myCartIsEmpty();
                     }
                 }
             });
         }
+
+        binding.checkOutBtn.setOnClickListener(view -> {
+            callback.openCheckOutFragment();
+        });
     }
 
     private void myCartIsEmpty() {
@@ -114,7 +151,6 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         binding.requestLoginButton.setVisibility(View.GONE);
         binding.cartEmptyImage.setVisibility(View.VISIBLE);
         binding.cartEmptyText.setVisibility(View.VISIBLE);
-        binding.purchaseNow.setVisibility(View.VISIBLE);
     }
 
     private void myCartIsNotEmpty(ArrayList<MyCart> myCarts) {
@@ -128,24 +164,12 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
         binding.requestLoginButton.setVisibility(View.GONE);
         binding.cartEmptyImage.setVisibility(View.GONE);
         binding.cartEmptyText.setVisibility(View.GONE);
-        binding.purchaseNow.setVisibility(View.GONE);
 
-        myCartAdapter = new MyCartAdapter();
         binding.rcvCart.setLayoutManager(new LinearLayoutManager(getContext()));
         myCartAdapter.setProducts(myCarts);
         binding.rcvCart.setAdapter(myCartAdapter);
 
         setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
-
-//        homeViewModel.getCartUpdate().observe(getViewLifecycleOwner(), myCart -> {
-//            if (myCart != null) {
-//                if (homeViewModel.isObserveMyCartUpdate()) {
-//                    Log.d("thanh1", "update: " + myCart.getCartId());
-//                    homeViewModel.replaceMyCartHashMap(myCart);
-//                    setTotalPriceToCheckout(new ArrayList<>(homeViewModel.getMyCartHashMap().values()));
-//                }
-//            }
-//        });
 
         myCartAdapter.setCallback(new MyCartAdapter.Callback() {
             @Override
@@ -188,6 +212,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
             totalPrice += myCarts.get(i).getTotalPrice();
         }
         homeViewModel.setTotalPriceToCheckout(totalPrice);
+        homeViewModel.setTotalPriceToCheckoutV2(totalPrice);
         binding.totalPriceText.setText(Utilities.convertCurrency(String.valueOf(homeViewModel.getTotalPriceToCheckout())).concat(" VND"));
         homeViewModel.setTotalPriceToCheckout(0);
     }
@@ -201,6 +226,10 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
 
     private void backToHomeFragment() {
         getParentFragmentManager().popBackStack();
+    }
+
+    public interface MyCartCallback {
+        void openCheckOutFragment();
     }
 
 }

@@ -101,33 +101,16 @@ public class FurnitureRepository {
         return retrieveDatabase.getLiveDataAfterDeleted();
     }
 
-
-    public void addProductToFavorites(String userId, Favorites favorites) {
-        retrieveDatabase.addProductToFavorites(userId, favorites);
-    }
-
-    public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
-        return retrieveDatabase.getFavoritesLiveDataFromServer(userId);
-    }
-
-    public LiveData<Favorites> getFavoritesLiveDataAfterDeleted() {
-        return retrieveDatabase.getFavoritesLiveDataAfterDeleted();
-    }
-
     public LiveData<Address> getMyAddressAfterCreate() {
         return retrieveDatabase.getMyAddressAfterCreate();
     }
 
+    public LiveData<ArrayList<Address>> getAllShippingAddress(String userId) {
+        return retrieveDatabase.getAllShippingAddress(userId);
+    }
+
     public void createNewAddress(String userId, Address address) {
         retrieveDatabase.createShippingAddress(userId, address);
-    }
-
-    public void removeMyFavorites(String userId, Favorites favorites) {
-        retrieveDatabase.removeMyFavorites(userId, favorites);
-    }
-
-    public LiveData<Favorites> getFavoritesLiveData() {
-        return retrieveDatabase.getFavoritesLiveData();
     }
 
     public void createNewUser(User user) {
@@ -140,14 +123,6 @@ public class FurnitureRepository {
 
     public LiveData<String> getLiveDataLoginFail() {
         return retrieveDatabase.getLiveDataLoginFail();
-    }
-
-    public void deleteFavorite(String userId, String favoriteId) {
-        retrieveDatabase.deleteFavorite(userId, favoriteId);
-    }
-
-    public LiveData<String> isDeletedFavorite() {
-        return retrieveDatabase.isDeletedFavorite();
     }
 
     public void saveUserToSharePreferences(Application application) {

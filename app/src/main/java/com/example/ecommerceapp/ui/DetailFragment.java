@@ -80,10 +80,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             plusCount();
         } else if (view.getId() == R.id.minusButton) {
             minusCount();
-        } else if (view.getId() == R.id.addToCart) {
-            addProductToCart();
         } else if (view.getId() == R.id.saveProduct) {
-            saveProductToFavorites();
+            addProductToCart();
         }
     }
 
@@ -99,7 +97,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         binding.countText.setText(String.valueOf(homeViewModel.getDefaultCount()));
 
         binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back);
-
         binding.appBarLayout.addOnOffsetChangedListener((AppBarLayout.BaseOnOffsetChangedListener) (appBarLayout, verticalOffset) -> {
             if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
                 binding.toolbar.setTitle(R.string.detail);
@@ -129,30 +126,13 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             }
             binding.descriptionText.setText(product.getDescription());
 
-            if (homeViewModel.getIdOfFavorites().contains(Integer.parseInt(homeViewModel.getProduct().getProductId()))) {
-                binding.saveProduct.setImageResource(R.drawable.bookmark_added);
-                binding.saveProduct.setEnabled(false);
-            }
         });
 
-        homeViewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorite -> {
-            if (favorite != null) {
-                if (homeViewModel.isObserveFavorite()) {
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.saveProduct.setImageResource(R.drawable.bookmark_added);
-                    binding.saveProduct.setEnabled(false);
-                    homeViewModel.addMyFavoritesHashMap(favorite);
-                    Toast.makeText(getContext(), R.string.added_to_your_favorites, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
             if (myCart != null) {
                 if (homeViewModel.isObserve()) {
                     binding.progressBar.setVisibility(View.GONE);
-                    Log.d("thanh1", "cartId: " + myCart.getCartId());
-                    Log.d("thanh1", "detail: " + homeViewModel.getMyCartHashMap().size());
                     Toast.makeText(getContext(), R.string.added_to_your_cart, Toast.LENGTH_LONG).show();
                 }
             }
@@ -208,19 +188,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         myCart.setQuantity(homeViewModel.getFinalQuantity());
 
         homeViewModel.addProductToCart(homeViewModel.getUserId(), myCart, homeViewModel.getCartId());
-    }
-
-    private void saveProductToFavorites() {
-        homeViewModel.setObserveFavorite(true);
-        binding.progressBar.setVisibility(View.VISIBLE);
-        String userId = homeViewModel.getUserId();
-        Product product = homeViewModel.getProduct();
-        Favorites favorite = new Favorites(product.getProductId(), product);
-
-//        ArrayList<Favorites> favorites = new ArrayList<>(homeViewModel.getMyFavoritesList().values());
-//        favorites.add(favorite);
-//        homeViewModel.setMyFavoritesList(favorites);
-        homeViewModel.addProductToFavorites(userId, favorite);
     }
 
 }

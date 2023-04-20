@@ -114,23 +114,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
-
-    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.cartBtn) {
             openMyCartFragment();
@@ -145,34 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         binding.cartBtn.setOnClickListener(this);
 
         if (homeViewModel.isLogin()) {
-            homeViewModel.getMyCartMutableLiveDataFromServer().observe(getViewLifecycleOwner(), myCarts -> {
-                HashMap<String, MyCart> myCartHashMap = new HashMap<>();
-                if (myCarts != null && myCarts.size() > 0) {
-                    for (int i = 0; i < myCarts.size(); i++) {
-                        myCartHashMap.put(myCarts.get(i).getCartId(), myCarts.get(i));
-                    }
-                    binding.quantityItemInCart.setVisibility(View.VISIBLE);
-                    binding.quantityItemInCart.setText(String.valueOf(myCarts.size()));
-                } else {
-                    binding.quantityItemInCart.setVisibility(View.GONE);
-                }
-                homeViewModel.setMyCartHashMap(myCartHashMap);
-            });
 
-            homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
-                if (myCart != null) {
-//                    homeViewModel.addMyCartHashMap(myCart);
-                    Log.d("thanh1", "homeViewModel: " + homeViewModel.getMyCartHashMap().size());
-                    binding.quantityItemInCart.setText(String.valueOf(homeViewModel.getMyCartHashMap().size()));
-                }
-            });
-
-            homeViewModel.getLiveDataAfterDeleted().observe(getViewLifecycleOwner(), myCart -> {
-                if (myCart != null) {
-                    homeViewModel.removeItemInMyCartHashMap(myCart);
-                    Log.d("thanh1", "getLiveDataAfterDeleted: " + homeViewModel.getMyCartHashMap().size());
-                }
-            });
         } else {
             binding.quantityItemInCart.setVisibility(View.GONE);
         }

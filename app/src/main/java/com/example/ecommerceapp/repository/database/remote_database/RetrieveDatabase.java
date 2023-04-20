@@ -64,6 +64,7 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<Address> myAddressCreatedSuccess;
     private MutableLiveData<String> isDeletedFavorite;
     private MutableLiveData<ArrayList<Favorites>> myFavoritesLiveDataAddFail;
+    private MutableLiveData<ArrayList<Address>> myShippingAddressLiveData;
     private MutableLiveData<MyCart> myCartUpdate;
     private MutableLiveData<ArrayList<User>> usersLiveData;
 
@@ -92,6 +93,7 @@ public class RetrieveDatabase implements FurnitureService {
         userMutableLiveDataLoginFail = new MutableLiveData<>();
         myFavoritesMutableLiveDataDeleteSuccess = new MutableLiveData<>();
         myAddressCreatedSuccess = new MutableLiveData<>();
+        myShippingAddressLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -359,24 +361,11 @@ public class RetrieveDatabase implements FurnitureService {
                 }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
-    public void removeMyFavorites(String userId, Favorites favorites) {
-        firebaseFirestore.collection("users")
-                .document(userId)
-                .collection("MyFavorites")
-                .document(favorites.getFavoriteId())
-                .delete()
-                .addOnSuccessListener(unused -> {
-                    myFavoritesMutableLiveDataDeleteSuccess.postValue(favorites);
-                }).addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
-    }
 
     public LiveData<MyCart> getLiveDataAfterDeleted() {
         return myCartMutableLiveDataDeleteSuccess;
     }
 
-    public LiveData<Favorites> getFavoritesLiveDataAfterDeleted() {
-        return myFavoritesMutableLiveDataDeleteSuccess;
-    }
 
     public LiveData<MyCart> getCartAfterAdd() {
         return myCartMutableLiveDataAddSuccess;
@@ -389,18 +378,6 @@ public class RetrieveDatabase implements FurnitureService {
                 .document(cartId)
                 .set(myCart)
                 .addOnSuccessListener(unused -> myCartUpdate.postValue(myCart))
-                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
-    }
-
-    public void addProductToFavorites(String userId, Favorites favorites) {
-        firebaseFirestore.collection("users")
-                .document(userId)
-                .collection("MyFavorites")
-                .document(favorites.getProduct().getProductId())
-                .set(favorites)
-                .addOnSuccessListener(unused -> {
-                    myFavoritesLiveDataAddSuccess.postValue(favorites);
-                })
                 .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
@@ -417,50 +394,26 @@ public class RetrieveDatabase implements FurnitureService {
                 .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
     }
 
-    public LiveData<Address> getMyAddressAfterCreate() {
-        return myAddressCreatedSuccess;
-    }
-
-    public void deleteFavorite(String userId, String favoriteId) {
+    public LiveData<ArrayList<Address>> getAllShippingAddress(String userId) {
         firebaseFirestore.collection("users")
                 .document(userId)
-                .collection("MyFavorites")
-                .document(favoriteId)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        isDeletedFavorite.postValue(favoriteId);
-                    }
-                })
-                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
-
-    }
-
-    public LiveData<String> isDeletedFavorite() {
-        return isDeletedFavorite;
-    }
-
-    public LiveData<Favorites> getFavoritesLiveData() {
-        return myFavoritesLiveDataAddSuccess;
-    }
-
-    public LiveData<ArrayList<Favorites>> getFavoritesLiveDataFromServer(String userId) {
-        firebaseFirestore.collection("users")
-                .document(userId)
-                .collection("MyFavorites")
+                .collection("ShippingAddresses")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        ArrayList<Favorites> myFavorites = new ArrayList<>();
+                        ArrayList<Address> myAddress = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Favorites object = document.toObject(Favorites.class);
-                            myFavorites.add(object);
+                            Address object = document.toObject(Address.class);
+                            myAddress.add(object);
                         }
-                        myFavoritesLiveData.postValue(myFavorites);
+                        myShippingAddressLiveData.postValue(myAddress);
                     }
                 });
-        return myFavoritesLiveData;
+        return myShippingAddressLiveData;
+    }
+
+    public LiveData<Address> getMyAddressAfterCreate() {
+        return myAddressCreatedSuccess;
     }
 
     public LiveData<MyCart> getCartUpdate() {
@@ -471,17 +424,14 @@ public class RetrieveDatabase implements FurnitureService {
         firebaseFirestore.collection("users").document(userId)
                 .collection("MyCarts")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<MyCart> myCarts = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                MyCart object = document.toObject(MyCart.class);
-                                myCarts.add(object);
-                            }
-                            myCartMutableLiveData.postValue(myCarts);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<MyCart> myCarts = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            MyCart object = document.toObject(MyCart.class);
+                            myCarts.add(object);
                         }
+                        myCartMutableLiveData.postValue(myCarts);
                     }
                 });
         return myCartMutableLiveData;
@@ -490,17 +440,14 @@ public class RetrieveDatabase implements FurnitureService {
     public MutableLiveData<ArrayList<User>> getUserByEmailAndPass(String email, String password) {
         firebaseFirestore.collection("users")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<User> users = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                User object = document.toObject(User.class);
-                                users.add(object);
-                            }
-                            usersLiveData.postValue(users);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<User> users = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            User object = document.toObject(User.class);
+                            users.add(object);
                         }
+                        usersLiveData.postValue(users);
                     }
                 });
         return usersLiveData;
