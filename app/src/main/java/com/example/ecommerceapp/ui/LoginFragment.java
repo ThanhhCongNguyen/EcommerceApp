@@ -3,7 +3,9 @@ package com.example.ecommerceapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private FragmentLoginBinding binding;
     private HomeViewModel homeViewModel;
+    private boolean isValidEmail = false;
+    private boolean isValidPassword = false;
 
 
     @Override
@@ -89,33 +93,86 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         binding.loginButton.setOnClickListener(this);
 
         homeViewModel.getLiveDataLoginFail().observe(getViewLifecycleOwner(), s -> {
+            binding.progressBar.setVisibility(View.GONE);
             Toast.makeText(getContext(), "Please try again: " + s, Toast.LENGTH_LONG).show();
         });
 
     }
 
     private void login() {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         binding.progressBar.setVisibility(View.VISIBLE);
         String email = binding.emailEdittext.getText().toString().trim();
         String password = binding.passwordEdittext.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email)) {
-            binding.emailTextField.setError("You need to enter your name");
+        if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+            binding.emailTextField.setError("You need to enter your email");
+            binding.passwordTextField.setError("You need to enter your password");
             binding.progressBar.setVisibility(View.GONE);
-            return;
+            isValidEmail = false;
+            isValidPassword = false;
         } else {
-            binding.emailTextField.setErrorEnabled(false);
-        }
+            if (TextUtils.isEmpty(email)) {
+                binding.emailTextField.setError("You need to enter your email");
+                binding.progressBar.setVisibility(View.GONE);
+                isValidEmail = false;
+            } else {
+                isValidEmail = true;
+                binding.emailTextField.setErrorEnabled(false);
+            }
 
-        if (TextUtils.isEmpty(password)) {
-            binding.passwordTextField.setError("You need to enter your name");
-            binding.progressBar.setVisibility(View.GONE);
-            return;
-        } else {
-            binding.passwordTextField.setErrorEnabled(false);
+            if (TextUtils.isEmpty(password)) {
+                binding.passwordTextField.setError("You need to enter your password");
+                binding.progressBar.setVisibility(View.GONE);
+                isValidPassword = false;
+                return;
+            } else {
+                isValidPassword = true;
+                binding.passwordTextField.setErrorEnabled(false);
+            }
         }
+        binding.emailEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        homeViewModel.signInWithEmailAndPassword(email, password);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (email.matches(emailPattern) && charSequence.length() > 0) {
+                    isValidEmail = true;
+                    binding.emailTextField.setErrorEnabled(false);
+                } else {
+                    binding.emailTextField.setError("You need to enter a valid email");
+                    isValidEmail = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        binding.passwordEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                binding.passwordTextField.setErrorEnabled(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        if (isValidPassword && isValidEmail) {
+            homeViewModel.signInWithEmailAndPassword(email, password);
+        }
     }
 
     private void navigateSignUp() {

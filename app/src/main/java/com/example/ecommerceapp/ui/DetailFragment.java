@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -128,7 +129,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
         });
 
-
         homeViewModel.getCartAfterAdd().observe(getViewLifecycleOwner(), myCart -> {
             if (myCart != null) {
                 if (homeViewModel.isObserve()) {
@@ -137,6 +137,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
     }
 
     private void plusCount() {
@@ -177,17 +178,30 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     }
 
     private void addProductToCart() {
-        homeViewModel.setObserve(true);
-        binding.progressBar.setVisibility(View.VISIBLE);
-        String userId = homeViewModel.getUserId();
-        MyCart myCart = new MyCart();
-        myCart.setProduct(homeViewModel.getProduct());
-        myCart.setUserId(userId);
-        myCart.setCartId(homeViewModel.getCartId());
-        myCart.setTotalPrice(homeViewModel.getFinalPrice());
-        myCart.setQuantity(homeViewModel.getFinalQuantity());
+        if (homeViewModel.isLogin()) {
+            homeViewModel.setObserve(true);
+            binding.progressBar.setVisibility(View.VISIBLE);
+            String userId = homeViewModel.getUserId();
+            MyCart myCart = new MyCart();
+            myCart.setProduct(homeViewModel.getProduct());
+            myCart.setUserId(userId);
+            myCart.setCartId(homeViewModel.getCartId());
+            myCart.setTotalPrice(homeViewModel.getFinalPrice());
+            myCart.setQuantity(homeViewModel.getFinalQuantity());
 
-        homeViewModel.addProductToCart(homeViewModel.getUserId(), myCart, homeViewModel.getCartId());
+            homeViewModel.addProductToCart(homeViewModel.getUserId(), myCart, homeViewModel.getCartId());
+        } else {
+            RequestLoginDialog requestLoginDialog = new RequestLoginDialog();
+            requestLoginDialog.show(getParentFragmentManager(), "MyFragment");
+            requestLoginDialog.setCallback(() -> {
+                requestLoginDialog.dismiss();
+                LoginFragment loginFragment = new LoginFragment();
+                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+                fragmentTransaction.replace(R.id.frameLayout, loginFragment);
+                fragmentTransaction.commit();
+            });
+        }
     }
 
 }

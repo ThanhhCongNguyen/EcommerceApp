@@ -18,6 +18,7 @@
     <color name="green100">#4CAF50</color>
     <color name="green">#00A300</color>
     <color name="blue">#0000FF</color>
+    <color name="red">#F44336</color>
 
 
 </resources>

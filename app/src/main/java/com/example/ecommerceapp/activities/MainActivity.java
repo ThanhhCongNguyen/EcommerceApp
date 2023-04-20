@@ -2,6 +2,7 @@ package com.example.ecommerceapp.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,6 @@ import com.example.ecommerceapp.ui.MainFragment;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
     private HomeViewModel homeViewModel;
 
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 homeViewModel.saveUserIdToSharePreferences(user.getUserId());
                 MainFragment mainFragment = new MainFragment();
                 transactionFragment(mainFragment);
+                Toast.makeText(this, "Login success", Toast.LENGTH_LONG).show();
             }
         });
     }

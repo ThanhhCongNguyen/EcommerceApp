@@ -58,9 +58,8 @@ public class CheckOutFragment extends Fragment {
         });
 
         binding.editDeliveryBtn.setOnClickListener(view -> {
-            SelectDeliveryMethodDialog selectDeliveryMethodDialog;
-            selectDeliveryMethodDialog = new SelectDeliveryMethodDialog();
-            selectDeliveryMethodDialog.show(getParentFragmentManager(), "My  Fragment");
+            SelectDeliveryMethodDialog selectDeliveryMethodDialog = new SelectDeliveryMethodDialog();
+            selectDeliveryMethodDialog.show(getParentFragmentManager(), "MyFragment");
             selectDeliveryMethodDialog.setCallback(deliveryMethod -> updateDelivery(deliveryMethod));
         });
     }

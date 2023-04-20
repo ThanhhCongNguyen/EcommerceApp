@@ -323,7 +323,7 @@ public class RetrieveDatabase implements FurnitureService {
                             FirebaseUser user = mAuth.getCurrentUser();
                             getUserAfterLogin(user.getUid());
                         } else {
-
+                            userMutableLiveDataLoginFail.postValue(task.getException().toString());
                         }
                     }
                 });
