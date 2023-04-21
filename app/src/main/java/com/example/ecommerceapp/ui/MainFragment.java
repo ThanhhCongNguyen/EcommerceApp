@@ -167,7 +167,7 @@ public class MainFragment extends Fragment {
                 MyOrderFragment myOrderFragment = new MyOrderFragment();
                 transactionFragment(myOrderFragment);
 //                AddData addData = new AddData();
-//                addData.addProductToFirestore();
+//                addData.addProductToFirestore2();
             }
 
             @Override

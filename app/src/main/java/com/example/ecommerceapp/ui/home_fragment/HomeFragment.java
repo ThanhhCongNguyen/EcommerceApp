@@ -56,13 +56,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             if (position == 0) {
-                tab.setText(R.string.chair);
+                tab.setText("Off plants");
             } else if (position == 1) {
-                tab.setText(R.string.table);
+                tab.setText("Des plants");
             } else if (position == 2) {
-                tab.setText(R.string.arm_chair);
+                tab.setText("Und plants");
             } else {
-                tab.setText(R.string.bed);
+                tab.setText("Han plants");
             }
         }).attach();
 
