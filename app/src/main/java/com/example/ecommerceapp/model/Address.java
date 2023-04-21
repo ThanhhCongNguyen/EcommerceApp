@@ -5,6 +5,7 @@ import com.firebase.ui.auth.data.model.PhoneNumber;
 public class Address {
     private String addressId;
     private String userId;
+    private String userName;
     private String phoneNumber;
     private String street;
     private String city;
@@ -20,6 +21,14 @@ public class Address {
         this.street = street;
         this.city = city;
         this.country = country;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPhoneNumber() {

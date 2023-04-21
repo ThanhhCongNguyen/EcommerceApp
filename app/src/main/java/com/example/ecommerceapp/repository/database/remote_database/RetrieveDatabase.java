@@ -67,6 +67,7 @@ public class RetrieveDatabase implements FurnitureService {
     private MutableLiveData<ArrayList<Address>> myShippingAddressLiveData;
     private MutableLiveData<MyCart> myCartUpdate;
     private MutableLiveData<ArrayList<User>> usersLiveData;
+    private MutableLiveData<String> paymentMethodLiveData;
 
     private Callback callback;
 
@@ -94,6 +95,7 @@ public class RetrieveDatabase implements FurnitureService {
         myFavoritesMutableLiveDataDeleteSuccess = new MutableLiveData<>();
         myAddressCreatedSuccess = new MutableLiveData<>();
         myShippingAddressLiveData = new MutableLiveData<>();
+        paymentMethodLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -451,6 +453,22 @@ public class RetrieveDatabase implements FurnitureService {
                     }
                 });
         return usersLiveData;
+    }
+
+    public void setPaymentMethod(String userId) {
+        firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("PaymentMethods")
+                .document()
+                .set("Payment on delivery")
+                .addOnSuccessListener(unused -> {
+                    paymentMethodLiveData.postValue("Payment on delivery");
+                })
+                .addOnFailureListener(e -> Log.d(TAG, "Error writing document", e));
+    }
+
+    public LiveData<String> getPaymentMethod() {
+        return paymentMethodLiveData;
     }
 
     public MutableLiveData<User> getUserFromShare() {

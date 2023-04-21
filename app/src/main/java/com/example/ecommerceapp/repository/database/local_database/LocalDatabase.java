@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.ecommerceapp.utils.PaymentMethod;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.net.PortUnreachableException;
@@ -50,6 +51,19 @@ public class LocalDatabase {
         SharedPreferences shared = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String userId = (shared.getString("userId", "default"));
         return userId;
+    }
+
+    public void savePaymentMethod(Application application, String paymentMethod) {
+        SharedPreferences sharedpreferences = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("payment", paymentMethod);
+        editor.apply();
+    }
+
+    public String getPaymentMethod(Application application) {
+        SharedPreferences shared = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String paymentMethod = (shared.getString("payment", "default"));
+        return paymentMethod;
     }
 
 }

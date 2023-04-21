@@ -46,7 +46,7 @@
     <string name="enter_phone_number_require">You need to enter your phoneNumber</string>
     <string name="enter_password_require">You need to enter your password</string>
     <string name="confirm_password_require">You need to confirm password</string>
-    <string name="number_not_correct_format">Your phone number is not correct format</string>
+    <string name="number_not_correct_format">Your email is not correct format</string>
     <string name="check_password_length">Password length must be more than 6 characters</string>
     <string name="confirm_password_not_correct">Confirm password is not correct</string>
     <string name="authen_fail">Authentication failed.</string>

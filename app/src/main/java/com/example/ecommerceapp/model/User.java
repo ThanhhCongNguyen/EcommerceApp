@@ -1,5 +1,7 @@
 package com.example.ecommerceapp.model;
 
+import com.example.ecommerceapp.utils.PaymentMethod;
+
 import java.util.ArrayList;
 
 public class User {
@@ -7,6 +9,7 @@ public class User {
     private String userName;
     private String email;
     private String password;
+    private PaymentMethod paymentMethod = PaymentMethod.PAYMENT_ON_DELIVERY;
 
     public User() {
     }
@@ -17,6 +20,14 @@ public class User {
         this.userName = userName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String userId, String userName, String email, String password, PaymentMethod paymentMethod) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.paymentMethod = paymentMethod;
     }
 
     public String getUserId() {
@@ -49,5 +60,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

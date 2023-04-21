@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             if (user != null) {
                 homeViewModel.saveUserToSharePreferences();
                 homeViewModel.saveUserIdToSharePreferences(user.getUserId());
+                homeViewModel.setPaymentMethod("Payment on delivery");
                 MainFragment mainFragment = new MainFragment();
                 transactionFragment(mainFragment);
                 Toast.makeText(this, "Login success", Toast.LENGTH_LONG).show();

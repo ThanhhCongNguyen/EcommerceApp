@@ -153,6 +153,14 @@ public class FurnitureRepository {
         return localDatabase.getUserId(application);
     }
 
+    public String getPaymentMethod(Application application) {
+        return localDatabase.getPaymentMethod(application);
+    }
+
+    public void setPaymentMethod(Application application, String paymentMethod) {
+        localDatabase.savePaymentMethod(application, paymentMethod);
+    }
+
 
     public interface FurnitureRepositoryCallback {
 

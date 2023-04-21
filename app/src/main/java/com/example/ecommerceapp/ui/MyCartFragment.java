@@ -39,9 +39,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.backBtn) {
-            backToHomeFragment();
-        }
+
     }
 
     @Override
@@ -77,8 +75,6 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init() {
-        binding.backBtn.setOnClickListener(this);
-
         if (!homeViewModel.isLogin()) {
             binding.rcvCart.setVisibility(View.GONE);
             binding.tv1.setVisibility(View.GONE);

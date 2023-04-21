@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecommerceapp.R;
 import com.example.ecommerceapp.databinding.FragmentLoginBinding;
+import com.example.ecommerceapp.utils.Validate;
 import com.example.ecommerceapp.viewmodel.HomeViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -101,7 +103,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void login() {
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        binding.progressBar.setVisibility(View.VISIBLE);
         String email = binding.emailEdittext.getText().toString().trim();
         String password = binding.passwordEdittext.getText().toString().trim();
 
@@ -129,6 +130,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             } else {
                 isValidPassword = true;
                 binding.passwordTextField.setErrorEnabled(false);
+            }
+
+            if (!Validate.checkIsValidEmailAddress(email)) {
+                binding.emailTextField.setError(getString(R.string.number_not_correct_format));
+                isValidEmail = false;
+            } else {
+                binding.emailTextField.setErrorEnabled(false);
+                isValidEmail = true;
             }
         }
         binding.emailEdittext.addTextChangedListener(new TextWatcher() {
@@ -171,7 +180,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         });
 
         if (isValidPassword && isValidEmail) {
+            binding.progressBar.setVisibility(View.VISIBLE);
             homeViewModel.signInWithEmailAndPassword(email, password);
+
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 

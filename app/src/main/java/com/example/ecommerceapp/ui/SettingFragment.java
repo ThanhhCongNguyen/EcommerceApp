@@ -99,6 +99,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         binding.settingLayout.setOnClickListener(this);
         binding.requestLoginButton.setOnClickListener(this);
 
+        binding.logoutTextview.setOnClickListener(view -> {
+            homeViewModel.clearUserCache();
+
+            LoginFragment fragment = new LoginFragment();
+            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.frameLayout, fragment);
+            fragmentTransaction.commit();
+        });
+
     }
 
     private void initData() {

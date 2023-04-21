@@ -442,6 +442,14 @@ public class HomeViewModel extends AndroidViewModel {
         isObserveMyFavorites = observeMyFavorites;
     }
 
+    public void setPaymentMethod(String paymentMethod) {
+        furnitureRepository.setPaymentMethod(application, paymentMethod);
+    }
+
+    public String getPaymentMethod() {
+        return furnitureRepository.getPaymentMethod(application);
+    }
+
     public interface HomeViewModelCallback {
         void getUserHomeViewModelCallback(User user);
     }
