@@ -102,7 +102,6 @@ public class MainFragment extends Fragment {
     };
 
     private void initData() {
-        binding.bottomNavigation.getOrCreateBadge(R.id.notifications).setNumber(4);
         if (homeViewModel.isLogin()) {
             homeViewModel.getUserFromShare().observe(getViewLifecycleOwner(), user -> {
                 if (user != null) {

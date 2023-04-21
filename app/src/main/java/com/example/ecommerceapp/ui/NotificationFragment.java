@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -62,6 +64,14 @@ public class NotificationFragment extends Fragment {
             notificationsAdapter = new NotificationsAdapter();
             binding.rcvNotification.setLayoutManager(new LinearLayoutManager(getContext()));
             binding.rcvNotification.setAdapter(notificationsAdapter);
+
+            binding.requestLoginButton.setOnClickListener(view -> {
+                homeViewModel.clearUserCache();
+                FragmentManager fm = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
+                fragmentTransaction.commit();
+            });
         }
     }
 }

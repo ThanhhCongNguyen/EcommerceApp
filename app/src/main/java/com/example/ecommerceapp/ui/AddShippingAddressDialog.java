@@ -11,17 +11,27 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.ecommerceapp.adapter.SelectAddressAdapter;
 import com.example.ecommerceapp.databinding.DeliveryMethodLayoutBinding;
 import com.example.ecommerceapp.databinding.FragmentAddShippingAddressBinding;
 import com.example.ecommerceapp.databinding.FragmentShippingAddressBinding;
+import com.example.ecommerceapp.databinding.SelectAddressDialogLayoutBinding;
 import com.example.ecommerceapp.model.Address;
 import com.example.ecommerceapp.utils.DeliveryMethod;
 
-public class AddShippingAddressDialog extends DialogFragment {
-    private FragmentAddShippingAddressBinding binding;
-    private Callback callback;
+import java.util.ArrayList;
 
+public class AddShippingAddressDialog extends Fragment {
+    private SelectAddressDialogLayoutBinding binding;
+    private Callback callback;
+    private ArrayList<Address> addresses;
+
+    public void setAddresses(ArrayList<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     public void setCallback(Callback callback) {
         this.callback = callback;
@@ -30,7 +40,7 @@ public class AddShippingAddressDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentAddShippingAddressBinding.inflate(inflater, container, false);
+        binding = SelectAddressDialogLayoutBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -42,26 +52,22 @@ public class AddShippingAddressDialog extends DialogFragment {
     }
 
     private void init() {
-        String[] country = {"HaNoi", "DaNang"};
-        ArrayAdapter aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,country);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCity.setAdapter(aa);
-        binding.spinnerCity.setSelection(0);
-        binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     private void setOnClick() {
+        SelectAddressAdapter addressAdapter = new SelectAddressAdapter();
+        binding.recyclerViewAddress.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerViewAddress.setAdapter(addressAdapter);
+        addressAdapter.setProducts(addresses);
 
+        addressAdapter.setCallback(new SelectAddressAdapter.Callback() {
+            @Override
+            public void onItemClick(Address address) {
+                callback.save(address);
+                getParentFragmentManager().popBackStack();
+            }
+        });
     }
 
     public interface Callback {

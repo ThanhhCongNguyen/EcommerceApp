@@ -148,13 +148,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (email.matches(emailPattern) && charSequence.length() > 0) {
                     isValidEmail = true;
                     binding.emailTextField.setErrorEnabled(false);
-                } else {
-                    binding.emailTextField.setError("You need to enter a valid email");
-                    isValidEmail = false;
-                }
+//                } else {
+//                    binding.emailTextField.setError("You need to enter a valid email");
+//                    isValidEmail = false;
+//                }
             }
 
             @Override
@@ -171,6 +170,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 binding.passwordTextField.setErrorEnabled(false);
+                isValidPassword = true;
             }
 
             @Override

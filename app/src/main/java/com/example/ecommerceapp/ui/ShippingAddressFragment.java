@@ -98,6 +98,7 @@ public class ShippingAddressFragment extends Fragment implements View.OnClickLis
         shippingAddressAdapter = new ShippingAddressAdapter();
         binding.rcvShippingAddress.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcvShippingAddress.setAdapter(shippingAddressAdapter);
+//        shippingAddressAdapter.setProducts();
     }
 
     private void addressEmpty() {

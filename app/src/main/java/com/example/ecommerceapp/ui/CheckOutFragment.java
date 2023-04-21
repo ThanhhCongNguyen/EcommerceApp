@@ -69,6 +69,34 @@ public class CheckOutFragment extends Fragment {
                     Address address = addresses.get(0);
                     binding.userName.setText(address.getUserName());
                     binding.userAddress.setText(address.getStreet() + ", " + address.getCity() + ", " + address.getCountry());
+
+                    binding.editAddressBtn.setOnClickListener(view -> {
+                        if (!hasAddress) {
+                            AddShippingAddressFragment fragment = new AddShippingAddressFragment();
+                            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+                            fragmentTransaction.replace(R.id.frameLayout1, fragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        } else {
+                            AddShippingAddressDialog addShippingAddressDialog = new AddShippingAddressDialog();
+                            addShippingAddressDialog.setAddresses(addresses);
+                            FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+                            fragmentTransaction.replace(R.id.frameLayout1, addShippingAddressDialog);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+
+                            addShippingAddressDialog.setCallback(new AddShippingAddressDialog.Callback() {
+                                @Override
+                                public void save(Address address) {
+                                    binding.userName.setText(address.getUserName());
+                                    binding.userAddress.setText(address.getStreet() + ", " + address.getCity() + ", " + address.getCountry());
+                                }
+                            });
+                        }
+                    });
+
                 } else {
                     hasAddress = false;
                     binding.userName.setText("Bạn chưa đặt địa chỉ nhận hàng mặc định");
@@ -96,18 +124,26 @@ public class CheckOutFragment extends Fragment {
             paymentMethodDialog.setCallback(paymentMethod -> updatePaymentMethod(paymentMethod));
         });
 
-        binding.editAddressBtn.setOnClickListener(view -> {
-            if (!hasAddress) {
-                AddShippingAddressFragment fragment = new AddShippingAddressFragment();
-                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-                fragmentTransaction.replace(R.id.frameLayout1, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            } else {
-
-            }
-        });
+//        binding.editAddressBtn.setOnClickListener(view -> {
+//            if (!hasAddress) {
+//                AddShippingAddressFragment fragment = new AddShippingAddressFragment();
+//                FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+//                fragmentTransaction.replace(R.id.frameLayout1, fragment);
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
+//            } else {
+//                AddShippingAddressDialog addShippingAddressDialog = new AddShippingAddressDialog();
+//                addShippingAddressDialog.setAddresses();
+//                addShippingAddressDialog.show(getParentFragmentManager(), "MyFragment");
+//                addShippingAddressDialog.setCallback(new AddShippingAddressDialog.Callback() {
+//                    @Override
+//                    public void save(Address address) {
+//
+//                    }
+//                });
+//            }
+//        });
     }
 
     private void updateDelivery(DeliveryMethod deliveryMethod) {

@@ -79,7 +79,7 @@
                 android:layout_marginTop="@dimen/_16dp"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18sp"
+                android:textSize="@dimen/_16sp"
                 android:textStyle="bold"
                 tools:text="Leo Messi" />
 

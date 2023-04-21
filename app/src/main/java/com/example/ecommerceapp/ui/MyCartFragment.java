@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -134,6 +136,14 @@ public class MyCartFragment extends Fragment implements View.OnClickListener {
 
         binding.checkOutBtn.setOnClickListener(view -> {
             callback.openCheckOutFragment();
+        });
+
+        binding.requestLoginButton.setOnClickListener(view -> {
+            homeViewModel.clearUserCache();
+            FragmentManager fm = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
+            fragmentTransaction.commit();
         });
     }
 

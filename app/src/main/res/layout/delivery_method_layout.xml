@@ -33,7 +33,7 @@
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_4dp"
             android:layout_marginEnd="@dimen/_16dp"
-            android:text="Fast delivery" />
+            android:text="Fast delivery (15,000 VND)" />
 
         <RadioButton
             android:id="@+id/viettelPost"
@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_4dp"
             android:layout_marginEnd="@dimen/_16dp"
-            android:text=" Viettel Post" />
+            android:text=" Viettel Post (16,000 VND)" />
 
         <RadioButton
             android:id="@+id/vietnamPost"
@@ -51,7 +51,7 @@
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_4dp"
             android:layout_marginEnd="@dimen/_16dp"
-            android:text=" Vietnam Post" />
+            android:text=" Vietnam Post (17000 VND)" />
 
         <RadioButton
             android:id="@+id/ninjaVan"
@@ -60,7 +60,7 @@
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_4dp"
             android:layout_marginEnd="@dimen/_16dp"
-            android:text=" Ninja Van" />
+            android:text=" Ninja Van (18,000 VND)" />
     </RadioGroup>
 
 
